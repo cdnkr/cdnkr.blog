@@ -51,22 +51,22 @@ export default function Home({
 
 function Socials() {
     return (
-        <div className="flex flex-col gap-6 p-4">
+        <div className="flex flex-col gap-8 px-2 py-4">
             <Link href="https://github.com/cdnkr" target="_blank" rel="noopener noreferrer">
-                <Button className="px-2 py-2 lg:px-4 lg:py-4">
-                    <GitHub className="size-6 lg:size-6 stroke-black fill-black" />/cdnkr
+                <Button>
+                    <GitHub className="size-6 stroke-black fill-black" />/cdnkr
                 </Button>
             </Link>
 
             <Link href="https://www.linkedin.com/in/cdnkr" target="_blank" rel="noopener noreferrer">
-                <Button className="px-2 py-2 lg:px-4 lg:py-4">
-                    <LinkedIn className="size-6 lg:size-6 fill-black" />/in/cdnkr
+                <Button>
+                    <LinkedIn className="size-6 fill-black" />/in/cdnkr
                 </Button>
             </Link>
 
             <Link href="https://x.com/chaddanker" target="_blank" rel="noopener noreferrer">
-                <Button className="px-2 py-2 lg:px-4 lg:py-4">
-                    <XDotCom className="size-6 lg:size-6 fill-black" />/chaddanker
+                <Button>
+                    <XDotCom className="size-6 fill-black" />/chaddanker
                 </Button>
             </Link>
         </div>
