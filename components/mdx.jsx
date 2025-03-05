@@ -59,7 +59,7 @@ const components = {
         const text = getTextContent(children);
         
         return (
-            <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/20 relative">
+            <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/75 relative">
                 <CopyButton text={text} />
                 {children}
             </pre>
