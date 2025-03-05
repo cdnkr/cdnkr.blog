@@ -1,7 +1,8 @@
 import Button from "@/components/ui/button";
 import { cn } from "@/utils/cn";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import rehypePrettyCode from 'rehype-pretty-code';
+import rehypePrettyCode from "rehype-pretty-code";
+import CopyButton from "@/components/copybutton";
 
 const components = {
     Button: (props) => (
@@ -35,8 +36,31 @@ const components = {
         <blockquote className="border-l-4 border-gray-200 pl-4 my-4 italic" {...props} />
     ),
     pre: ({ children }) => {
+        const getTextContent = (node) => {
+            // If it"s a string, return it directly
+            if (typeof node === "string") return node;
+            // If null/undefined, return empty string
+            if (!node) return "";
+            
+            // If it"s an array, map through it
+            if (Array.isArray(node)) {
+                return node.map(getTextContent).join("");
+            }
+            
+            // If it has children in props, recurse
+            if (node.props?.children) {
+                return getTextContent(node.props.children);
+            }
+            
+            // Fallback
+            return "";
+        };
+
+        const text = getTextContent(children);
+        
         return (
-            <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/20">
+            <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/20 relative">
+                <CopyButton text={text} />
                 {children}
             </pre>
         )
@@ -62,14 +86,14 @@ const components = {
 }
 
 const prettyCodeOptions = {
-    theme: 'one-dark-pro',
+    theme: "one-dark-pro",
     onVisitLine(node) {
         if (node.children.length === 0) {
-            node.children = [{ type: 'text', value: ' ' }]
+            node.children = [{ type: "text", value: " " }]
         }
     },
     onVisitHighlightedLine(node) {
-        node.properties.className.push('highlighted')
+        node.properties.className.push("highlighted")
     },
     keepBackground: true,
 }
