@@ -7,9 +7,9 @@ export default function PostCard({ post, className }) {
 
     return (
         <Link href={`/post/${slug}`}>
-            <Card id={encodeURIComponent(frontmatter.title)} className={cn(className, "flex flex-col gap-4")}>
+            <Card id={encodeURIComponent(frontmatter.title)} className={cn(className, "flex flex-col gap-4 group")}>
                 <div className="w-full flex flex-col">
-                    <h3 className="text-4xl max-w-full leading-snug text-wrap break-words font-black">{frontmatter.title}</h3>
+                    <h3 className="text-4xl max-w-full leading-snug text-wrap break-words font-black group-hover:text-primary transition-all duration-200">{frontmatter.title}</h3>
                 </div>
                 <div className="w-full flex items-center flex-wrap gap-2">
                     <span className="text-gray-700 leading-none">
