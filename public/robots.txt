@@ -1,0 +1,7 @@
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+Sitemap: https://cdnkr.github.io/sitemap.xml
