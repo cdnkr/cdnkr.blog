@@ -56,7 +56,7 @@ export function XDotCom({ className }) {
   );
 }
 
-export function ChevronLeft({ className, strokeWidth = 1.5 }) {
+export function ChevronLeft({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -75,13 +75,14 @@ export function ChevronLeft({ className, strokeWidth = 1.5 }) {
   );
 }
 
-export function Copy({ className }) {
+export function Copy({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
       className={cn("size-6", className)}
+      strokeWidth={strokeWidth}
     >
       <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 0 1 3.75 3.75v1.875C13.5 8.161 14.34 9 15.375 9h1.875A3.75 3.75 0 0 1 21 12.75v3.375C21 17.16 20.16 18 19.125 18h-9.75A1.875 1.875 0 0 1 7.5 16.125V3.375Z" />
       <path d="M15 5.25a5.23 5.23 0 0 0-1.279-3.434 9.768 9.768 0 0 1 6.963 6.963A5.23 5.23 0 0 0 17.25 7.5h-1.875A.375.375 0 0 1 15 7.125V5.25ZM4.875 6H6v10.125A3.375 3.375 0 0 0 9.375 19.5H16.5v1.125c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V7.875C3 6.839 3.84 6 4.875 6Z" />
@@ -89,13 +90,13 @@ export function Copy({ className }) {
   );
 }
 
-export function ArrowLeft({ className }) {
+export function ArrowLeft({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       className={cn("size-6", className)}
     >
@@ -108,13 +109,13 @@ export function ArrowLeft({ className }) {
   );
 }
 
-export function ArrowRight({ className }) {
+export function ArrowRight({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       className={cn("size-6", className)}
     >
@@ -127,13 +128,13 @@ export function ArrowRight({ className }) {
   );
 }
 
-export function Share({ className }) {
+export function ArrowUpRight({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       className={cn("size-6", className)}
     >
@@ -146,13 +147,32 @@ export function Share({ className }) {
   );
 }
 
-export function Install({ className }) {
+export function ArrowTurnDownRight({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={strokeWidth}
+      stroke="currentColor"
+      className={cn("size-6", className)}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m16.49 12 3.75 3.75m0 0-3.75 3.75m3.75-3.75H3.74V4.499"
+      />
+    </svg>
+  );
+}
+
+export function Install({ className, strokeWidth = 2 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       className={cn("size-6", className)}
     >
@@ -165,13 +185,13 @@ export function Install({ className }) {
   );
 }
 
-export function Download({ className }) {
+export function Download({ className, strokeWidth = 2 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={strokeWidth}
       stroke="currentColor"
       className={cn("size-6", className)}
     >
@@ -179,6 +199,63 @@ export function Download({ className }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+      />
+    </svg>
+  );
+}
+
+export function ArrowsPointingOut({ className, strokeWidth = 2 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth}
+      stroke="currentColor"
+      className={cn("size-6", className)}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+      />
+    </svg>
+  );
+}
+
+export function Share({ className, strokeWidth = 2 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth}
+      stroke="currentColor"
+      className={cn("size-6", className)}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+      />
+    </svg>
+  );
+}
+
+export function ChevronDoubleRight({ className, strokeWidth = 2 }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={strokeWidth}
+      stroke="currentColor"
+      className={cn("size-6", className)}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
       />
     </svg>
   );
