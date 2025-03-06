@@ -7,6 +7,19 @@ tags: [How-to,PWA,Next.js]
 slug: setting-up-a-pwa-in-nextjs
 ---
 
+Progressive Web Apps (PWAs) combine the best of web and native applications. They're websites that can be installed on devices like regular apps, work offline, and send push notifications. 
+
+### PWAs have some benefits
+
+They're **installable** - Users can add your web app to their home screen; **Offline Support** Works without an internet connection; They _Feels_ like a native app with full-screen mode;
+
+This post will walk through setting up a PWA in Next.js. And how to create a custom install button.
+
+_Like this 👇_
+<PWAInstallButton />
+
+---
+
 ### Step 1: Create the `manifest.json` File
 
 The `manifest.json` file provides metadata for your PWA, like its name, icons, and theme color.
@@ -110,55 +123,56 @@ This will allow users to manually trigger the PWA install prompt when they click
 
 **Create an `InstallButton` component that listens for the `beforeinstallprompt` event, which is triggered when the app meets the PWA installability criteria.**
 
-   ```jsx
-   // components/InstallButton.tsx
-   import { useEffect, useState } from 'react';
+```jsx
+// components/PWAInstallButton.tsx
+"use client"
 
-   const InstallButton = () => {
-     const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
-     const [isInstallable, setIsInstallable] = useState(false);
+import { useEffect, useState } from 'react';
+import Button from '../ui/button';
+ 
+export default function PWAInstallButton() {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+ 
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setIsInstallable(true);
+    };
+ 
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+ 
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+ 
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      (deferredPrompt).prompt();
+      const { outcome } = await (deferredPrompt).userChoice;
+      setDeferredPrompt(null);
+      setIsInstallable(false);
+      console.log(`User response to the install prompt: ${outcome}`);
+    }
+  };
+ 
+  return (
+    <div className="flex">
+      {isInstallable && (
+        <Button onClick={handleInstallClick}>
+          Install App
+        </Button>
+      )}
+    </div>
+  );
+};
+```
 
-     useEffect(() => {
-       const handleBeforeInstallPrompt = (e: Event) => {
-         e.preventDefault();
-         setDeferredPrompt(e);
-         setIsInstallable(true);
-       };
-
-       window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-       return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-     }, []);
-
-     const handleInstallClick = async () => {
-       if (deferredPrompt) {
-         (deferredPrompt as any).prompt();
-         const { outcome } = await (deferredPrompt as any).userChoice;
-         setDeferredPrompt(null);
-         setIsInstallable(false);
-         console.log(`User response to the install prompt: ${outcome}`);
-       }
-     };
-
-     return (
-       <>
-         {isInstallable && (
-           <button onClick={handleInstallClick} className="install-button">
-             Install App
-           </button>
-         )}
-       </>
-     );
-   };
-
-   export default InstallButton;
-   ```
-
-**Add `InstallButton` to your layout or any component where you’d like the install button to appear.**
+**Add `PWAInstallButton` to your layout or any component where you’d like the install button to appear.**
 
    ```jsx
    // app/layout.tsx or another component
-   import InstallButton from '@/components/InstallButton';
+   import PWAInstallButton from '@/components/PWAInstallButton';
 
    export default function RootLayout({ children }: { children: React.ReactNode }) {
      return (
@@ -168,7 +182,7 @@ This will allow users to manually trigger the PWA install prompt when they click
            <meta name="theme-color" content="#ffffff" />
          </head>
          <body>
-           <InstallButton />
+           <PWAInstallButton />
            {children}
          </body>
        </html>
