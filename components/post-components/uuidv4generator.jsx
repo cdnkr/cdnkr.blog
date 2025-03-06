@@ -43,12 +43,14 @@ export default function UUIDV4Generator() {
     }
 
     return (
-        <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/75 relative">
-            <div className="absolute right-2 top-2 flex gap-2">
+        <div className="relative">
+            <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
                 <CopyButton text={uuid} />
                 <RegenerateButton onClick={generateUUIDV4} />
             </div>
-            {uuid}
-        </pre>
+            <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/75">
+                {uuid}
+            </pre>
+        </div>
     );
 }
