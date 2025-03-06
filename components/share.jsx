@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "./ui/button";
-import { Share } from "./ui/icons";
+import { ArrowUpRight } from "./ui/icons";
 
 export default function ShareButton({ title, text }) {
   return (
@@ -16,7 +16,7 @@ export default function ShareButton({ title, text }) {
           });
         }}
       >
-        <Share className="size-6 lg:size-6 stroke-black fill-black" />
+        <ArrowUpRight className="size-6 lg:size-6 stroke-black fill-black" />
       </Button>
     </div>
   );
