@@ -22,7 +22,7 @@ export default function Post({ post }) {
             />
           </div>
           <div className="w-full flex items-center flex-wrap gap-2">
-            <span className="text-gray-700 leading-none">
+            <span className="text-gray-600 leading-none">
               {frontmatter.date && (
                 <time dateTime={frontmatter.date}>
                   {new Date(frontmatter.date).toLocaleDateString("en-US", {
