@@ -21,11 +21,6 @@ export default function PWAInstallButton() {
     }, []);
 
     const handleInstallClick = async () => {
-        if (!isInstallable) {
-            alert("PWA is not installable in this environment or on this device 🤷‍♂️");
-            return;
-        };
-
         if (deferredPrompt) {
             (deferredPrompt).prompt();
             const { outcome } = await (deferredPrompt).userChoice;
