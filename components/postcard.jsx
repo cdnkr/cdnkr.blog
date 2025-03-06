@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import Card from "./ui/card";
+import { ChevronDoubleRight } from "./ui/icons";
 
 export default function PostCard({ post, className }) {
   const { slug, frontmatter } = post;
@@ -11,9 +12,13 @@ export default function PostCard({ post, className }) {
         id={encodeURIComponent(frontmatter.title)}
         className={cn(className, "flex flex-col gap-4 group")}
       >
-        <div className="w-full flex flex-col">
-          <h3 className="text-4xl max-w-full leading-snug text-wrap break-words font-black group-hover:text-primary transition-all duration-200">
+        <div className="w-full group">
+          <h3 className="text-4xl max-w-full leading-snug text-wrap break-words font-black group-hover:text-primary transition-all duration-300">
             {frontmatter.title}
+            <ChevronDoubleRight
+              strokeWidth={3}
+              className="ml-4 inline-block transition-all duration-300 opacity-0 group-hover:opacity-100 size-6 lg:size-6 stroke-primary"
+            />
           </h3>
         </div>
         <div className="w-full flex items-center flex-wrap gap-2">
