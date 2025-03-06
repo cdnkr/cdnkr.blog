@@ -1,4 +1,5 @@
 import Post from '@/components/post'
+import config from '@/config'
 import { getAllPosts } from '@/utils/mdx'
 
 export async function generateStaticParams() {
@@ -6,6 +7,24 @@ export async function generateStaticParams() {
     return posts.map((post) => ({
         slug: post.slug,
     }))
+}
+
+export async function generateMetadata({ params }) {
+    params = await params
+    const posts = await getAllPosts()
+    const post = posts.find(post => post.slug === params.slug)
+    return {
+        title: post.title,
+        keywords: post.keywords,
+        description: post.description,
+        openGraph: {
+            title: post.title,
+            description: post.description,
+            keywords: post.keywords,
+            siteName: config.title,
+            url: `${config.url}/${post.slug}`,
+        },
+    }
 }
 
 export default async function BlogPost({ params }) {
