@@ -3,11 +3,11 @@ title: Setting up a PWA in Next.js
 description: The following details how to set up a PWA in a Next.js 15 App Router project. As well as adding an install button.
 date: 2024-11-11
 author: Chad Danker
-tags: [How-to,PWA,Next.js]
+tags: [How-to, PWA, Next.js]
 slug: setting-up-a-pwa-in-nextjs
 ---
 
-Progressive Web Apps (PWAs) combine the best of web and native applications. They're websites that can be installed on devices like regular apps, work offline, and send push notifications. 
+Progressive Web Apps (PWAs) combine the best of web and native applications. They're websites that can be installed on devices like regular apps, work offline, and send push notifications.
 
 ### PWAs have some benefits
 
@@ -16,6 +16,7 @@ They're **installable** - Users can add your web app to their home screen; **Off
 This post will walk through setting up a PWA in Next.js. And how to create a custom install button.
 
 _Like this 👇_
+
 <PWAInstallButton />
 
 ---
@@ -26,55 +27,55 @@ The `manifest.json` file provides metadata for your PWA, like its name, icons, a
 
 **In the root of your `public/` folder, create a `manifest.json` file:**
 
-   ```json
-   // public/manifest.json
-   {
-     "name": "Your App Name",
-     "short_name": "App",
-     "description": "Your app description",
-     "start_url": "/",
-     "display": "standalone",
-     "background_color": "#ffffff",
-     "theme_color": "#ffffff",
-     "icons": [
-       {
-         "src": "/icons/48x48.png",
-         "sizes": "48x48",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/72x72.png",
-         "sizes": "72x72",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/96x96.png",
-         "sizes": "96x96",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/144x144.png",
-         "sizes": "144x144",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/192x192.png",
-         "sizes": "192x192",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/256x256.png",
-         "sizes": "256x256",
-         "type": "image/png"
-       },
-       {
-         "src": "/icons/512x512.png",
-         "sizes": "512x512",
-         "type": "image/png"
-       }
-     ]
-   }
-   ```
+```json
+// public/manifest.json
+{
+  "name": "Your App Name",
+  "short_name": "App",
+  "description": "Your app description",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icons/48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```
 
 **Add Icons: Place the required icon files (e.g., `192x192.png`, `512x512.png`, etc.) in the `public/icons` directory.**
 
@@ -86,34 +87,34 @@ In a Next.js App Router project, use `layout.tsx` in the `app` directory to add 
 
 **Open your `app/layout.tsx` file and add the manifest link, theme color, and icon link in the `<head>` section.**
 
-   ```jsx
-   // app/layout.tsx
-   import './globals.css';
-   import { Metadata } from 'next';
+```jsx
+// app/layout.tsx
+import './globals.css';
+import { Metadata } from 'next';
 
-   export const metadata: Metadata = {
-     title: 'Your App Name',
-     description: 'Your app description',
-     themeColor: '#ffffff',
-   };
+export const metadata: Metadata = {
+  title: 'Your App Name',
+  description: 'Your app description',
+  themeColor: '#ffffff',
+};
 
-   export default function RootLayout({
-     children,
-   }: {
-     children: React.ReactNode;
-   }) {
-     return (
-       <html lang="en">
-         <head>
-           <link rel="manifest" href="/manifest.json" />
-           <link rel="icon" href="/icons/192x192.png" />
-           <meta name="theme-color" content="#ffffff" />
-         </head>
-         <body>{children}</body>
-       </html>
-     );
-   }
-   ```
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icons/192x192.png" />
+        <meta name="theme-color" content="#ffffff" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
 
 ---
 
@@ -125,70 +126,72 @@ This will allow users to manually trigger the PWA install prompt when they click
 
 ```jsx
 // components/PWAInstallButton.tsx
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react';
-import Button from '../ui/button';
- 
+import { useEffect, useState } from "react";
+import Button from "../ui/button";
+
 export default function PWAInstallButton() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstallable, setIsInstallable] = useState(false);
- 
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setIsInstallable(true);
     };
- 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
- 
-    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+
+    return () =>
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
   }, []);
- 
+
   const handleInstallClick = async () => {
     if (deferredPrompt) {
-      (deferredPrompt).prompt();
-      const { outcome } = await (deferredPrompt).userChoice;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
       setDeferredPrompt(null);
       setIsInstallable(false);
       console.log(`User response to the install prompt: ${outcome}`);
     }
   };
- 
+
   return (
     <div className="flex">
       {isInstallable && (
-        <Button onClick={handleInstallClick}>
-          Install App
-        </Button>
+        <Button onClick={handleInstallClick}>Install App</Button>
       )}
     </div>
   );
-};
+}
 ```
 
 **Add `PWAInstallButton` to your layout or any component where you’d like the install button to appear.**
 
-   ```jsx
-   // app/layout.tsx or another component
-   import PWAInstallButton from '@/components/PWAInstallButton';
+```jsx
+// app/layout.tsx or another component
+import PWAInstallButton from '@/components/PWAInstallButton';
 
-   export default function RootLayout({ children }: { children: React.ReactNode }) {
-     return (
-       <html lang="en">
-         <head>
-           <link rel="manifest" href="/manifest.json" />
-           <meta name="theme-color" content="#ffffff" />
-         </head>
-         <body>
-           <PWAInstallButton />
-           {children}
-         </body>
-       </html>
-     );
-   }
-   ```
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ffffff" />
+      </head>
+      <body>
+        <PWAInstallButton />
+        {children}
+      </body>
+    </html>
+  );
+}
+```
 
 ---
 
@@ -198,22 +201,22 @@ To further optimize your PWA for offline capabilities, you can set up a service 
 
 **Install `next-pwa`:**
 
-   ```bash
-   npm install next-pwa
-   ```
+```bash
+npm install next-pwa
+```
 
 **Configure `next-pwa` in your `next.config.js` file:**
 
-   ```javascript
-   // next.config.js
-   const withPWA = require('next-pwa')({
-     dest: 'public',
-   });
+```javascript
+// next.config.js
+const withPWA = require("next-pwa")({
+  dest: "public",
+});
 
-   module.exports = withPWA({
-     // other Next.js configurations
-   });
-   ```
+module.exports = withPWA({
+  // other Next.js configurations
+});
+```
 
 **After setting up `next-pwa`, a `sw.js` file will be generated automatically in the `public/` directory during the build process. This file enables caching for offline use.**
 
@@ -235,9 +238,9 @@ Since service workers like `sw.js` and `workbox-xxxxxx.js` are generated during 
 
 **Build and serve the app in production mode:**
 
-   ```bash
-   npm run build && npm start
-   ```
+```bash
+npm run build && npm start
+```
 
 **Open your app in Chrome or another browser that supports PWAs, and check for the "Install" option in the browser’s address bar or try the custom install button.**
 
