@@ -1,6 +1,6 @@
 import Post from '@/components/post'
 import config from '@/config'
-import { getAllPosts } from '@/utils/mdx'
+import { getAllPosts, getPostBySlug } from '@/utils/mdx'
 
 export async function generateStaticParams() {
     const posts = await getAllPosts()
@@ -11,8 +11,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
     params = await params
-    const posts = await getAllPosts()
-    const post = posts.find(post => post.slug === params.slug)
+    const post = await getPostBySlug(params.slug)
+
     return {
         title: post.frontmatter.title,
         keywords: post.frontmatter.tags,
@@ -30,12 +30,10 @@ export async function generateMetadata({ params }) {
 export default async function BlogPost({ params }) {
     try {
         params = await params
-        const posts = await getAllPosts()
-        const post = posts.find(post => post.slug === params.slug)
-        const similar = posts.filter(post => post.slug !== params.slug)
+        const post = await getPostBySlug(params.slug)
 
         return (
-            <Post post={{ ...post, similar }} />
+            <Post post={post} />
         )
     } catch (error) {
         console.error('Error loading post:', error)

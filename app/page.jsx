@@ -1,18 +1,9 @@
 import Home from "@/components/home";
-import config from "@/config";
-import { getAllPosts } from "@/utils/mdx";
+import { getAllPosts, getTags } from "@/utils/mdx";
 
 export default async function HomePage() {
-  const posts = await getAllPosts()
-  
-  // sort posts by date
-  const sortedPosts = posts.sort((a, b) => {
-    if (!a.frontmatter?.date || !b.frontmatter?.date) return 0
-    return new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-  })
+  const posts = await getAllPosts();
+  const tags = await getTags(posts);
 
-  const allTags = posts.map((post) => post.frontmatter?.tags).flat()
-  const tags = [...new Set(allTags)]
-
-  return <Home posts={sortedPosts} tags={tags} />;
+  return <Home posts={posts} tags={tags} />;
 }
