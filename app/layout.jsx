@@ -16,10 +16,20 @@ const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: config.title,
-  description: config.description,
-};
+export async function generateMetadata() {
+  return {
+      title: config.title,
+      keywords: config.keywords,
+      description: config.description,
+      openGraph: {
+          title: config.title,
+          description: config.description,
+          images: config.image,
+          siteName: config.title,
+          url: config.url,
+      },
+  }
+}
 
 export default function RootLayout({ children }) {
   return (
