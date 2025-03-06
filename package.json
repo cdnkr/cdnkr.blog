@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "clean": "rm -rf .next out",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "format:check": "prettier --check .",
+    "format": "prettier --write . --list-different"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -32,6 +34,8 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11"
   }
 }
