@@ -3,6 +3,7 @@ import { cn } from "@/utils/cn";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import CopyButton from "@/components/copybutton";
+import postComponents from "@/components/post-components";
 
 const components = {
     Button: (props) => (
@@ -83,6 +84,7 @@ const components = {
             </code>
         );
     },
+    ...postComponents,
 }
 
 const prettyCodeOptions = {

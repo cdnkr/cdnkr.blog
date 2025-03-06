@@ -1,0 +1,75 @@
+---
+title: Random UUID Generator
+description: A simple component that generates a random UUIDV4.
+date: 2025-03-06
+author: Chad Danker
+tags: [Component,UUID,React]
+slug: random-uuid-generator
+---
+
+Got frustrated with other UUIDv4 generators at the top of Google search results—filled with ads and lacking an easy way to regenerate—so I created a simple component that quickly generates random UUIDv4 values.
+
+---
+
+<UUIDV4Generator />
+
+---
+
+## Code
+
+```jsx
+"use client";
+
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+function RegenerateButton({
+    onClick
+}) {
+    return (
+        <button
+            onClick={onClick}
+            className="rounded-md px-2 py-1 text-sm bg-primary/70 hover:bg-primary/90 transition-colors cursor-pointer"
+        >
+            Regenerate
+        </button>
+    );
+}
+
+function CopyButton({ text }) {
+    const [copied, setCopied] = useState(false);
+
+    const copy = async () => {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <button
+            onClick={copy}
+            className="rounded-md px-2 py-1 text-sm bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+        >
+            {copied ? "Copied!" : "Copy"}
+        </button>
+    );
+}
+
+export default function UUIDV4Generator() {
+    const [uuid, setUUID] = useState(uuidv4());
+
+    function generateUUIDV4() {
+        setUUID(uuidv4());
+    }
+
+    return (
+        <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/75 relative">
+            <div className="absolute right-2 top-2 flex gap-2">
+                <CopyButton text={uuid} />
+                <RegenerateButton onClick={generateUUIDV4} />
+            </div>
+            {uuid}
+        </pre>
+    );
+}
+```
