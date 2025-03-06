@@ -24,6 +24,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${lexend.variable} ${jetBrainsMono.variable}`}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/icons/icon-192x192.png" />
+        <meta name="theme-color" content="#000000" />
+      </head>
       <body className="antialiased font-sans text-text flex flex-col items-center w-full min-h-screen py-8 bg-background">
         <Background />
         <div className="w-full max-w-[1260px] flex flex-col gap-8 items-center px-6 lg:px-8">
