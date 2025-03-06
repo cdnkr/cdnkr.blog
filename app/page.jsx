@@ -2,21 +2,6 @@ import Home from "@/components/home";
 import config from "@/config";
 import { getAllPosts } from "@/utils/mdx";
 
-export async function generateMetadata() {
-  return {
-      title: config.title,
-      keywords: config.keywords,
-      description: config.description,
-      openGraph: {
-          title: config.title,
-          description: config.description,
-          images: config.image,
-          siteName: config.title,
-          url: config.url,
-      },
-  }
-}
-
 export default async function HomePage() {
   const posts = await getAllPosts()
   
