@@ -34,9 +34,9 @@ export default function Post({ post }) {
                         {frontmatter.description}
                     </p>
                 </div>
-                <div className="w-full grid grid-cols-12 gap-8 relative">
-                    <PostSectionNav sectionTitles={post.sectionTitles} className="col-span-12 lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pt-7" />
-                    <article className="w-full flex flex-col gap-8 col-span-12 lg:col-span-8">
+                <div className="w-full flex flex-col lg:grid lg:grid-cols-12 gap-8 relative">
+                    <PostSectionNav sectionTitles={post.sectionTitles} className="lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pt-7" />
+                    <article className="w-full flex flex-col gap-8 lg:col-span-8">
                         {post.sections.map((section, i) => (
                             <div key={i} id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))} className="w-full">
                                 <MDX
