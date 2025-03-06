@@ -21,8 +21,8 @@ export default function Home({
 
     return (
         <div className="w-full flex flex-col gap-12 py-12">
-            <div className="w-full grid grid-cols-12 gap-8 relative">
-                <div className="flex flex-col gap-8 lg:hidden col-span-12">
+            <div className="w-full flex flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
+                <div className="flex flex-col gap-8 lg:hidden lg:col-span-12">
                     <Filters
                         search={search}
                         setSearch={setSearch}
@@ -31,10 +31,10 @@ export default function Home({
                         setTag={setTag}
                     />
                 </div>
-                <div className="w-full flex flex-col gap-12 col-span-12 lg:col-span-8">
+                <div className="w-full flex flex-col gap-12 lg:col-span-8">
                     <PostList posts={filteredPosts} />
                 </div>
-                <div className="hidden lg:flex col-span-12 lg:col-span-4 flex-col gap-8">
+                <div className="hidden lg:flex lg:col-span-4 flex-col gap-8">
                     <Filters
                         search={search}
                         setSearch={setSearch}
