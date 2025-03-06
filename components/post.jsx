@@ -44,11 +44,7 @@ export default function Post({ post }) {
           </div>
           <p>{frontmatter.description}</p>
         </div>
-        <div className="w-full flex flex-col lg:grid lg:grid-cols-12 gap-8 relative">
-          <PostSectionNav
-            sectionTitles={post.sectionTitles}
-            className="lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pt-7"
-          />
+        <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
           <article className="w-full flex flex-col gap-8 lg:col-span-8">
             {post.sections.map((section, i) => (
               <div
@@ -84,6 +80,10 @@ export default function Post({ post }) {
               )}
             </div>
           </article>
+          <PostSectionNav
+            sectionTitles={post.sectionTitles}
+            className="lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto pt-7"
+          />
         </div>
       </div>
     </div>
