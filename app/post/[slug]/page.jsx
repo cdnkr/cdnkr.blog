@@ -14,13 +14,13 @@ export async function generateMetadata({ params }) {
     const posts = await getAllPosts()
     const post = posts.find(post => post.slug === params.slug)
     return {
-        title: post.title,
-        keywords: post.tags,
-        description: post.description,
+        title: post.frontmatter.title,
+        keywords: post.frontmatter.tags,
+        description: post.frontmatter.description,
         openGraph: {
-            title: post.title,
-            description: post.description,
-            keywords: post.tags,
+            title: post.frontmatter.title,
+            description: post.frontmatter.description,
+            keywords: post.frontmatter.tags,
             siteName: config.title,
             url: `${config.url}/${post.slug}`,
         },
