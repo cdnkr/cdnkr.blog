@@ -4,7 +4,6 @@ import "./globals.css";
 
 import Background from "@/components/background";
 import Header from "@/components/header";
-import config from "@/config";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -15,21 +14,6 @@ const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
 });
-
-export async function generateMetadata() {
-  return {
-    title: config.title,
-    keywords: config.keywords,
-    description: config.description,
-    openGraph: {
-      title: config.title,
-      description: config.description,
-      images: `${config.url}/${config.image}`,
-      siteName: config.title,
-      url: config.url,
-    },
-  };
-}
 
 export default function RootLayout({ children }) {
   return (

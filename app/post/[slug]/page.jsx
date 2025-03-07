@@ -9,6 +9,26 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata() {
+  return {
+    title: config.title,
+    keywords: config.keywords,
+    description: config.description,
+    openGraph: {
+      title: config.title,
+      description: config.description,
+      images: [
+        {
+          url: `${config.url}/${config.image}`,
+        },
+      ],
+      siteName: config.title,
+      url: config.url,
+    },
+  };
+}
+
+
 export async function generateMetadata({ params }) {
   params = await params;
   const post = await getPostBySlug(params.slug);
