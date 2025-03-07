@@ -9,7 +9,7 @@ export default function Header({ className }) {
     <div className={cn("w-full flex flex-col gap-4 rounded-lg", className)}>
       <div className="w-full flex gap-8 lg:gap-0 justify-between items-center mb-0">
         <Link href="/">
-          <h1 className="text-4xl lg:text-5xl uppercase font-black">
+          <h1 className="text-4xl lg:text-6xl uppercase font-black">
             <span className="mr-3">{titlePart}</span>
             <span className="underline decoration-wavy decoration-primary underline-offset-[8px]">
               {titleSecondaryPart}
