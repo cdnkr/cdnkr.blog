@@ -10,6 +10,7 @@ export async function generateMetadata() {
     openGraph: {
       title: config.title,
       description: config.description,
+      keywords: config.keywords,
       images: [
         {
           url: `${config.url}/${config.image}`,
