@@ -3,9 +3,18 @@
 import config from "@/config";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
-import Button from "../ui/button";
 import Input from "../ui/input";
-import { Download } from "../ui/icons";
+
+function DownloadButton({ onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="rounded-md px-2 py-1 text-sm bg-primary/70 hover:bg-primary/90 transition-colors cursor-pointer"
+    >
+      Download
+    </button>
+  );
+}
 
 export default function QRCodeGenerator() {
   const [text, setText] = useState("");
@@ -43,25 +52,29 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="w-full flex flex-col">
-      <div className="flex flex-col items-center gap-8 p-4 max-w-md mx-auto">
-        <QRCodeSVG
-          id="qrcode"
-          value={text || config.url}
-          size={512}
-          className="rounded-lg w-full h-auto"
-          bgColor="transparent"
-          fgColor="#ffffff"
-        />
+    <div className="w-full flex justify-start">
+      <div className="w-full max-w-xl flex flex-col mt-6">
+        <div className="relative">
+          <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
+            <DownloadButton onClick={downloadQRCode} />
+          </div>
+          <div className="group w-full flex justify-center p-8 rounded-t-lg overflow-x-auto text-white bg-black/75">
+            <QRCodeSVG
+              id="qrcode"
+              value={text || config.url}
+              size={512}
+              className="rounded-lg w-44 h-auto"
+              bgColor="transparent"
+              fgColor="#ffffff"
+            />
+          </div>
+        </div>
         <Input
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter something to encode..."
+          className="rounded-b-lg focus:ring-0"
         />
-        <Button onClick={downloadQRCode}>
-          Download
-          <Download />
-        </Button>
       </div>
     </div>
   );
