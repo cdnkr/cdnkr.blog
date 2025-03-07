@@ -64,13 +64,13 @@ const components = {
   code: ({ children, className }) => {
     if (!className) {
       return (
-        <code className="rounded px-1 py-0.5 cursor-pointer relative">
+        <code className="rounded px-1 py-0.5 relative">
           {children}
         </code>
       );
     }
     return (
-      <code className={cn("cursor-pointer hover:opacity-80", className)}>
+      <code className={cn("hover:opacity-80", className)}>
         {children}
       </code>
     );
