@@ -4,4 +4,4 @@ Disallow: /
 User-agent: Yandex
 Disallow: /
 
-Sitemap: https://cdnkr.github.io/sitemap.xml
+Sitemap: https://cdnkr.blog/sitemap.xml
