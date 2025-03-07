@@ -13,7 +13,7 @@ export async function GET() {
         (post) =>
           `<url>
         <loc>${`${config.url}/${post.slug}`}</loc>
-        <lastmod>${post.frontmatter.date}</lastmod>
+        <lastmod>${new Date(post.frontmatter.date).toISOString()}</lastmod>
     </url>`,
       )
       .join("")}
