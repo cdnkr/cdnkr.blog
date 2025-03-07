@@ -4,7 +4,7 @@ const config = {
   keywords:
     "frontend, javascript, typescript, react, nextjs, tailwindcss, css, html, web development, web design, web development blog, web design blog, web development tutorial, web design tutorial, web development blog post, web design blog post, web development blog post title, web design blog post title",
   url: "https://cdnkr.blog",
-  image: "/icons/icon-512x512.png",
+  image: "icons/icon-512x512.png",
 };
 
 export default config;
