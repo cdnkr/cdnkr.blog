@@ -11,7 +11,7 @@ export default function Post({ post }) {
   return (
     <div className="w-full flex flex-col gap-12">
       <div className="w-full flex flex-col gap-8">
-        <div className="relative w-full flex flex-col gap-4 border-b-2 border-dark pb-8">
+        <div className="relative w-full flex flex-col gap-4 border-b-2 border-dark bg-dotted py-8">
           <div className="w-full flex justify-between">
             <h3 className="text-2xl lg:text-4xl max-w-xl text-wrap break-words leading-snug font-libre-franklin">
               <span className="text-white bg-dark px-2 font-bold">

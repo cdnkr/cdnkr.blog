@@ -58,7 +58,7 @@ export default function RootLayout({ children }) {
             </a>
           </div>
         </div>
-        <div className="w-full max-w-[1260px] flex flex-col gap-12 items-center py-8 px-6 lg:px-8">
+        <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
           <Header className="z-[1]" />
           {children}
         </div>
