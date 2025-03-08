@@ -26,7 +26,7 @@ export default function UUIDV4Generator() {
   }
 
   return (
-    <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark space-y-3 my-8">
+    <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark space-y-3 my-8 lg:my-0 lg:mb-8">
       <pre className="group p-4 overflow-x-auto text-white bg-dark">
         {uuid}
       </pre>
