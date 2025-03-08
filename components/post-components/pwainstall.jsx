@@ -35,11 +35,13 @@ export default function PWAInstallButton() {
   };
 
   return (
-    <div className="flex">
-      <Button outerClassName="max-w-fit" onClick={handleInstallClick}>
-        <Install />
-        Install App
-      </Button>
+    <div className="p-4 border-2 border-dashed rounded-lg border-dark my-8">
+      <div className="flex w-full justify-center">
+        <Button className="max-w-fit" onClick={handleInstallClick}>
+          <Install />
+          Install App
+        </Button>
+      </div>
     </div>
   );
 }

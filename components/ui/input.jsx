@@ -8,8 +8,8 @@ export default function Input({ value, onChange, placeholder, className }) {
       type="text"
       placeholder={placeholder}
       className={cn(
-        "w-full bg-black/75 max-w-full px-4 py-3 rounded-lg border-none focus:outline-none focus:ring-2 focus:ring-primary max-h-12",
-        className
+        "w-full max-w-full px-4 py-3 rounded-lg border-0 focus:outline-none max-h-12",
+        className,
       )}
     />
   );

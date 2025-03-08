@@ -7,23 +7,23 @@ import postComponents from "@/components/post-components";
 
 const components = {
   Button: (props) => <Button {...props} />,
-  h1: (props) => (
-    <h1 className="text-2xl lg:text-4xl font-black mt-8 mb-4" {...props} />
-  ),
-  h2: (props) => (
-    <h2 className="text-xl lg:text-3xl font-black mt-6 mb-3" {...props} />
-  ),
-  h3: (props) => (
-    <h3 className="text-xl lg:text-2xl font-black mt-5 mb-2" {...props} />
-  ),
-  p: (props) => <p className="my-4 leading-relaxed" {...props} />,
-  ul: (props) => <ul className="list-disc list-inside my-4 ml-4" {...props} />,
+  h1: (props) => <h1 className="text-2xl lg:text-4xl mt-0 mb-8" {...props} />,
+  h2: (props) => <h2 className="text-xl lg:text-3xl mt-0 mb-8" {...props} />,
+  h3: (props) => <h3 className="text-xl lg:text-2xl mt-0 mb-8" {...props} />,
+  p: (props) => <p className="mb-6 leading-relaxed" {...props} />,
+  ul: (props) => <ul className="list-disc list-inside my-5 ml-0" {...props} />,
   ol: (props) => (
-    <ol className="list-decimal list-inside my-4 ml-4" {...props} />
+    <ol className="list-decimal list-inside my-6 ml-0" {...props} />
   ),
-  li: (props) => <li className="my-2" {...props} />,
+  li: (props) => <li className="my-4" {...props} />,
   a: (props) => (
     <a className="text-primary hover:text-primary/80 underline" {...props} />
+  ),
+  strong: (props) => (
+    <strong
+      className="underline decoration-primary underline-offset-4"
+      {...props}
+    />
   ),
   blockquote: (props) => (
     <blockquote
@@ -55,31 +55,27 @@ const components = {
     const text = getTextContent(children);
 
     return (
-      <pre className="group p-4 rounded-lg overflow-x-auto my-4 text-white bg-black/75 relative">
-        <CopyButton text={text} />
-        {children}
-      </pre>
+      <div className="p-4 border-2 border-dashed rounded-none border-dark my-8">
+        <pre className="group p-4 rounded-none overflow-x-auto text-white bg-dark relative">
+          <CopyButton text={text} className="absolute right-2 top-2" />
+          {children}
+        </pre>
+      </div>
     );
   },
   code: ({ children, className }) => {
     if (!className) {
-      return (
-        <code className="rounded px-1 py-0.5 relative">
-          {children}
-        </code>
-      );
+      return <code className="rounded px-1 py-0.5 relative">{children}</code>;
     }
     return (
-      <code className={cn("hover:opacity-80", className)}>
-        {children}
-      </code>
+      <code className={cn("hover:opacity-80", className)}>{children}</code>
     );
   },
   ...postComponents,
 };
 
 const prettyCodeOptions = {
-  theme: "one-dark-pro",
+  theme: "andromeeda",
   onVisitLine(node) {
     if (node.children.length === 0) {
       node.children = [{ type: "text", value: " " }];

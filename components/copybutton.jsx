@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import UtilityButton from "./ui/utilitybutton";
 
-export default function CopyButton({ text }) {
+export default function CopyButton({ text, className }) {
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {
@@ -12,11 +13,8 @@ export default function CopyButton({ text }) {
   };
 
   return (
-    <button
-      onClick={copy}
-      className="absolute right-2 top-2 rounded-md px-2 py-1 text-sm bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-    >
+    <UtilityButton onClick={copy} className={className}>
       {copied ? "Copied!" : "Copy"}
-    </button>
+    </UtilityButton>
   );
 }

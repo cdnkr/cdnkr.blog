@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
 
-export default function Button({
+function Button__Pushable({
   children,
   onClick,
   className,
@@ -49,6 +49,26 @@ export default function Button({
       >
         {children}
       </span>
+    </button>
+  );
+}
+
+export default function Button({
+  children,
+  onClick,
+  className,
+  outerClassName,
+  variant = "primary", // default variant
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "max-h-[52px] flex justify-center items-center gap-1 py-3 px-10 rounded-none border-2 bg-dark text-white border-dark shadow-[3px_3px_0_0_rgba(244,68,46,0.5)] active:shadow-[1px_1px_0_0_rgba(244,68,46,0.5)] hover:shadow-[5px_5px_0_0_rgba(244,68,46,0.5)] transition-all duration-300",
+        className,
+      )}
+    >
+      {children}
     </button>
   );
 }

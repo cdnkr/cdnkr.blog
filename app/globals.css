@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #d5c63e;
-  --color-dark: #333;
-  --color-text: #e0e0e0;
-  --color-background: rgba(0, 0, 0, 0.75);
+  --color-primary: coral;
+  --color-secondary: #2eabb0;
+  --color-muted: #424242;
+  --color-dark: #111111;
+  --color-text: #333;
+  --color-background: #fafafa;
   --color-border-button-background: #262626;
   --color-card-background: rgb(255 255 255 / 0.8);
   --color-logo: #333;
@@ -21,8 +23,10 @@
   --color-gray-700: #616161;
   --color-gray-800: #424242;
   --color-gray-900: #212121;
-  --font-sans: var(--font-lexend);
+  --font-sans: var(--font-libre-franklin);
   --font-mono: var(--font-jetbrains-mono);
+  --font-gochi-hand: var(--font-gochi-hand);
+  --font-oswald: var(--font-oswald);
 }
 
 /* Scrollbar */

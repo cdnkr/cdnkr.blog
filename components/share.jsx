@@ -7,7 +7,7 @@ export default function ShareButton({ title, text }) {
   return (
     <div>
       <Button
-        className="px-2 py-2 lg:px-4 lg:py-4"
+        className="px-4 bg-black"
         onClick={() => {
           navigator.share({
             title: title,
@@ -16,7 +16,7 @@ export default function ShareButton({ title, text }) {
           });
         }}
       >
-        <ArrowUpRight className="size-6 lg:size-6 stroke-black fill-black" />
+        <ArrowUpRight className="size-6 lg:size-6 stroke-white fill-white" />
       </Button>
     </div>
   );

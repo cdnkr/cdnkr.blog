@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import PostList from "./postlist";
 import TagSelection from "./tagselection";
-import Button from "./ui/button";
-import { GitHub, LinkedIn, XDotCom } from "./ui/icons";
 import Input from "./ui/input";
 
 export default function Home({ posts, tags }) {
@@ -20,18 +17,9 @@ export default function Home({ posts, tags }) {
   });
 
   return (
-    <div className="w-full flex flex-col gap-12 py-12">
-      <div className="w-full flex flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
-        <div className="flex flex-col gap-8 lg:hidden lg:col-span-12">
-          <Filters
-            search={search}
-            setSearch={setSearch}
-            tags={tags}
-            tag={tag}
-            setTag={setTag}
-          />
-        </div>
-        <div className="w-full flex flex-col gap-12 lg:col-span-8">
+    <div className="w-full flex flex-col gap-12">
+      <div className="w-full flex flex-col-reverse lg:flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
+        <div className="w-full flex flex-col gap-y-8 gap-x-4 lg:col-span-8">
           <PostList posts={filteredPosts} />
         </div>
         <div className="hidden lg:flex lg:col-span-4 flex-col gap-8">
@@ -42,48 +30,8 @@ export default function Home({ posts, tags }) {
             tag={tag}
             setTag={setTag}
           />
-          <Socials />
         </div>
       </div>
-    </div>
-  );
-}
-
-function Socials() {
-  return (
-    <div className="flex flex-col gap-8 px-2 py-4">
-      <Link
-        href="https://github.com/cdnkr"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Button>
-          <GitHub className="size-6 stroke-black fill-black" />
-          /cdnkr
-        </Button>
-      </Link>
-
-      <Link
-        href="https://www.linkedin.com/in/cdnkr"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Button>
-          <LinkedIn className="size-6 fill-black" />
-          /in/cdnkr
-        </Button>
-      </Link>
-
-      <Link
-        href="https://x.com/chaddanker"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Button>
-          <XDotCom className="size-6 fill-black" />
-          /chaddanker
-        </Button>
-      </Link>
     </div>
   );
 }
@@ -95,8 +43,9 @@ function Filters({ search, setSearch, tags, tag, setTag }) {
         placeholder="Search posts..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        className="border-b-2 border-dark rounded-none"
       />
-      <div className="w-full flex flex-wrap gap-8 lg:px-4">
+      <div className="w-full flex flex-wrap gap-4 lg:px-4">
         <TagSelection tags={tags} selectedTag={tag} setSelectedTag={setTag} />
       </div>
     </>

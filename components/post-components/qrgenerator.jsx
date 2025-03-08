@@ -4,16 +4,10 @@ import config from "@/config";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import Input from "../ui/input";
+import UtilityButton from "../ui/utilitybutton";
 
 function DownloadButton({ onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      className="rounded-md px-2 py-1 text-sm bg-primary/70 hover:bg-primary/90 transition-colors cursor-pointer"
-    >
-      Download
-    </button>
-  );
+  return <UtilityButton onClick={onClick}>Download</UtilityButton>;
 }
 
 export default function QRCodeGenerator() {
@@ -52,29 +46,31 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="w-full flex justify-start">
-      <div className="w-full max-w-xl flex flex-col mt-6">
-        <div className="relative">
-          <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
-            <DownloadButton onClick={downloadQRCode} />
+    <div className="p-4 border-2 border-dashed border-dark my-8">
+      <div className="w-full flex justify-start">
+        <div className="w-full flex flex-col">
+          <div className="relative">
+            <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
+              <DownloadButton onClick={downloadQRCode} />
+            </div>
+            <div className="group w-full flex justify-center p-8 overflow-x-auto text-white bg-dark">
+              <QRCodeSVG
+                id="qrcode"
+                value={text || config.url}
+                size={512}
+                className="w-44 h-auto"
+                bgColor="transparent"
+                fgColor="#ffffff"
+              />
+            </div>
           </div>
-          <div className="group w-full flex justify-center p-8 rounded-t-lg overflow-x-auto text-white bg-black/75">
-            <QRCodeSVG
-              id="qrcode"
-              value={text || config.url}
-              size={512}
-              className="rounded-lg w-44 h-auto"
-              bgColor="transparent"
-              fgColor="#ffffff"
-            />
-          </div>
+          <Input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Enter something to encode..."
+            className="focus:ring-0 bg-dark text-white rounded-none"
+          />
         </div>
-        <Input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter something to encode..."
-          className="rounded-b-lg focus:ring-0"
-        />
       </div>
     </div>
   );

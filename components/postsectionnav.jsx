@@ -99,9 +99,9 @@ export default function PostSectionNav({ sectionTitles, className }) {
           onClick={() => onSectionClick(title)}
           key={i}
           className={cn(
-            "px-4 py-1 inline-block rounded-lg truncate transition-all duration-200 cursor-pointer text-gray-600 hover:text-primary/90",
+            "px-4 py-1 inline-block rounded-lg truncate transition-all duration-200 cursor-pointer text-gray-600 hover:text-dark text-sm",
             currentSection === encodeURIComponent(title.replace(/#/g, "")) &&
-              "text-primary/90 bg-black/75 font-bold",
+              "text-dark font-bold",
           )}
         >
           {title.replace(/#/g, "")}
