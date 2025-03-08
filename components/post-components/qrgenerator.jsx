@@ -3,12 +3,8 @@
 import config from "@/config";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
+import Button from "../ui/button";
 import Input from "../ui/input";
-import UtilityButton from "../ui/utilitybutton";
-
-function DownloadButton({ onClick }) {
-  return <UtilityButton onClick={onClick}>Download</UtilityButton>;
-}
 
 export default function QRCodeGenerator() {
   const [text, setText] = useState("");
@@ -46,30 +42,33 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="p-4 border-2 border-dashed border-dark my-8">
+    <div className="p-4 border-2 border-dashed border-dark mb-8 lg:my-8 max-w-sm mx-auto">
       <div className="w-full flex justify-start">
-        <div className="w-full flex flex-col">
-          <div className="relative">
-            <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
-              <DownloadButton onClick={downloadQRCode} />
-            </div>
-            <div className="group w-full flex justify-center p-8 overflow-x-auto text-white bg-dark">
-              <QRCodeSVG
-                id="qrcode"
-                value={text || config.url}
-                size={512}
-                className="w-44 h-auto"
-                bgColor="transparent"
-                fgColor="#ffffff"
-              />
-            </div>
-          </div>
-          <Input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Enter something to encode..."
-            className="focus:ring-0 bg-dark text-white rounded-none"
+        <div className="w-full flex flex-col  gap-4">
+          <QRCodeSVG
+            id="qrcode"
+            value={text || config.url}
+            size={512}
+            className="w-full  h-auto"
+            bgColor="transparent"
+            fgColor="#111111"
           />
+          <div className="w-full flex flex-col gap-4">
+            <Input
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Enter something to encode..."
+              variant="secondary"
+            />
+            <Button
+              onClick={downloadQRCode}
+              variant="tertiary"
+              className="w-full h-full uppercase"
+            >
+              Download
+            </Button>
+          </div>
+
         </div>
       </div>
     </div>

@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import UtilityButton from "../ui/utilitybutton";
-
-function RegenerateButton({ onClick }) {
-  return <UtilityButton onClick={onClick}>Regenerate</UtilityButton>;
-}
+import Button from "../ui/button";
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -18,7 +14,7 @@ function CopyButton({ text }) {
   };
 
   return (
-    <UtilityButton onClick={copy}>{copied ? "Copied!" : "Copy"}</UtilityButton>
+    <Button variant="tertiary" className="uppercase" onClick={copy}>{copied ? "Copied!" : "Copy"}</Button>
   );
 }
 
@@ -30,15 +26,13 @@ export default function UUIDV4Generator() {
   }
 
   return (
-    <div className="p-4 border-2 border-dashed border-dark my-8">
-      <div className="relative">
-        <div className="absolute right-2 -top-10 lg:top-2 flex gap-2">
-          <CopyButton text={uuid} />
-          <RegenerateButton onClick={generateUUIDV4} />
-        </div>
-        <pre className="group p-4 overflow-x-auto my-4 text-white bg-black/85">
-          {uuid}
-        </pre>
+    <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark space-y-3 my-8">
+      <pre className="group p-4 overflow-x-auto text-white bg-dark">
+        {uuid}
+      </pre>
+      <div className="flex gap-4">
+        <CopyButton text={uuid} />
+        <Button variant="tertiary" className="uppercase" onClick={generateUUIDV4}>Regenerate</Button>
       </div>
     </div>
   );

@@ -3,16 +3,12 @@
 @theme {
   --color-primary: coral;
   --color-secondary: #2eabb0;
+  --color-tertiary: #f4442e;
   --color-muted: #424242;
   --color-dark: #111111;
   --color-text: #333;
   --color-background: #fafafa;
-  --color-border-button-background: #262626;
-  --color-card-background: rgb(255 255 255 / 0.8);
-  --color-logo: #333;
-  --color-logo-secondary: #333;
-  --color-card-background-secondary: rgba(255, 255, 255, 1);
-  --color-card-background-tertiary: rgba(0, 0, 0, 0.8);
+  --color-shadow: 244, 68, 46, 0.75;
   --color-gray-50: #fafafa;
   --color-gray-100: #f5f5f5;
   --color-gray-200: #eeeeee;

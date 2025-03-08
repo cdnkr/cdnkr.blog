@@ -7,9 +7,9 @@ import postComponents from "@/components/post-components";
 
 const components = {
   Button: (props) => <Button {...props} />,
-  h1: (props) => <h1 className="text-2xl lg:text-4xl mt-0 mb-8" {...props} />,
-  h2: (props) => <h2 className="text-xl lg:text-3xl mt-0 mb-8" {...props} />,
-  h3: (props) => <h3 className="text-xl lg:text-2xl mt-0 mb-8" {...props} />,
+  h1: (props) => <h1 className="font-bold text-2xl lg:text-4xl mt-0 mb-8" {...props} />,
+  h2: (props) => <h2 className="font-bold text-xl lg:text-3xl mt-0 mb-8" {...props} />,
+  h3: (props) => <h3 className="font-bold text-xl lg:text-2xl mt-0 mb-8" {...props} />,
   p: (props) => <p className="mb-6 leading-relaxed" {...props} />,
   ul: (props) => <ul className="list-disc list-inside my-5 ml-0" {...props} />,
   ol: (props) => (
@@ -18,12 +18,6 @@ const components = {
   li: (props) => <li className="my-4" {...props} />,
   a: (props) => (
     <a className="text-primary hover:text-primary/80 underline" {...props} />
-  ),
-  strong: (props) => (
-    <strong
-      className="underline decoration-primary underline-offset-4"
-      {...props}
-    />
   ),
   blockquote: (props) => (
     <blockquote
@@ -55,8 +49,8 @@ const components = {
     const text = getTextContent(children);
 
     return (
-      <div className="p-4 border-2 border-dashed rounded-none border-dark my-8">
-        <pre className="group p-4 rounded-none overflow-x-auto text-white bg-dark relative">
+      <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark my-8">
+        <pre className="group p-4 overflow-x-auto text-white bg-dark relative">
           <CopyButton text={text} className="absolute right-2 top-2" />
           {children}
         </pre>
@@ -75,7 +69,7 @@ const components = {
 };
 
 const prettyCodeOptions = {
-  theme: "andromeeda",
+  theme: "github-dark",
   onVisitLine(node) {
     if (node.children.length === 0) {
       node.children = [{ type: "text", value: " " }];

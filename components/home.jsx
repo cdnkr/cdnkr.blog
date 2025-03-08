@@ -43,7 +43,6 @@ function Filters({ search, setSearch, tags, tag, setTag }) {
         placeholder="Search posts..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="border-b-2 border-dark rounded-none"
       />
       <div className="w-full flex flex-wrap gap-4 lg:px-4">
         <TagSelection tags={tags} selectedTag={tag} setSelectedTag={setTag} />

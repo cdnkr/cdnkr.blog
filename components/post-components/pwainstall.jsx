@@ -35,9 +35,9 @@ export default function PWAInstallButton() {
   };
 
   return (
-    <div className="p-4 border-2 border-dashed rounded-lg border-dark my-8">
+    <div className="p-4 border-2 border-dashed border-dark my-8">
       <div className="flex w-full justify-center">
-        <Button className="max-w-fit" onClick={handleInstallClick}>
+        <Button variant="tertiary" className="max-w-fit uppercase" onClick={handleInstallClick}>
           <Install />
           Install App
         </Button>

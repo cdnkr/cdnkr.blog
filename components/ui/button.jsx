@@ -57,14 +57,40 @@ export default function Button({
   children,
   onClick,
   className,
-  outerClassName,
-  variant = "primary", // default variant
+  variant = "primary",
 }) {
+  const variants = {
+    primary: "bg-dark border-dark text-white shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
+    secondary: "bg-white border-dark text-dark shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
+    tertiary: "bg-tertiary border-tertiary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
+  };
+
   return (
     <button
       onClick={onClick}
       className={cn(
-        "max-h-[52px] flex justify-center items-center gap-1 py-3 px-10 rounded-none border-2 bg-dark text-white border-dark shadow-[3px_3px_0_0_rgba(244,68,46,0.5)] active:shadow-[1px_1px_0_0_rgba(244,68,46,0.5)] hover:shadow-[5px_5px_0_0_rgba(244,68,46,0.5)] transition-all duration-300",
+        "font-mono max-h-[52px] max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
+        variants[variant],
+        className,
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function UtilityButton({ children, onClick, className, variant = "primary" }) {
+  const variants = {
+    primary: "bg-white border-white text-dark",
+    secondary: "bg-white text-primary border-dark",
+    tertiary: "bg-tertiary border-tertiary text-white"
+  };
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "font-mono px-2 py-1 text-sm border-2 shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] transition-all duration-300 cursor-pointer",
+        variants[variant],
         className,
       )}
     >

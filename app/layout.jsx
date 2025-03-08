@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col gap-12 items-center py-8 px-6 lg:px-8">
-          <Header className="rounded-lg z-[1]" />
+          <Header className="z-[1]" />
           {children}
         </div>
       </body>

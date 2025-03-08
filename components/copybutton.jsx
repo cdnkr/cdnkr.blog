@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import UtilityButton from "./ui/utilitybutton";
+import { UtilityButton } from "./ui/button";
 
 export default function CopyButton({ text, className }) {
   const [copied, setCopied] = useState(false);
