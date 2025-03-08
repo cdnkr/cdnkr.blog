@@ -51,35 +51,35 @@ export default function Post({ post }) {
                 <MDX source={section} />
               </div>
             ))}
-            <div className="w-full flex flex-col-reverse lg:flex-row justify-between gap-4 lg:gap-8 mt-8">
-              {post?.previous ? (
-                <Link href={post.previous?.slug}>
-                  <Button className="gap-3 w-full lg:w-auto lg:max-w-60">
-                    <ArrowLeft className="shrink-0" />
-                    <span className="truncate">
-                      {post.previous?.frontmatter?.title}
-                    </span>
-                  </Button>
-                </Link>
-              ) : (
-                <div />
-              )}
-              {post?.next && (
-                <Link href={post.next?.slug}>
-                  <Button className="gap-3 w-full lg:w-auto lg:max-w-60">
-                    <span className="truncate">
-                      {post.next?.frontmatter?.title}
-                    </span>
-                    <ArrowRight className="shrink-0" />
-                  </Button>
-                </Link>
-              )}
-            </div>
           </article>
           <PostSectionNav
             sectionTitles={post.sectionTitles}
             className="lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pt-7"
           />
+        </div>
+        <div className="w-full flex flex-col-reverse lg:flex-row justify-between gap-4 lg:gap-8 mt-8">
+          {post?.previous ? (
+            <Link href={post.previous?.slug}>
+              <Button className="gap-3 w-full lg:w-auto">
+                <ArrowLeft className="shrink-0" />
+                <span className="truncate">
+                  {post.previous?.frontmatter?.title}
+                </span>
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+          {post?.next && (
+            <Link href={post.next?.slug}>
+              <Button className="gap-3 w-full lg:w-auto">
+                <span className="truncate">
+                  {post.next?.frontmatter?.title}
+                </span>
+                <ArrowRight className="shrink-0" />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
