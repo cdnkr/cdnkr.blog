@@ -1,19 +1,9 @@
 import CopyButton from "@/components/copybutton";
 import postComponents from "@/components/post-components";
-import { cn } from "@/utils/cn";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 
 const components = {
-  a: (props) => (
-    <a className="text-tertiary hover:text-tertiary/80 underline font-bold" {...props} />
-  ),
-  blockquote: (props) => (
-    <blockquote
-      className="border-l-4 border-gray-200 pl-4 my-4 italic"
-      {...props}
-    />
-  ),
   pre: ({ children }) => {
     const getTextContent = (node) => {
       // If it"s a string, return it directly
@@ -49,7 +39,7 @@ const components = {
     );
   },
   code: ({ children, className }) => {
-    // Check if this code element is inside a pre element
+    // check if this code element is inside a pre element
     const isInPre = 
     Array.isArray(children) && children.some(child => child.type === 'span')
     || (typeof children === 'object' && children?.type === 'span');
@@ -83,7 +73,7 @@ const prettyCodeOptions = {
 
 export default function MDX({ source }) {
   return (
-    <div className="prose">
+    <div className="prose prose-headings:text-dark prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-a:hover:text-tertiary/80 prose-a:font-bold">
       <MDXRemote
         source={source}
         components={components}
