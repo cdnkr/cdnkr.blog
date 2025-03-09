@@ -63,9 +63,9 @@ export default function RootLayout({ children }) {
             </div>
             <div className="flex lg:hidden items-center gap-4">
               <span
-                className="uppercase text-tertiary text-xs transition-all duration-300 -rotate-90"
+                className="uppercase text-xs text-white"
               >
-                {"(="}
+                {"////"}
               </span>
             </div>
             <Me className="block" />
