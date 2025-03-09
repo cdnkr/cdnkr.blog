@@ -93,20 +93,22 @@ export default function PostSectionNav({ sectionTitles, className }) {
   }, [sectionTitles, currentSection]);
 
   return (
-    <div className={cn("w-full flex flex-col gap-2", className)}>
-      {sectionTitles.map((title, i) => (
-        <span
-          onClick={() => onSectionClick(title)}
-          key={i}
-          className={cn(
-            "px-4 py-1 inline-block truncate transition-all duration-200 cursor-pointer text-gray-600 hover:text-dark text-sm",
-            currentSection === encodeURIComponent(title.replace(/#/g, "")) &&
+    <div className={cn("w-full", className)}>
+      <div className="flex flex-col gap-2">
+        {sectionTitles.map((title, i) => (
+          <span
+            onClick={() => onSectionClick(title)}
+            key={i}
+            className={cn(
+              "px-4 py-1 block truncate transition-all duration-200 cursor-pointer text-gray-600 hover:text-dark text-sm",
+              currentSection === encodeURIComponent(title.replace(/#/g, "")) &&
               "text-dark font-bold",
-          )}
-        >
-          {title.replace(/#/g, "")}
-        </span>
-      ))}
+            )}
+          >
+            {title.replace(/#/g, "")}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
