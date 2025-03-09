@@ -54,7 +54,7 @@ export default function Post({ post }) {
           </article>
           <PostSectionNav
             sectionTitles={post.sectionTitles}
-            className="lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pt-7"
+            className="hidden lg:block lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pt-7"
           />
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row justify-between gap-4 lg:gap-8 mt-8">
