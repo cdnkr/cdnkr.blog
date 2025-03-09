@@ -3,49 +3,51 @@
 import { useEffect, useState } from "react";
 import Button from "../ui/button";
 import { Install } from "../ui/icons";
+import { getPrompt, clearPrompt } from "@/utils/pwa-handler";
+import { Block } from "../ui/block";
 
 export default function PWAInstallButton() {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setIsInstallable(true);
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-
-    return () =>
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt,
-      );
+    const prompt = getPrompt();
+    setIsInstallable(!!prompt);
   }, []);
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      setDeferredPrompt(null);
+    const promptEvent = getPrompt();
+    if (promptEvent) {
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      clearPrompt();
       setIsInstallable(false);
       console.log(`User response to the install prompt: ${outcome}`);
     }
   };
 
   return (
-    <div className="p-4 border-2 border-dashed border-dark my-8">
-      <div className="flex w-full justify-center">
-        <Button
-          variant="tertiary"
-          className="max-w-fit uppercase"
-          onClick={handleInstallClick}
-        >
-          <Install />
-          Install App
-        </Button>
+    <>
+      <div className="p-4 border-2 border-dashed border-dark my-8">
+        <div className="flex w-full justify-center">
+          <Button
+            variant="tertiary"
+            className="max-w-fit uppercase"
+            onClick={handleInstallClick}
+          >
+            <Install />
+            Install App
+          </Button>
+        </div>
       </div>
-    </div>
+      {!isInstallable && (
+        <Block caretPosition="top-left" variant="dark" className="font-mono space-y-2 mb-8 text-tertiary">
+          <h3>
+            <strong>PWA install is not supported in your browser.</strong>
+          </h3>
+          <p>Browser: {navigator.userAgent}</p>
+          <p>See <a href="#%20Important%20Caveats" className="underline">Important Caveats</a> below for more information.</p>
+        </Block>
+      )}
+    </>
   );
 }

@@ -10,6 +10,8 @@ import "./globals.css";
 import Header from "@/components/header";
 import Me from "@/components/me";
 
+import "@/utils/pwa-handler";
+
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
