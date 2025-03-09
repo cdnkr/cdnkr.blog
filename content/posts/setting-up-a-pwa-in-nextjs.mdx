@@ -171,7 +171,7 @@ export default function PWAInstallButton() {
 }
 ```
 
-**Add `PWAInstallButton` to your layout or any component where you’d like the install button to appear.**
+**Add `PWAInstallButton` to your layout or any component where you'd like the install button to appear.**
 
 ```jsx
 // app/layout.tsx or another component
@@ -193,11 +193,91 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
+#### Important Caveat: Client-Side Navigation and Install Button
+
+When implementing the install button, there's an important caveat to consider: the `beforeinstallprompt` event only fires once when the site initially loads. This creates a problem if your install button is on a page that isn't the user's entry point to your app.
+
+**For example:**
+
+- If a user lands directly on `/blog/pwa-post` where your install button is, it works fine
+- But if they first land on `/` (home page) and then navigate to `/blog/pwa-post`, the install button won't work because the `beforeinstallprompt` event already fired and was missed
+
+To solve this, we need to capture the event at the application level using a global handler:
+
+```javascript
+// utils/pwaHandler.js
+let deferredPrompt = null;
+
+export const getPrompt = () => deferredPrompt;
+export const clearPrompt = () => {
+  deferredPrompt = null;
+};
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+}
+```
+
+**First, initialize the handler in your root layout:**
+
+```jsx
+// app/layout.tsx
+import "@/utils/pwaHandler";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+**Then use it in your install button component:**
+
+```jsx
+// components/PWAInstallButton.tsx
+import { getPrompt, clearPrompt } from "@/utils/pwaHandler";
+
+export default function PWAInstallButton() {
+  const [isInstallable, setIsInstallable] = useState(false);
+
+  useEffect(() => {
+    // Check if installation is possible
+    const prompt = getPrompt();
+    setIsInstallable(!!prompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    const promptEvent = getPrompt();
+    if (promptEvent) {
+      promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      clearPrompt();
+      setIsInstallable(false);
+    }
+  };
+
+  if (!isInstallable) return null;
+  
+  return (
+    <Button onClick={handleInstallClick}>
+      Install App
+    </Button>
+  );
+}
+```
+
+This approach ensures the install button works correctly regardless of how users navigate to it within your app.
+
 ---
 
 ### Step 4: Set Up the Service Worker (Optional)
 
-To further optimize your PWA for offline capabilities, you can set up a service worker using `next-pwa` or another library. Here’s an example using `next-pwa`:
+To further optimize your PWA for offline capabilities, you can set up a service worker using `next-pwa` or another library. Here's an example using `next-pwa`:
 
 **Install `next-pwa`:**
 
@@ -242,6 +322,23 @@ Since service workers like `sw.js` and `workbox-xxxxxx.js` are generated during 
 npm run build && npm start
 ```
 
-**Open your app in Chrome or another browser that supports PWAs, and check for the "Install" option in the browser’s address bar or try the custom install button.**
+**Open your app in Chrome or another browser that supports PWAs, and check for the "Install" option in the browser's address bar or try the custom install button.**
 
 **Test the offline functionality by going offline after the initial load to see if the app is available.**
+
+---
+
+## Browser Support
+
+Not all browsers support PWA installation in the same way:
+
+**Chrome, Edge, and other Chromium-based browsers**: Full PWA support with the install prompt
+
+**Safari (iOS and macOS)**: No native install prompt, but users can manually add the site to their home screen:
+  1. Click the share button (box with arrow) in the browser toolbar
+  2. Select "Add to Home Screen"
+  3. Customize the name and click "Add"
+
+**Firefox**: Limited PWA support, varies by platform
+
+See [caniuse.com/install-app](https://caniuse.com/install-app) for the full list.
