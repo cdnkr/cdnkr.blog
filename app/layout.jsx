@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/icons/icon-192x192.png" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#111111" />
       </head>
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
         <div className="w-full py-4 bg-dark flex justify-center">
