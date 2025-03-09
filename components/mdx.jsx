@@ -59,10 +59,12 @@ const components = {
 
     return (
       <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark my-8">
-        <pre className="group p-4 overflow-x-auto text-white bg-dark relative">
+        <div className="relative">
           <CopyButton text={text} className="absolute right-2 top-2" />
-          {children}
-        </pre>
+          <pre className="group p-4 overflow-x-auto text-white bg-dark">
+            {children}
+          </pre>
+        </div>
       </div>
     );
   },
