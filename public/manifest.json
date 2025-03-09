@@ -1,7 +1,7 @@
 {
-  "name": "cdnkr.blog",
-  "short_name": "cdnkr.blog",
-  "description": "Just another javascript bro with a javascript blog.",
+  "name": "theinternetisdown.xyz",
+  "short_name": "theinternetisdown.xyz",
+  "description": "Real world Components, tutorials and guides for modern React.js & Next.js development.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
