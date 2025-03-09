@@ -1,10 +1,10 @@
 const config = {
-  title: "CDNKR.BLOG",
+  title: "THE INTERNET i$ DOWN",
   description:
-    "Tutorials and guides for modern JavaScript development - React, Node.js, Next.js, TailwindCSS..",
+    "Real world Components, tutorials and guides for modern React.js & Next.js development.",
   keywords:
     "frontend, javascript, typescript, react, nextjs, nodejs, tailwindcss, css, html, web development, web design, web development blog, web design blog, web development tutorial, web design tutorial,",
-  url: "https://cdnkr.blog",
+  url: "https://theinternetisdown.xyz",
   image: "icons/512x512.png",
 };
 

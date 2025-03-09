@@ -4,6 +4,8 @@ import { useState } from "react";
 import PostList from "./postlist";
 import TagSelection from "./tagselection";
 import Input from "./ui/input";
+import { Block } from "./ui/block";
+import config from "@/config";
 
 export default function Home({ posts, tags }) {
   const [search, setSearch] = useState("");
@@ -18,6 +20,11 @@ export default function Home({ posts, tags }) {
 
   return (
     <div className="w-full flex flex-col gap-12 py-12">
+      {/* <Block caretPosition="top-left"> */}
+        <h1 className="leading-[1.7] text-5xl lg:text-5xl text-black uppercase font-oswald font-black tracking-tight">
+          <span className="bg-dark text-white">{config.description}</span>
+        </h1>
+      {/* </Block> */}
       <div className="w-full flex flex-col-reverse lg:flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
         <div className="w-full flex flex-col gap-y-8 gap-x-4 lg:col-span-8">
           <PostList posts={filteredPosts} />

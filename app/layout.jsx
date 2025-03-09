@@ -47,28 +47,20 @@ export default function RootLayout({ children }) {
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
         <div className="w-full py-4 bg-dark flex justify-center">
           <div className="w-full max-w-[1260px] flex justify-between flex-wrap py-0 px-6 lg:px-8 gap-4">
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <a
                 href="https://github.com/cdnkr"
                 className="uppercase text-white text-xs hover:text-tertiary transition-all duration-300"
               >
-                github.com/cdnkr
+                Components
               </a>
               <a
                 href="https://linkedin.com/in/cdnkr"
                 className="hidden lg:block uppercase text-white text-xs hover:text-tertiary transition-all duration-300"
               >
-                linkedin.com/in/cdnkr
+                Guides
               </a>
             </div>
-            <div className="flex lg:hidden items-center gap-4">
-              <span
-                className="uppercase text-tertiary text-xs transition-all duration-300 -rotate-90"
-              >
-                {"(="}
-              </span>
-            </div>
-            <Me className="block" />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
