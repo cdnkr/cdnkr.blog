@@ -43,7 +43,7 @@ function Popover({
       <div
         ref={popoverRef}
         className={cn(
-          "min-w-sm lg:min-w-xl hidden absolute w-full p-4 border-2 border-dark transition-all duration-300",
+          "min-w-xs lg:min-w-xl hidden absolute w-full p-4 border-2 border-dark transition-all duration-300",
           "bg-primary",
           position === "left" && "-left-2",
           position === "right" && "-right-2",
