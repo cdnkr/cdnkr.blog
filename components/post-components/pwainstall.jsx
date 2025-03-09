@@ -47,7 +47,7 @@ export default function PWAInstallButton() {
           </Button>
         </div>
       </div>
-      {!isInstallable && (
+      {/* {!isInstallable && (
         <Block caretPosition="top-left" variant="dark" className="font-mono space-y-2 mb-8 text-tertiary">
           <h3>
             <strong>PWA install is not supported in your browser.</strong>
@@ -55,7 +55,7 @@ export default function PWAInstallButton() {
           {typeof navigator !== "undefined" && <p>Browser: {navigator.userAgent}</p>}
           <p>See <a href="#%20Browser%20Support" className="underline">Browser Support</a> below for more information.</p>
         </Block>
-      )}
+      )} */}
     </>
   );
 }
