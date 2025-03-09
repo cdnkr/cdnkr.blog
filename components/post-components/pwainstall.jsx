@@ -20,8 +20,9 @@ export default function PWAInstallButton() {
       promptEvent.prompt();
       const { outcome } = await promptEvent.userChoice;
       clearPrompt();
-      setIsInstallable(false);
       console.log(`User response to the install prompt: ${outcome}`);
+    } else {
+      setIsInstallable(false);
     }
   };
 
