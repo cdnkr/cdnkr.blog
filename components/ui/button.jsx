@@ -60,9 +60,12 @@ export default function Button({
   variant = "primary",
 }) {
   const variants = {
-    primary: "bg-dark border-dark text-white shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
-    secondary: "bg-white border-dark text-dark shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
-    tertiary: "bg-tertiary border-tertiary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
+    primary:
+      "bg-dark border-dark text-white shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
+    secondary:
+      "bg-white border-dark text-dark shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
+    tertiary:
+      "bg-tertiary border-tertiary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
   };
 
   return (
@@ -79,11 +82,16 @@ export default function Button({
   );
 }
 
-export function UtilityButton({ children, onClick, className, variant = "primary" }) {
+export function UtilityButton({
+  children,
+  onClick,
+  className,
+  variant = "primary",
+}) {
   const variants = {
     primary: "bg-white border-white text-dark",
     secondary: "bg-white text-primary border-dark",
-    tertiary: "bg-tertiary border-tertiary text-white"
+    tertiary: "bg-tertiary border-tertiary text-white",
   };
   return (
     <button

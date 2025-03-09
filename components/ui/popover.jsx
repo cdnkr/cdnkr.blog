@@ -5,13 +5,22 @@ import { useRef, useState } from "react";
 import { cn } from "@/utils/cn";
 import { ChevronUp } from "./icons";
 
-function Popover({ children, className, popoverContent, offset = 24, position = "right" }) {
+function Popover({
+  children,
+  className,
+  popoverContent,
+  offset = 24,
+  position = "right",
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const triggerRef = useRef(null);
   const popoverRef = useRef(null);
 
   function handleClickOutside(event) {
-    if (!triggerRef.current?.contains(event.target) && !popoverRef.current?.contains(event.target)) {
+    if (
+      !triggerRef.current?.contains(event.target) &&
+      !popoverRef.current?.contains(event.target)
+    ) {
       setIsOpen(false);
     }
   }
@@ -50,11 +59,13 @@ function Popover({ children, className, popoverContent, offset = 24, position = 
             position === "right" && "-right-2",
           )}
         />
-        <div className={cn(
-          "absolute -top-[1px] h-[1px] w-7 bg-primary",
-          position === "left" && "left-0",
-          position === "right" && "right-0.5",
-          )}/>
+        <div
+          className={cn(
+            "absolute -top-[1px] h-[1px] w-7 bg-primary",
+            position === "left" && "left-0",
+            position === "right" && "right-0.5",
+          )}
+        />
         {popoverContent}
       </div>
     </div>

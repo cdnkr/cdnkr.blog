@@ -7,9 +7,15 @@ import postComponents from "@/components/post-components";
 
 const components = {
   Button: (props) => <Button {...props} />,
-  h1: (props) => <h1 className="font-bold text-2xl lg:text-4xl mt-0 mb-8" {...props} />,
-  h2: (props) => <h2 className="font-bold text-xl lg:text-3xl mt-0 mb-8" {...props} />,
-  h3: (props) => <h3 className="font-bold text-xl lg:text-2xl mt-0 mb-8" {...props} />,
+  h1: (props) => (
+    <h1 className="font-bold text-2xl lg:text-4xl mt-0 mb-8" {...props} />
+  ),
+  h2: (props) => (
+    <h2 className="font-bold text-xl lg:text-3xl mt-0 mb-8" {...props} />
+  ),
+  h3: (props) => (
+    <h3 className="font-bold text-xl lg:text-2xl mt-0 mb-8" {...props} />
+  ),
   p: (props) => <p className="mb-6 leading-relaxed" {...props} />,
   ul: (props) => <ul className="list-disc list-inside my-5 ml-0" {...props} />,
   ol: (props) => (

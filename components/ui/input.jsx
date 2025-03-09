@@ -1,6 +1,12 @@
 import { cn } from "@/utils/cn";
 
-export default function Input({ value, onChange, placeholder, className, variant = "primary" }) {
+export default function Input({
+  value,
+  onChange,
+  placeholder,
+  className,
+  variant = "primary",
+}) {
   const variants = {
     primary: "border-b-2 border-dark",
     secondary: "border-2 border-dark",

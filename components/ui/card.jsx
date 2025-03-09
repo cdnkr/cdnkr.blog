@@ -4,10 +4,7 @@ function Card_Simple({ children, id, className }) {
   return (
     <div
       id={id}
-      className={cn(
-        "w-full transition-all duration-300",
-        className,
-      )}
+      className={cn("w-full transition-all duration-300", className)}
     >
       {children}
     </div>

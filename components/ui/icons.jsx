@@ -85,9 +85,13 @@ export function ChevronUp({ className, strokeWidth = 2 }) {
       stroke="currentColor"
       className={cn("size-6", className)}
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m4.5 15.75 7.5-7.5 7.5 7.5"
+      />
     </svg>
-  )
+  );
 }
 
 export function Copy({ className, strokeWidth = 2 }) {
