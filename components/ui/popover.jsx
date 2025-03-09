@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-
 import { cn } from "@/utils/cn";
-import { ChevronUp } from "./icons";
+import { Block } from "./block";
 
 function Popover({
   children,
@@ -40,34 +39,25 @@ function Popover({
       <div ref={triggerRef} onClick={handleClick} className="cursor-pointer">
         {children}
       </div>
-      <div
-        ref={popoverRef}
+      <Block
+        _ref={popoverRef}
         className={cn(
-          "min-w-xs lg:min-w-xl hidden absolute w-full p-4 border-2 border-dark transition-all duration-300",
+          "min-w-xs lg:min-w-xl",
+          "hidden absolute",
           "bg-primary",
           position === "left" && "-left-2",
           position === "right" && "-right-2",
           isOpen && "opacity-100 block",
           className,
         )}
+        caretPosition={
+          position === "right"
+          ? "top-right"
+          : "top-left"
+        }
       >
-        <ChevronUp
-          strokeWidth={1}
-          className={cn(
-            "absolute -top-[2rem] stroke-dark fill-primary size-12",
-            position === "left" && "-left-2",
-            position === "right" && "-right-2",
-          )}
-        />
-        <div
-          className={cn(
-            "absolute -top-[1px] h-[1px] w-7 bg-primary",
-            position === "left" && "left-0",
-            position === "right" && "right-0.5",
-          )}
-        />
-        {popoverContent}
-      </div>
+          {popoverContent}
+        </Block>
     </div>
   );
 }
