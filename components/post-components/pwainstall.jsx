@@ -16,12 +16,19 @@ export default function PWAInstallButton() {
 
   const handleInstallClick = async () => {
     const promptEvent = getPrompt();
-    if (promptEvent) {
+    if (!promptEvent) {
+      // Show error message for unsupported browsers (like Safari)
+      setIsInstallable(false);
+      return;
+    }
+
+    try {
       promptEvent.prompt();
       const { outcome } = await promptEvent.userChoice;
       clearPrompt();
       console.log(`User response to the install prompt: ${outcome}`);
-    } else {
+    } catch (error) {
+      console.error('PWA installation failed:', error);
       setIsInstallable(false);
     }
   };
