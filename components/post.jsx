@@ -41,7 +41,7 @@ export default function Post({ post }) {
           </span>
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
-          <article className="w-full flex flex-col gap-0 lg:col-span-8">
+          <article className="w-full flex flex-col gap-8 lg:col-span-8">
             {post.sections.map((section, i) => (
               <div
                 key={i}

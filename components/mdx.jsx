@@ -1,39 +1,9 @@
-import Button from "@/components/ui/button";
-import { cn } from "@/utils/cn";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import rehypePrettyCode from "rehype-pretty-code";
 import CopyButton from "@/components/copybutton";
 import postComponents from "@/components/post-components";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypePrettyCode from "rehype-pretty-code";
 
 const components = {
-  Button: (props) => <Button {...props} />,
-  h1: (props) => (
-    <h1 className="font-bold text-2xl lg:text-4xl mt-0 mb-8" {...props} />
-  ),
-  h2: (props) => (
-    <h2 className="font-bold text-xl lg:text-3xl mt-0 mb-8" {...props} />
-  ),
-  h3: (props) => (
-    <h3 className="font-bold text-xl lg:text-2xl mt-0 mb-8" {...props} />
-  ),
-  h4: (props) => (
-    <h4 className="font-bold text-lg lg:text-xl mt-0 mb-8" {...props} />
-  ),
-  p: (props) => <p className="mb-6 leading-relaxed" {...props} />,
-  ul: (props) => <ul className="list-disc list-item my-5 ml-4" {...props} />,
-  ol: (props) => (
-    <ol className="list-decimal my-6 ml-4" {...props} />
-  ),
-  li: (props) => <li className="my-4" {...props} />,
-  a: (props) => (
-    <a className="text-tertiary hover:text-tertiary/80 underline" {...props} />
-  ),
-  blockquote: (props) => (
-    <blockquote
-      className="border-l-4 border-gray-200 pl-4 my-4 italic"
-      {...props}
-    />
-  ),
   pre: ({ children }) => {
     const getTextContent = (node) => {
       // If it"s a string, return it directly
@@ -69,11 +39,20 @@ const components = {
     );
   },
   code: ({ children, className }) => {
-    if (!className) {
-      return <code className="rounded px-1 py-0.5 relative">{children}</code>;
+    // check if this code element is inside a pre element
+    const isInPre = 
+    Array.isArray(children) && children.some(child => child.type === 'span')
+    || (typeof children === 'object' && children?.type === 'span');
+
+    if (!className && !isInPre) {
+      return (
+        <code className="px-0.5 bg-dark/10 relative before:content-[''] after:content-['']">
+          {children}
+        </code>
+      );
     }
     return (
-      <code className={cn("hover:opacity-80", className)}>{children}</code>
+      <code className={className}>{children}</code>
     );
   },
   ...postComponents,
@@ -94,15 +73,17 @@ const prettyCodeOptions = {
 
 export default function MDX({ source }) {
   return (
-    <MDXRemote
-      source={source}
-      components={components}
-      options={{
-        parseFrontmatter: true,
-        mdxOptions: {
-          rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
-        },
-      }}
-    />
+    <div className="prose prose-headings:text-dark prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-a:hover:text-tertiary/80 prose-a:font-bold">
+      <MDXRemote
+        source={source}
+        components={components}
+        options={{
+          parseFrontmatter: true,
+          mdxOptions: {
+            rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+          },
+        }}
+      />
+    </div>
   );
 }
