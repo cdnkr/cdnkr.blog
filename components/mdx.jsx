@@ -16,14 +16,17 @@ const components = {
   h3: (props) => (
     <h3 className="font-bold text-xl lg:text-2xl mt-0 mb-8" {...props} />
   ),
+  h4: (props) => (
+    <h4 className="font-bold text-lg lg:text-xl mt-0 mb-8" {...props} />
+  ),
   p: (props) => <p className="mb-6 leading-relaxed" {...props} />,
-  ul: (props) => <ul className="list-disc list-inside my-5 ml-0" {...props} />,
+  ul: (props) => <ul className="list-disc list-item my-5 ml-4" {...props} />,
   ol: (props) => (
-    <ol className="list-decimal list-inside my-6 ml-0" {...props} />
+    <ol className="list-decimal my-6 ml-4" {...props} />
   ),
   li: (props) => <li className="my-4" {...props} />,
   a: (props) => (
-    <a className="text-primary hover:text-primary/80 underline" {...props} />
+    <a className="text-tertiary hover:text-tertiary/80 underline" {...props} />
   ),
   blockquote: (props) => (
     <blockquote
