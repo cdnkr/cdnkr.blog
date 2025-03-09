@@ -44,7 +44,7 @@ export default function PWAInstallButton() {
           <h3>
             <strong>PWA install is not supported in your browser.</strong>
           </h3>
-          <p>Browser: {navigator.userAgent}</p>
+          {typeof navigator !== "undefined" && <p>Browser: {navigator.userAgent}</p>}
           <p>See <a href="#%20Important%20Caveats" className="underline">Important Caveats</a> below for more information.</p>
         </Block>
       )}
