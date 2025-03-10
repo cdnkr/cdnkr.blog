@@ -1,0 +1,667 @@
+---
+title: AI Chatbot Component (with product preview cards) in React with Gemini 2.0 Flash
+description: A simple React component that generates a chatbot with product preview cards using Gemini 2.0 Flash.
+date: 2025-03-10
+author: Chad Danker
+tags: [AI, Chatbot, React, OpenAI]
+slug: ai-chatbot-component-with-product-preview-cards-in-react-with-gemini-2-flash
+---
+
+The world of AI is rapidly evolving, and integrating AI into your web applications is becoming easier than ever. In this tutorial, we'll walk through creating a React component that leverages Google's Gemini 2.0 Flash model to build a helpful and engaging chatbot. This chatbot will be specifically designed to assist customers on an online shoe store, answering questions about products, sizing, shipping, and more.
+
+---
+
+### Here's what we'll build:
+
+<Chatbot />
+
+---
+
+**A Quick Note About Gemini:** At the time of writing, Gemini (especially new releases like Flash 2.0) can be under heavy load. You might experience occasional errors or slowdowns. Don't be discouraged – this is expected with new and popular AI models!
+
+---
+
+### Why Gemini 2.0 Flash?
+
+Gemini 2.0 Flash is a powerful and efficient language model that's perfect for chatbot applications. It's designed for speed and responsiveness, making it ideal for real-time conversations.
+
+---
+
+### Project Setup
+
+This tutorial assumes you have a basic understanding of React and have a development environment set up (Node.js, npm or yarn). We'll be using functional components and hooks.
+
+---
+
+### Getting Your Gemini API Key
+
+1.  Go to: [https://aistudio.google.com/](https://aistudio.google.com/)
+2.  Click on "Get API Key" in the top right corner.
+3.  Follow the prompts to create a new project and generate an API key.
+
+**Important Security Measure:** After obtaining your API key, it's crucial to restrict its usage to prevent abuse. Follow these steps:
+
+1.  Go to: [https://console.cloud.google.com/](https://console.cloud.google.com/)
+2.  Navigate to "Credentials."
+3.  Click on your "Generative Language API Key."
+4.  Under "Application restrictions," add your website URL and the path where the chatbot will be used. For example, for this article, you would add: `cdnkr.blog/post/ai-chatbot-component-with-product-preview-cards-in-react-with-gemini-2-flash`
+5. Save changes.
+
+---
+
+### The Code: A Step-by-Step Guide
+
+Let's dive into the code for our `Chatbot` component. We'll break down each part to understand how it works.
+
+---
+
+#### 1. Imports and Initial data
+
+*   `SAMPLE_FAQ`: An array of objects representing frequently asked questions and their answers. This data will be used to inform the chatbot's responses.
+*   `SAMPLE_PRODUCTS`: An array of objects representing the products in our online shoe store. This data will be used to provide details about specific shoes.
+*   `INITIAL_MESSAGES`: An array containing the initial welcome message from the chatbot.
+
+Later we'll import and use this data.
+
+```javascript
+
+// Sample FAQ data for our demo shoe store
+const SAMPLE_FAQ = [
+    {
+        question: "What is your return policy?",
+        answer: "We offer a 30-day return policy on unworn shoes in their original packaging.  See our full Return & Exchange policy for details and exclusions.",
+    },
+    {
+        question: "How do I find my correct shoe size?",
+        answer: "We have a comprehensive size guide available on our website. You can find it [link to size guide]. We recommend measuring your foot in socks at the end of the day for the most accurate measurement.",
+    },
+    {
+        question: "Do you offer free shipping?",
+        answer: "Yes! We offer free standard shipping on all orders over $75 within the continental United States.  Expedited shipping options are available for an additional fee.",
+    },
+    {
+        question: "What payment methods do you accept?",
+        answer: "We accept all major credit cards (Visa, Mastercard, American Express, Discover), PayPal, and Apple Pay.",
+    },
+    {
+        question: "How do I care for my leather shoes?",
+        answer: "For leather shoes, we recommend using a leather cleaner and conditioner regularly.  Avoid getting them excessively wet.  For suede, use a suede brush and protector spray.",
+    },
+    {
+        question: "Are your shoes ethically sourced?",
+        answer: "We are committed to ethical sourcing and work closely with our manufacturers to ensure fair labor practices and environmentally responsible production.  We are continuously working to improve our sustainability efforts.",
+    },
+    {
+        question: "How long will it take to receive my order?",
+        answer: "Standard shipping typically takes 3-7 business days within the continental US.  Expedited shipping options are available for faster delivery.",
+    },
+    {
+        question: "Do you ship internationally?",
+        answer: "Yes, we ship to select countries internationally. Shipping costs and delivery times vary depending on the destination. Please see our shipping policy for more details.",
+    },
+];
+
+// Sample product data for our demo shoe store
+const SAMPLE_PRODUCTS = [
+    {
+        id: "1001",
+        name: "Cloudfoam Racer TR21",
+        brand: "Adidas",
+        category: "Running Shoes",
+        description: "Lightweight running shoe with Cloudfoam cushioning for superior comfort. Ideal for everyday runs and gym workouts.",
+        price: 79.99,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Adidas+Running+Shoe", // Replace with actual image URL
+        colors: ["Black/White", "Grey/Blue", "Navy/Red"],
+        sizes: [7, 8, 9, 10, 11, 12],
+        rating: 4.5,
+        numReviews: 125,
+    },
+    {
+        id: "1002",
+        name: "Chuck Taylor All Star",
+        brand: "Converse",
+        category: "Casual Sneakers",
+        description: "The iconic Chuck Taylor All Star. A timeless classic for everyday style.",
+        price: 60.00,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Converse+Chuck+Taylor", // Replace with actual image URL
+        colors: ["Black", "White", "Red", "Navy"],
+        sizes: [5, 6, 7, 8, 9, 10, 11],
+        rating: 4.7,
+        numReviews: 280,
+    },
+    {
+        id: "1003",
+        name: "Air Max 90",
+        brand: "Nike",
+        category: "Sneakers",
+        description: "The Nike Air Max 90 stays true to its OG running roots with the iconic Waffle sole, stitched overlays and classic TPU accents. Classic looks meet classic comfort.",
+        price: 130.00,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Nike+Air+Max+90", // Replace with actual image URL
+        colors: ["White/Red/Black", "Grey/Blue", "Black/White"],
+        sizes: [8, 9, 10, 11, 12, 13],
+        rating: 4.8,
+        numReviews: 350,
+    },
+    {
+        id: "1004",
+        name: "Arizona Sandal",
+        brand: "Birkenstock",
+        category: "Sandals",
+        description: "The classic Birkenstock Arizona sandal. Known for its comfort and support.",
+        price: 99.95,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Birkenstock+Arizona", // Replace with actual image URL
+        colors: ["Brown", "Black", "White", "Taupe"],
+        sizes: [36, 37, 38, 39, 40, 41, 42],  // EU sizing
+        rating: 4.6,
+        numReviews: 185,
+    },
+    {
+        id: "1005",
+        name: "Newton Ridge Plus II",
+        brand: "Columbia",
+        category: "Hiking Boots",
+        description: "Durable and waterproof hiking boots for all-terrain adventures.",
+        price: 110.00,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Columbia+Hiking+Boots", // Replace with actual image URL
+        colors: ["Brown/Green", "Black/Grey"],
+        sizes: [7, 8, 9, 10, 11, 12, 13],
+        rating: 4.4,
+        numReviews: 90,
+    },
+    {
+        id: "1006",
+        name: "Classic Leather",
+        brand: "Reebok",
+        category: "Casual Sneakers",
+        description: "The Reebok Classic Leather is a timeless icon, offering simple style and all-day comfort.",
+        price: 75.00,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=Reebok+Classic+Leather", // Replace with actual image URL
+        colors: ["White/Grey", "Black/White", "Navy/White"],
+        sizes: [6, 7, 8, 9, 10, 11, 12],
+        rating: 4.3,
+        numReviews: 112,
+    },
+    {
+        id: "1007",
+        name: "Gel-Kayano 28",
+        brand: "ASICS",
+        category: "Running Shoes",
+        description: "The GEL-KAYANO® 28 shoe creates a stable stride that moves you towards a balanced mindset. Featuring a lower-profile external heel counter, this piece cradles your foot with improved rearfoot support.  FLYTEFOAM™ Blast cushioning keeps the shoe lightweight, while creating a springy rebound.",
+        price: 160.00,
+        imageUrl: "https://placehold.co/300x200/000000/FFFFFF?text=ASICS+Gel-Kayano+28", // Replace with actual image URL
+        colors: ["Blue/White", "Grey/Black", "Red/Black"],
+        sizes: [7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5, 12],
+        rating: 4.9,
+        numReviews: 410,
+    },
+];
+
+// A welcome message for the chatbot
+const INITIAL_MESSAGES = [
+    {
+        role: "assistant",
+        content: "Hey there👋 I'm here to help you find the perfect shoe for your needs. What are you looking for?"
+    }
+];
+
+```
+
+---
+
+#### 2. `CardPreview` Component
+This component is responsible for rendering a preview card for a specific shoe product. It takes a `productId` as a prop, finds the corresponding product in the `SAMPLE_PRODUCTS` array, and displays its image, name, category, price, and a short description.
+
+```javascript
+function CardPreview({ productId }) {
+    const product = SAMPLE_PRODUCTS.find(p => p.id === productId);
+    if (!product) return null;
+
+    return (
+        <div className="border-2 cursor-pointer bg-white p-4 mt-2 mb-4 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300">
+            <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-24 h-24 object-cover"
+            />
+            <div className="flex-1">
+                <h3 className="font-bold">{product.name}</h3>
+                <p className="text-sm text-gray-600">{product.category}</p>
+                <p className="font-semibold">${product.price.toFixed(2)}</p>
+                <p className="text-sm text-gray-700 mt-1">
+                    {product.description.slice(0, 100)}
+                    {product.description.length > 100 ? "..." : ""}
+                </p>
+            </div>
+        </div>
+    );
+}
+```
+
+---
+
+#### 3. `MessageContent` Component
+
+This component is responsible for rendering the content of a chat message.  It's designed to detect product IDs embedded in the chatbot's response (in the format `%shoeId%`) and replace them with the `CardPreview` component.  This allows the chatbot to display interactive product cards within the conversation.
+
+```javascript
+function MessageContent({ content }) {
+    // Split content by product ID pattern
+    const parts = content.split(/(%\{[\d]+\}%)/);
+
+    return (
+        <>
+            {parts.map((part, index) => {
+                // Check if this part matches the product ID pattern
+                const match = part.match(/^%\{([\d]+)\}%$/);
+                if (match) {
+                    // If it's a product ID, render the CardPreview
+                    return <CardPreview key={index} productId={match[1]} />;
+                }
+                // Otherwise render the text
+                return <span key={index}>{part}</span>;
+            })}
+        </>
+    );
+}
+```
+
+---
+
+#### 4. `Chatbot` Component (Main Component)
+
+This is the main component that orchestrates the chatbot functionality.
+
+*   **State Management:**
+    *   `messages`: An array of objects representing the chat messages. Each message has a `role` (either "user" or "assistant") and `content`.
+    *   `input`: The text currently entered in the input field.
+    *   `isLoading`: A boolean indicating whether the chatbot is currently processing a request.
+*   **Refs:**
+    *   `messagesEndRef`: A ref used to scroll the chat container to the bottom when new messages are added.
+*   **`useEffect` Hook:** This hook is used to automatically scroll the chat container to the bottom whenever the `messages` state changes.
+*   **`sendMessage` Function:** This is the core function that sends the user's message to the Gemini API and handles the response.
+
+```javascript
+import { useState, useRef, useEffect } from "react";
+
+// Necassary for client side only implementation to work
+// import { INITIAL_MESSAGES, SAMPLE_PRODUCTS, SAMPLE_FAQ } from "../data";
+
+export default function Chatbot() {
+    // State for managing chat messages, user input, and loading state
+    const [messages, setMessages] = useState(INITIAL_MESSAGES);
+    const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    // Ref for auto-scrolling to the latest message
+    const messagesEndRef = useRef(null);
+
+    /**
+     * Scrolls the chat container to the latest message
+     */
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // Auto-scroll when new messages are added
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    // ===============================================================
+    //  Choose ONE of the following sendMessage functions based on
+    //  your implementation:  React (client-side only) OR Next.js (API Route)
+    // ===============================================================
+
+    // React (Client-Side Only) Implementation of sendMessage:
+    // ===============================================================
+    //  WARNING: This implementation exposes your API key in the client-side code.
+    //  This is NOT recommended for production environments.  It's intended for
+    //  development and testing purposes only. Use the Next.js API route approach
+    //  for production.
+    // ===============================================================
+
+    /**
+     * Sends a message to the Gemini API and handles the response streaming
+     * (Client-Side Implementation - **NOT RECOMMENDED FOR PRODUCTION**)
+     * @param {string} userInput - The message text from the user
+     */
+    /*
+    async function sendMessage(userInput) {
+        // Don't process empty messages
+        if (!userInput.trim()) return;
+
+        // Add user's message to the chat
+        setMessages(prev => [...prev, { role: "user", content: userInput }]);
+        setInput(""); // Clear input field
+        setIsLoading(true); // Show loading state
+
+        try {
+            // Set up Gemini API request
+            const GEMINI_API_KEY = GOOGLE_API_KEY;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            // Construct the system prompt with product catalog and FAQ data
+            const systemPrompt = `You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
+
+Product Catalog:
+${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
+
+FAQ Information:
+${JSON.stringify(SAMPLE_FAQ, null, 2)}
+
+Important: When referring to specific shoes, include the shoe ID in the format %{shoeId}%. For example, if discussing the Nike Air Max 90, include %{1003}% in your response.
+
+Please provide helpful, friendly responses about our shoes, sizing, shipping, returns, and any other customer inquiries. If a customer asks about specific shoes, make sure to reference them using the ID format mentioned above.`;
+
+            // Combine system prompt with user's message
+            const fullPrompt = `${systemPrompt}\n\nCustomer: ${userInput}\nAssistant:`;
+
+            // Make API request to Gemini
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: fullPrompt
+                        }]
+                    }]
+                })
+            });
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            // Parse the response
+            const data = await response.json();
+            const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!text) {
+                throw new Error("No response from Gemini");
+            }
+
+            // Store the index where we'll insert the assistant's message
+            // This prevents issues with state updates during streaming
+            const messageIndex = messages.length;
+            setMessages(prev => [...prev, { role: "assistant", content: "" }]);
+
+            // Simulate streaming by splitting response into words
+            const chunks = text.split(" ");
+            let currentContent = "";
+
+            // Add each word with a delay to create a typing effect
+            for (let i = 0; i < chunks.length; i++) {
+                currentContent += chunks[i] + " ";
+                setMessages(prev => {
+                    const newMessages = [...prev];
+                    newMessages[messageIndex + 1] = { 
+                        role: "assistant", 
+                        content: currentContent 
+                    };
+                    return newMessages;
+                });
+                // Add a small delay between words
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+
+        } catch (error) {
+            // Handle any errors that occur during the API call
+            console.error("Error:", error);
+            setMessages(prev => [...prev, {
+                role: "assistant",
+                content: "Sorry, I encountered an error. Please try again."
+            }]);
+        } finally {
+            // Reset loading state whether the request succeeded or failed
+            setIsLoading(false);
+        }
+    }
+    */
+
+    // Next.js API Route Implementation of sendMessage:
+    // ===============================================================
+    //  This is the recommended approach for production environments.
+    //  It keeps your API key secure by handling the Gemini API request
+    //  on the server-side.
+    // ===============================================================
+
+    /**
+     * Sends a message to the Gemini API and handles the response streaming
+     * (Next.js API Route Implementation - RECOMMENDED FOR PRODUCTION)
+     * @param {string} userInput - The message text from the user
+     */
+    async function sendMessage(userInput) {
+        // Don't process empty messages
+        if (!userInput.trim()) return;
+
+        // Add user's message to the chat
+        setMessages(prev => [...prev, { role: "user", content: userInput }]);
+        setInput(""); // Clear input field
+        setIsLoading(true); // Show loading state
+
+        try {
+            // Set up Gemini API request
+            const url = `/api/chat`; //  POST route we'll create
+
+            // Make API request to Gemini
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    message: userInput // Send the user's message
+                })
+            });
+
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            // Parse the response
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = "";
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                    break;
+                }
+                buffer += decoder.decode(value);
+                setMessages(prev => [...prev, { role: "assistant", content: buffer }]);
+            }
+
+        } catch (error) {
+            // Handle any errors that occur during the API call
+            console.error("Error:", error);
+            setMessages(prev => [...prev, {
+                role: "assistant",
+                content: "Sorry, I encountered an error. Please try again."
+            }]);
+        } finally {
+            // Reset loading state whether the request succeeded or failed
+            setIsLoading(false);
+        }
+    }
+
+    return (
+        <div className="p-4">
+            <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2">
+                {/* Chat messages container */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {messages.map((message, index) => (
+                        <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
+                            <div className={`max-w-[80%] p-3 ${
+                                message.role === "user"
+                                    ? "bg-black text-white"
+                                    : "bg-gray-100 text-gray-800"
+                                }`}>
+                                {/* Render message content with product previews for assistant messages */}
+                                {message.role === "assistant" ? (
+                                    <MessageContent content={message.content} />
+                                ) : (
+                                    message.content
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                    {/* Invisible element for auto-scrolling */}
+                    <div ref={messagesEndRef} />
+                </div>
+
+                {/* Chat input form */}
+                <div className="border-t-2 p-4">
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        sendMessage(input);
+                    }} className="flex gap-2">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Ask about our shoes..."
+                            className="flex-1 p-2 border-2"
+                            disabled={isLoading}
+                        />
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="px-4 py-2 cursor-pointer bg-black text-white hover:bg-black/90 disabled:bg-black/50"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}
+```
+
+##### Inside `sendMessage` (Next.js API Route Implementation):
+
+1.  **Input Validation:** Checks if the user input is empty.
+2.  **Update Chat State:** Adds the user's message to the `messages` array and clears the input field.
+3.  **API Request:**
+    *   Sets the API endpoint URL to `/api/chat`, a POST route in your application.
+    *   Uses `fetch` to make a POST request to the API route.  The request includes the user's message.
+4.  **Handle API Response:**
+    *   Handles streaming the response from the API route.  It reads the response body chunk by chunk, decodes it, and updates the `messages` state with the accumulated response.
+5.  **Error Handling:** Catches any errors that occur during the API call and displays an error message to the user.
+6.  **Loading State:**  Sets the `isLoading` state to `true` before the API call and `false` after, regardless of whether the call succeeds or fails.
+
+##### Inside `sendMessage` (React Client-Side Only Implementation):
+
+1.  **Input Validation:** Checks if the user input is empty.
+2.  **Update Chat State:** Adds the user's message to the `messages` array and clears the input field.
+3.  **API Request:**
+    *   Sets the `GEMINI_API_KEY` and the API endpoint URL.
+    *   Uses `fetch` to make a POST request directly to the Gemini API.  The request includes the user's message.
+4.  **Handle API Response:**
+    *   Parses the JSON response from the API.
+    *   Simulates streaming by splitting the response text into words and updating the message content with a small delay between words to create a "typing" effect.
+5.  **Error Handling:** Catches any errors that occur during the API call and displays an error message to the user.
+6.  **Loading State:**  Sets the `isLoading` state to `true` before the API call and `false` after, regardless of whether the call succeeds or fails.
+
+#### 5.  Rendering the Chat Interface
+
+The `return` statement in the `Chatbot` component renders the chat interface.  It includes:
+
+*   A container for the chat messages.
+*   A loop that iterates over the `messages` array and displays each message.
+*   An input field for the user to type their messages.
+*   A "Send" button that triggers the `sendMessage` function.
+
+---
+
+### Creating the `/api/chat` Route (Next.js Example)
+
+To protect your API key and handle the Gemini API request securely, you should create an API route in your Next.js application. Here's an example of how to create a `POST /api/chat` route:
+
+```javascript
+// pages/api/chat.js
+import { StreamingTextResponse } from 'ai';
+import { INITIAL_MESSAGES, SAMPLE_PRODUCTS, SAMPLE_FAQ } from "../data";
+
+export async function POST(req) {
+    if (!process.env.GOOGLE_API_KEY) {
+        throw new Error('GOOGLE_API_KEY is not set');
+    }
+
+    const { message } = await req.json();
+    const GEMINI_API_KEY = process.env.GOOGLE_API_KEY;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const systemPrompt = `You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
+
+Product Catalog:
+${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
+
+FAQ Information:
+${JSON.stringify(SAMPLE_FAQ, null, 2)}
+
+Important: When referring to specific shoes, include the shoe ID in the format %shoeId%. For example, if discussing the Nike Air Max 90, include %{1003}% in your response.
+
+Please provide helpful, friendly responses about our shoes, sizing, shipping, returns, and any other customer inquiries. If a customer asks about specific shoes, make sure to reference them using the ID format mentioned above.`;
+
+    const fullPrompt = `${systemPrompt}\n\nCustomer: ${message}\nAssistant:`;
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{
+                    text: fullPrompt
+                }]
+            })
+    });
+
+    const data = await response.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+        throw new Error('No response from Gemini');
+    }
+
+    // Create a stream from the response text
+    const stream = new ReadableStream({
+        start(controller) {
+            const encoder = new TextEncoder();
+            controller.enqueue(encoder.encode(text));
+            controller.close();
+        },
+    });
+
+    return new StreamingTextResponse(stream);
+}
+```
+
+---
+
+Key improvements and explanations in this backend code:
+
+*   **Environment Variables:**  The code now correctly gets the `GOOGLE_API_KEY` from `process.env`.  This is *essential* for security.  Never commit your API key directly to your repository.
+*   **System Prompt:** This is where you define the personality and knowledge base of your chatbot. The prompt includes instructions on how to use the product catalog and FAQ information, and how to format responses with product IDs.
+*   **Fetch API:** This code makes the actual request to the Gemini API.
+*   **Error Handling:** If the Gemini API returns an error, the code throws an error that will be caught and handled by the client-side code.
+*   **StreamingTextResponse:**  This returns the response as a stream, improving perceived performance.
+
+---
+
+### Important Considerations:
+
+*   **API Key Security:**  *Never* expose your API key directly in your client-side code. Use environment variables and server-side API routes to protect your key.
+*   **CORS:** Ensure that your API endpoint is configured to allow requests from your client-side application.
+*   **Error Handling:** Implement robust error handling to gracefully handle API errors and provide informative messages to the user.
+*   **Rate Limiting:** Be mindful of the Gemini API's rate limits and implement appropriate rate limiting in your application.
+*   **Prompt Engineering:** Experiment with different system prompts to optimize the chatbot's responses and behavior. The better your prompt, the better the results.
+*   **Context Management:** For more complex conversations, you'll need to implement context management to track the conversation history and provide more relevant responses.
+*   **UI/UX:**  Focus on creating a user-friendly and engaging chat interface.
+
+---
+
+### Conclusion
+
+This tutorial provides a foundation for building an AI chatbot component in React using Google's Gemini 2.0 Flash model. By understanding the code and following the best practices outlined above, you can create a powerful and engaging chatbot that enhances the user experience on your website. Remember to handle your API keys securely and experiment with different prompts and features to customize your chatbot to meet your specific needs. Good luck!
