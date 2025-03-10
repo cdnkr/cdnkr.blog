@@ -8,8 +8,8 @@ import {
 import "./globals.css";
 
 import Header from "@/components/header";
-import Me from "@/components/me";
 
+import config from "@/config";
 import "@/utils/pwa-handler";
 
 const jetBrainsMono = JetBrains_Mono({
@@ -47,20 +47,7 @@ export default function RootLayout({ children }) {
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
         <div className="w-full py-4 bg-dark flex justify-center">
           <div className="w-full max-w-[1260px] flex justify-between flex-wrap py-0 px-6 lg:px-8 gap-4">
-            <div className="flex items-center gap-4">
-              <a
-                href="https://github.com/cdnkr"
-                className="uppercase text-white text-xs hover:text-tertiary transition-all duration-300"
-              >
-                Components
-              </a>
-              <a
-                href="https://linkedin.com/in/cdnkr"
-                className="hidden lg:block uppercase text-white text-xs hover:text-tertiary transition-all duration-300"
-              >
-                Guides
-              </a>
-            </div>
+            <p className="text-gray-200 text-xs uppercase font-mono">{config.description}</p>
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
@@ -69,8 +56,8 @@ export default function RootLayout({ children }) {
         </div>
         <div className="absolute bottom-0 w-full py-2 bg-dark flex justify-center">
           <div className="w-full max-w-[1260px] flex justify-start items-center flex-wrap py-0 px-6 lg:px-8 gap-4">
-            <span className="text-white text-xs uppercase">
-              © {new Date().getFullYear()} cdnkr
+            <span className="text-gray-200 text-xs uppercase font-mono">
+              © {new Date().getFullYear()} <a href="https://github.com/cdnkr" className="hover:text-tertiary transition-all duration-300">cdnkr</a>
             </span>
           </div>
         </div>
