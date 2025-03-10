@@ -10,8 +10,8 @@ export const clearPrompt = () => {
 };
 
 // initialize the global handler
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeinstallprompt', (e) => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
   });

@@ -50,14 +50,10 @@ function Popover({
           isOpen && "opacity-100 block",
           className,
         )}
-        caretPosition={
-          position === "right"
-          ? "top-right"
-          : "top-left"
-        }
+        caretPosition={position === "right" ? "top-right" : "top-left"}
       >
-          {popoverContent}
-        </Block>
+        {popoverContent}
+      </Block>
     </div>
   );
 }

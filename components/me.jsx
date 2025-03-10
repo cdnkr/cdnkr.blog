@@ -7,9 +7,9 @@ export function MeContent() {
     <div className="flex flex-col gap-2">
       <h1 className="text-4xl lg:text-5xl leading-none text-black uppercase font-oswald font-black tracking-tight relative -top-1.5">
         "I'm a front-end developer, based in South Africa. I{" "}
-        <span className="text-7xl leading-[0]">♥</span> building
-        great-looking, functional websites. I'm passionate about pretty much
-        every f*cking thing JavaScript, design or front-end related."
+        <span className="text-7xl leading-[0]">♥</span> building great-looking,
+        functional websites. I'm passionate about pretty much every f*cking
+        thing JavaScript, design or front-end related."
       </h1>
       <div className="flex lg:hidden flex-col gap-3 w-full">
         <a
@@ -26,16 +26,12 @@ export function MeContent() {
         </a>
       </div>
     </div>
-  )
+  );
 }
 
 export default function Me({ className }) {
   return (
-    <Popover
-      popoverContent={
-        <MeContent />
-      }
-    >
+    <Popover popoverContent={<MeContent />}>
       <span
         className={cn(
           "uppercase text-white text-xs hover:text-tertiary transition-all duration-300",
