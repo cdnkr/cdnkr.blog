@@ -73,7 +73,7 @@ const prettyCodeOptions = {
 
 export default function MDX({ source }) {
   return (
-    <div className="prose prose-headings:text-dark prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-a:hover:text-tertiary/80 prose-a:font-bold">
+    <div className="prose prose-headings:text-dark prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-a:hover:text-tertiary/80 prose-a:font-bold prose-pre:rounded-none prose-pre:my-0">
       <MDXRemote
         source={source}
         components={components}
