@@ -21,6 +21,9 @@ const withMDX = createMDX({
     remarkPlugins: [],
     rehypePlugins: [],
   },
+  env: {
+    NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  },
 });
 
 export default withPWAConfig(withMDX(nextConfig));
