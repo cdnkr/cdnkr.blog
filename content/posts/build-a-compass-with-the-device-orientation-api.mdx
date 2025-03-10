@@ -17,9 +17,24 @@ Ever wanted to build a web app that provides users with a real-time compass, lik
 
 ### Why this is cool (and a little tricky)
 
-Modern browsers expose powerful APIs that allow us to access device hardware.  The Device Orientation API gives us access to the device's orientation in 3D space. The Geolocation API allows us to pinpoint the user's location. Combining these, we can build a feature-rich compass that provides accurate and relevant information.
+Modern browsers expose powerful APIs that allow us to access device hardware. The Device Orientation API gives us access to the device's orientation in 3D space. The Geolocation API allows us to pinpoint the user's location. Combining these, we can build a feature-rich compass that provides accurate and relevant information.
 
-However, working with these APIs isn't always straightforward.  Browser compatibility, permission handling, coordinate system differences, and the need to account for magnetic declination all add complexity. But don't worry, we'll tackle these challenges head-on.
+However, working with these APIs isn't always straightforward. Browser compatibility, permission handling, coordinate system differences, and the need to account for magnetic declination all add complexity. But don't worry, we'll tackle these challenges head-on.
+
+---
+
+### Before We Begin
+
+Before diving into the code, there are a couple of important points to consider:
+
+*   **HTTPS Requirement:** The Device Orientation API, and Geolocation API generally requires a secure (HTTPS) connection to function correctly. This is a security measure to protect user data. For local development, you'll need to set up a development SSL certificate. If you're using Next.js, you can find a detailed guide on how to do this here: [https://cdnkr.blog/post/setting-up-a-dev-ssl-certificate-in-nextjs](https://cdnkr.blog/post/setting-up-a-dev-ssl-certificate-in-nextjs)
+*   **Testing on Mobile Devices:** In most desktop browsers, the Device Orientation API is either not available or doesn't provide reliable data. To properly test your compass component, you'll need to run it on a mobile device. Here's how to do that:
+
+    1.  Run `ipconfig` (on Windows) or `ifconfig` (on macOS/Linux) in your terminal to find your computer's IPv4 address.
+    2.  Make sure your mobile device is on the same network as your computer.
+    3.  Open your mobile browser and navigate to `https://{your_ipv4_address}:3000` (replace `{your_ipv4_address}` with the actual IPv4 address and `3000` with the port your development server is running on).
+
+    This will allow you to access your local development server from your mobile device and test the compass component with real device orientation data. HTTPS is still required for this to work properly.
 
 ---
 
@@ -41,266 +56,139 @@ I'm assuming you've already bootstrapped a React project using Create React App,
 
 Let's break down the code into its key components:
 
-1.  **`useGeolocation` Hook:  Getting Your Bearings**
+1.  **`useGeolocation` Hook: Getting Your Bearings**
 
     This custom hook handles retrieving the user's location using the Geolocation API.
 
     ```javascript
     function useGeolocation() {
-        const [position, setPosition] = useState(null)
-        const [permission, setPermission] = useState(
-            'prompt',
-        )
-        const [error, setError] = useState(null)
-        const [watchId, setWatchId] = useState(null)
-
-        // Cleanup function for watchPosition
-        useEffect(() => {
-            return () => {
-                if (watchId !== null) {
-                    navigator.geolocation.clearWatch(watchId)
-                }
-            }
-        }, [watchId])
+        const [position, setPosition] = useState(null);
+        const [permission, setPermission] = useState('prompt');
+        const [error, setError] = useState(null);
 
         const requestPermission = async () => {
             if (!navigator.geolocation) {
-                setError('Geolocation is not supported by your browser')
-                return
+                setError('Geolocation is not supported by your browser');
+                return;
             }
 
             try {
-                // Request initial position to trigger permission prompt
-                await new Promise((resolve, reject) => {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            setPermission('granted')
-                            setPosition(position)
-                            setError(null)
-                            resolve()
-                        },
-                        (error) => {
-                            switch (error.code) {
-                                case error.PERMISSION_DENIED:
-                                    setPermission('denied')
-                                    setError('Location permission denied')
-                                    break
-                                case error.POSITION_UNAVAILABLE:
-                                    setError('Location information is unavailable')
-                                    break
-                                case error.TIMEOUT:
-                                    setError('Location request timed out')
-                                    break
-                                default:
-                                    setError('An unknown error occurred')
-                            }
-                            reject(error)
-                        },
-                        {
-                            enableHighAccuracy: true,
-                            timeout: 5000,
-                            maximumAge: 0,
-                        },
-                    )
-                })
-
-                // If we got here, permission was granted, so start watching position
-                const id = navigator.geolocation.watchPosition(
-                    (position) => {
-                        setPosition(position)
-                        setError(null)
-                    },
-                    (error) => {
-                        switch (error.code) {
-                            case error.PERMISSION_DENIED:
-                                setPermission('denied')
-                                setError('Location permission denied')
-                                break
-                            case error.POSITION_UNAVAILABLE:
-                                setError('Location information is unavailable')
-                                break
-                            case error.TIMEOUT:
-                                setError('Location request timed out')
-                                break
-                            default:
-                                setError('An unknown error occurred')
-                    }
-                    setPosition(null)
-                },
-                {
-                    enableHighAccuracy: true,
-                    maximumAge: 0,
-                    timeout: 5000,
-                },
-                )
-
-                setWatchId(id)
+                const pos = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0,
+                    });
+                });
+                setPosition(pos);
+                setPermission('granted');
+                setError(null);
             } catch (err) {
-                setError('Error requesting location permission')
-                console.error('Error:', err)
+                setPermission('denied');
+                setError('Error getting location');
+                console.error(err);
             }
-        }
+        };
 
-        return {
-            position,
-            permission,
-            error,
-            requestPermission,
-        }
+        return { position, permission, error, requestPermission };
     }
     ```
 
     *   **State Variables:**
         *   `position`: Stores the current geolocation (`{ latitude, longitude }`).
         *   `permission`: Tracks the permission state (`'prompt'`, `'granted'`, `'denied'`).
-        *   `error`:  Stores any error messages.
-        * `watchId`: Stores the id of the geolocation watch, this allows you to cancel location tracking later.
+        *   `error`: Stores any error messages.
 
     *   **`requestPermission` Function:**
         *   First, checks if the Geolocation API is supported by the browser.
         *   Uses `navigator.geolocation.getCurrentPosition` to request initial permission and get location. Handles success and error cases, updating the state accordingly.
-        *   If permission is granted, it uses `navigator.geolocation.watchPosition` to continuously monitor the user's location.
         *   Handles different error codes from the Geolocation API to provide more informative error messages.
-
-    *   **`useEffect` Cleanup:**
-        *   The `useEffect` with the `watchId` dependency ensures that the `watchPosition` is cleared when the component unmounts, preventing memory leaks and unnecessary location tracking.
 
     **Key Considerations:**
 
-    *   **Error Handling:** The Geolocation API can fail for various reasons (permission denied, location unavailable, timeout).  The `useGeolocation` hook handles these errors gracefully and provides error messages.
-    *   **`watchPosition`:** The `watchPosition` function is used to continuously monitor the user's location. This is more accurate than `getCurrentPosition` but also consumes more battery. Remember to clear the watch when the component unmounts!
-    *   **Permissions:** Always handle the permission flow gracefully.  Explain to the user why you need their location and provide clear instructions on how to grant permission.
+    *   **Error Handling:** The Geolocation API can fail for various reasons (permission denied, location unavailable, timeout). The `useGeolocation` hook handles these errors gracefully and provides error messages.
+    *   **`getCurrentPosition`:** The `getCurrentPosition` function is used to get the user's location.
+    *   **Permissions:** Always handle the permission flow gracefully. Explain to the user why you need their location and provide clear instructions on how to grant permission.
 
-2.  **`useCompass` Hook:  Finding True North (and Dealing with Magnetic Declination)**
+2.  **`useCompass` Hook: Finding True North (and Dealing with Magnetic Declination)**
 
     This hook handles the core compass logic, using the Device Orientation API to determine the device's heading.
 
     ```javascript
-    function useCompass({
-        userPosition,
-    }) {
-        const [permission, setPermission] = useState('unknown')
-        const [direction, setDirection] = useState(null)
-        const [hasSupport, setHasSupport] = useState(true)
-        const magneticDeclinationRef = useRef(0)
-        const offsetRef = useRef(0)
+    function useCompass({ userPosition }) {
+        const [permission, setPermission] = useState('unknown');
+        const [direction, setDirection] = useState(null);
+        const magneticDeclinationRef = useRef(0);
+        const offsetRef = useRef(0);
 
-        // Function to check device orientation support
-        const checkSupport = () => {
-            if (typeof window === 'undefined') return false
-
-            if (!window.DeviceOrientationEvent) {
-                alert('Your device does not support compass functionality.')
-                setHasSupport(false)
-                setDirection({ degrees: 0, cardinal: 'N' })
-                return false
-            }
-            return true
-        }
-
-        // Function to handle device motion/orientation data
         const handleOrientation = (event) => {
-            let heading = 0
+            const heading = (360 - event.alpha) % 360; // Simplified heading calculation
 
-            console.log({ orientationEvent: event })
-            // For iOS devices
-            if (event?.webkitCompassHeading) {
-                heading = event.webkitCompassHeading
-            }
-            // For Android devices
-            else if (event.alpha !== null) {
-                // On Android, we need to handle the screen orientation
-                const screenOrientation = window.screen.orientation?.angle || 0
-                heading = (360 - event.alpha + screenOrientation) % 360
-            } else {
-                setHasSupport(false)
-                setDirection({ degrees: 0, cardinal: 'N' })
-            }
+            const adjustedHeading = (heading + magneticDeclinationRef.current + 360 + offsetRef.current) % 360;
+            const cardinalDirection = getCardinalDirection(adjustedHeading);
 
-            if (heading !== undefined) {
+            setDirection({
+                degrees: Math.round(adjustedHeading),
+                cardinal: cardinalDirection,
+            });
+        };
 
-                const adjustedHeading =
-                    (heading + magneticDeclinationRef.current + 360 + offsetRef.current) % 360
-
-                let cardinalDirection = getCardinalDirection(adjustedHeading)
-
-                setDirection({
-                    degrees: Math.round(adjustedHeading),
-                    cardinal: cardinalDirection,
-                })
-            }
-        }
-
-        // Function to request permission
         const requestPermission = async () => {
-            if (!checkSupport()) return
-
-            if (
-                typeof DeviceOrientationEvent !== 'undefined' &&
-                // @ts-expect-error requestPermission is supported in iOS
-                typeof DeviceOrientationEvent.requestPermission === 'function'
-            ) {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
-                    // @ts-expect-error requestPermission is supported in iOS
-                    const response = await DeviceOrientationEvent.requestPermission()
-                    setPermission(response)
+                    const response = await DeviceOrientationEvent.requestPermission();
+                    setPermission(response);
 
                     if (response === 'granted') {
-                        window.addEventListener('deviceorientation', handleOrientation)
+                        window.addEventListener('deviceorientation', handleOrientation);
                     }
                 } catch (error) {
-                    console.error('Error requesting orientation permission:', error)
-                    setPermission('error')
+                    console.error('Error requesting orientation permission:', error);
+                    setPermission('error');
                 }
             } else {
-                // For non-iOS devices or older browsers
-                window.addEventListener('deviceorientation', handleOrientation)
-                setPermission('granted')
+                window.addEventListener('deviceorientation', handleOrientation);
+                setPermission('granted');
             }
-        }
+        };
 
         useEffect(() => {
-            if (!userPosition || magneticDeclinationRef.current !== 0) return
+            if (!userPosition || magneticDeclinationRef.current !== 0) return;
 
             getMagneticDeclination(
                 userPosition.coords.latitude,
-                userPosition.coords.longitude,
+                userPosition.coords.longitude
             ).then((declination) => {
-                magneticDeclinationRef.current = declination
-            })
-        }, [userPosition])
+                magneticDeclinationRef.current = declination;
+            });
+        }, [userPosition]);
 
-        // Cleanup
         useEffect(() => {
+            window.addEventListener('deviceorientation', handleOrientation);
             return () => {
-                window.removeEventListener('deviceorientation', handleOrientation)
-            }
-        }, [])
+                window.removeEventListener('deviceorientation', handleOrientation);
+            };
+        }, []);
 
         return {
             permission,
             direction,
             setDirection,
             requestPermission,
-            hasSupport,
             magneticDeclination: magneticDeclinationRef.current,
             offsetRef,
-        }
+        };
     }
     ```
 
     *   **State Variables:**
         *   `permission`: Tracks the permission state for device orientation.
         *   `direction`: Stores the current compass direction (`{ degrees, cardinal }`).
-        *   `hasSupport`: Indicates whether the device supports the Device Orientation API.
-        *   `magneticDeclinationRef`:  A `useRef` to store the magnetic declination (more on this later).
+        *   `magneticDeclinationRef`: A `useRef` to store the magnetic declination (more on this later).
         *   `offsetRef`: A `useRef` to store the user offset, this is used to recalibrate the compass.
 
-    *   **`checkSupport` Function:**
-        *   Checks if the `DeviceOrientationEvent` is supported by the browser. If not, it sets `hasSupport` to `false` and provides a fallback direction.
-
     *   **`handleOrientation` Function:**
-        *   This function is the heart of the compass logic.  It's called whenever the device orientation changes.
+        *   This function is the heart of the compass logic. It's called whenever the device orientation changes.
         *   It normalizes the heading value based on the platform (iOS vs. Android) and screen orientation.
         *   **Crucially, it adjusts the heading for magnetic declination.**
         *   Finally, it updates the `direction` state with the adjusted heading and cardinal direction.
@@ -319,13 +207,13 @@ Let's break down the code into its key components:
 
     **Understanding Magnetic Declination:**
 
-    Magnetic declination is the angle between true north (geographic north) and magnetic north (the direction a compass needle points).  This angle varies depending on your location on Earth. To get an accurate compass reading, you need to compensate for magnetic declination.
+    Magnetic declination is the angle between true north (geographic north) and magnetic north (the direction a compass needle points). This angle varies depending on your location on Earth. To get an accurate compass reading, you need to compensate for magnetic declination.
 
     The code uses the NOAA Geomagnetic Field Calculator API to fetch the magnetic declination for the user's latitude and longitude. You'll need to obtain an API key from NOAA and set it as an environment variable (`NEXT_PUBLIC_NOAA_API_KEY`).
 
-    **Important:**  The NOAA API has usage limits.  Consider caching the magnetic declination value or using a different API if you expect high traffic.
+    **Important:** The NOAA API has usage limits. Consider caching the magnetic declination value or using a different API if you expect high traffic.
 
-3.  **`Compass` Component:  Putting it all Together**
+3.  **`Compass` Component: Putting it all Together**
 
     This component renders the compass UI and connects the `useGeolocation` and `useCompass` hooks.
 
@@ -339,16 +227,14 @@ Let's break down the code into its key components:
         offsetRef,
     }) {
         function handleDirectionChange(e) {
-            const newDirection = e.currentTarget.value
+            const newDirection = parseFloat(e.currentTarget.value);
 
-            if (isNaN(parseFloat(newDirection))) return
-
-            if (parseFloat(newDirection) < 0 || parseFloat(newDirection) > 360) return
+            if (isNaN(newDirection) || newDirection < 0 || newDirection > 360) return;
 
             setDirection({
-                degrees: parseFloat(newDirection),
-                cardinal: getCardinalDirection(parseFloat(newDirection)),
-            })
+                degrees: newDirection,
+                cardinal: getCardinalDirection(newDirection),
+            });
         }
 
         function renderNorthOnCompass() {
@@ -392,7 +278,7 @@ Let's break down the code into its key components:
                                     width: `${String(direction?.degrees || 0).length}ch`,
                                 }}
                             />
-                            <p className="text-5xl text-center">°&nbsp;{direction?.cardinal}</p>
+                            <p className="text-5xl text-center">° {direction?.cardinal}</p>
                         </div>
                         {position && (
                             <div className="flex gap-2">
@@ -431,7 +317,7 @@ Let's break down the code into its key components:
     *   **Props:**
         *   `position`: The user's geolocation from `useGeolocation`.
         *   `direction`: The compass direction from `useCompass`.
-        *   `hasDeviceOrientationSupport`:  A boolean indicating device orientation support.
+        *   `hasDeviceOrientationSupport`: A boolean indicating device orientation support.
         *   `magneticDeclination`: The magnetic declination value.
         *   `offsetRef`: The offset ref from `useCompass`.
     *   **UI Elements:**
@@ -441,8 +327,6 @@ Let's break down the code into its key components:
         *   Includes a visual representation of a compass rose.
     *   **Manual Input:**
         *   If device orientation is not supported, allows the user to manually enter a heading value.
-    *   **Calibration:**
-        *   Adds a recalibration button to reset the compass heading.
 
 4.  **`Main` Component: Tying it All Together**
 
@@ -519,6 +403,8 @@ Let's break down the code into its key components:
         *   Displays a message if device orientation is not supported.
         *   Renders the `Compass` component only after permissions are granted.
 
+---
+
 ### Utility Functions
 
 *   **`getCardinalDirection(heading)`:** Converts a heading in degrees to a cardinal direction (N, NE, E, etc.).
@@ -573,17 +459,17 @@ Let's break down the code into its key components:
 
 *   **Browser Compatibility:** The Device Orientation API and Geolocation API have varying levels of support across different browsers and devices. Always test your code on multiple platforms.
 *   **HTTPS:** The Geolocation API requires a secure (HTTPS) connection.
-*   **Permissions:**  Users can deny permission to access their location or device orientation. Your app should handle these scenarios gracefully.
-*   **Battery Consumption:**  Continuously monitoring location and device orientation can drain the user's battery.  Consider using these features sparingly and providing options to disable them.
-*   **Privacy:**  Be transparent with users about how you are using their location and device orientation data.
-*   **Accuracy:**  The accuracy of the compass depends on the quality of the device's sensors and the presence of nearby magnetic interference.
+*   **Permissions:** Users can deny permission to access their location or device orientation. Your app should handle these scenarios gracefully.
+*   **Battery Consumption:** Continuously monitoring location and device orientation can drain the user's battery. Consider using these features sparingly and providing options to disable them.
+*   **Privacy:** Be transparent with users about how you are using their location and device orientation data.
+*   **Accuracy:** The accuracy of the compass depends on the quality of the device's sensors and the presence of nearby magnetic interference.
 *   **User Experience:** Provide clear instructions and feedback to the user throughout the process.
 
 ---
 
 ### Conclusion
 
-Building a compass component in React is a challenging but rewarding project.  By leveraging the Device Orientation API and Geolocation API, you can create a powerful and engaging user experience. Remember to handle permissions gracefully, account for magnetic declination, and be mindful of battery consumption and privacy.  Happy navigating!
+Building a compass component in React is a challenging but rewarding project. By leveraging the Device Orientation API and Geolocation API, you can create a powerful and engaging user experience. Remember to handle permissions gracefully, account for magnetic declination, and be mindful of battery consumption and privacy. Happy navigating!
 
 ---
 
@@ -594,3 +480,323 @@ Building a compass component in React is a challenging but rewarding project.  B
 *   Explore different mapping libraries to display the user's location on a map.
 *   Add settings to allow users to customize the compass behavior.
 *   Wrap this into a Native React application and put it on the app store.
+
+---
+
+### The Full Code
+
+For your convenience, here's the complete code for the compass component:
+
+```javascript
+"use client"
+
+import { useEffect, useState, useRef } from "react"
+import { ArrowRotate } from "../../ui/icons"
+
+import { Block } from "@/components/ui/block"
+import Button from "@/components/ui/button"
+
+
+// Utility functions
+function getCardinalDirection(heading) {
+    let cardinalDirection
+    if (heading >= 337.5 || heading < 22.5) {
+        cardinalDirection = "N"
+    } else if (heading >= 22.5 && heading < 67.5) {
+        cardinalDirection = "NE"
+    } else if (heading >= 67.5 && heading < 112.5) {
+        cardinalDirection = "E"
+    } else if (heading >= 112.5 && heading < 157.5) {
+        cardinalDirection = "SE"
+    } else if (heading >= 157.5 && heading < 202.5) {
+        cardinalDirection = "S"
+    } else if (heading >= 202.5 && heading < 247.5) {
+        cardinalDirection = "SW"
+    } else if (heading >= 247.5 && heading < 292.5) {
+        cardinalDirection = "W"
+    } else if (heading >= 292.5 && heading < 337.5) {
+        cardinalDirection = "NW"
+    }
+
+    return cardinalDirection
+}
+
+async function getMagneticDeclination(
+    latitude,
+    longitude,
+) {
+    const response = await fetch(
+        `https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination?lat1=${latitude}&lon1=${longitude}&key=${process.env.NEXT_PUBLIC_NOAA_API_KEY}&resultFormat=json`,
+    )
+    const data = await response.json()
+
+    if (!data?.result || data?.result?.length === 0) return 0
+
+    const declination = data.result[0].declination
+    return declination
+}
+
+function useCompass({
+    userPosition,
+}) {
+    const [permission, setPermission] = useState('unknown')
+    const [direction, setDirection] = useState(null)
+    const magneticDeclinationRef = useRef(0)
+    const offsetRef = useRef(0)
+
+    const handleOrientation = (event) => {
+        const heading = (360 - event.alpha) % 360; // Simplified heading calculation
+
+        const adjustedHeading = (heading + magneticDeclinationRef.current + 360 + offsetRef.current) % 360;
+        const cardinalDirection = getCardinalDirection(adjustedHeading);
+
+        setDirection({
+            degrees: Math.round(adjustedHeading),
+            cardinal: cardinalDirection,
+        });
+    };
+
+    const requestPermission = async () => {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            try {
+                const response = await DeviceOrientationEvent.requestPermission();
+                setPermission(response);
+
+                if (response === 'granted') {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            } catch (error) {
+                console.error('Error requesting orientation permission:', error);
+                setPermission('error');
+            } else {
+                window.addEventListener('deviceorientation', handleOrientation);
+                setPermission('granted');
+            }
+        };
+
+        useEffect(() => {
+            if (!userPosition || magneticDeclinationRef.current !== 0) return;
+
+            getMagneticDeclination(
+                userPosition.coords.latitude,
+                userPosition.coords.longitude
+            ).then((declination) => {
+                magneticDeclinationRef.current = declination;
+            });
+        }, [userPosition]);
+
+        useEffect(() => {
+            window.addEventListener('deviceorientation', handleOrientation);
+            return () => {
+                window.removeEventListener('deviceorientation', handleOrientation);
+            };
+        }, []);
+
+        return {
+            permission,
+            direction,
+            setDirection,
+            requestPermission,
+            magneticDeclination: magneticDeclinationRef.current,
+            offsetRef,
+        };
+    }
+}
+
+function useGeolocation() {
+    const [position, setPosition] = useState(null);
+    const [permission, setPermission] = useState('prompt');
+    const [error, setError] = useState(null);
+
+    const requestPermission = async () => {
+        if (!navigator.geolocation) {
+            setError('Geolocation is not supported by your browser');
+            return;
+        }
+
+        try {
+            const pos = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0,
+                });
+            });
+            setPosition(pos);
+            setPermission('granted');
+            setError(null);
+        } catch (err) {
+            setPermission('denied');
+            setError('Error getting location');
+            console.error(err);
+        }
+    };
+
+    return { position, permission, error, requestPermission };
+}
+
+function KeyValueItem({ label, value }) {
+    return (
+        <div className="w-full flex flex-row gap-2">
+            <span className="text-gray-400 uppercase">{label}</span>
+            <span>{value}</span>
+        </div>
+    )
+}
+
+function Compass({
+    position,
+    direction,
+    setDirection,
+    hasDeviceOrientationSupport,
+    magneticDeclination,
+    offsetRef,
+}) {
+    function handleDirectionChange(e) {
+        const newDirection = parseFloat(e.currentTarget.value);
+
+        if (isNaN(newDirection) || newDirection < 0 || newDirection > 360) return;
+
+        setDirection({
+            degrees: newDirection,
+            cardinal: getCardinalDirection(newDirection),
+        });
+    }
+
+    function renderNorthOnCompass() {
+        const maxRadius = 140
+        const scaledRadius = maxRadius
+        // North is at 0 degrees, so we only need to calculate relative to current direction
+        const angleInRadians = ((0 - (direction?.degrees || 0)) * Math.PI) / 180
+        const x = scaledRadius * Math.sin(angleInRadians)
+        const y = -scaledRadius * Math.cos(angleInRadians)
+
+        return (
+            <div
+                className="absolute inline-flex flex-col items-center justify-center border-t-4 border-red-500 w-4"
+                style={{
+                    transform: `translate(${x}px, ${y}px) rotate(${angleInRadians * (180 / Math.PI)}deg)`,
+                }}
+            />
+        )
+    }
+
+    function onRecalibrateNorth() {
+        const offset = 360 - (direction?.degrees || 0) + offsetRef.current
+
+        offsetRef.current = offset
+    }
+
+    return (
+        <div className="text-white w-full flex flex-col items-center mt-4">
+            <div className="h-auto my-16 w-[280px] aspect-square relative bg-white/10 flex items-center justify-center rounded-full">
+                <div className="flex flex-col items-center justify-center">
+                    <p className="text-white uppercase text-xs leading-tight">
+                        Your heading and location
+                    </p>
+                    <div className="flex items-center">
+                        <input
+                            readOnly={hasDeviceOrientationSupport}
+                            className="text-center text-5xl bg-transparent inline"
+                            value={direction?.degrees || 0}
+                            onChange={(e) => handleDirectionChange(e)}
+                            style={{
+                                width: `${String(direction?.degrees || 0).length}ch`,
+                            }}
+                        />
+                        <p className="text-5xl text-center">° {direction?.cardinal}</p>
+                    </div>
+                    {position && (
+                        <div className="flex gap-2">
+                            <KeyValueItem
+                                label="Lat"
+                                value={`${position.coords.latitude.toFixed(2)}°`}
+                            />
+                            <KeyValueItem
+                                label="Lon"
+                                value={`${position.coords.longitude.toFixed(2)}°`}
+                            />
+                        </div>
+                    )}
+                    {typeof magneticDeclination === "number" && (
+                        <div className="flex justify-center">
+                            <KeyValueItem
+                                label="Declination"
+                                value={`${magneticDeclination.toFixed(2)}°`}
+                            />
+                        </div>
+                    )}
+                    <button
+                        onClick={onRecalibrateNorth}
+                        className="px-6 py-2 bg-transparent w-full rounded-md cursor-pointer flex items-center justify-center gap-2 text-secondary leading-none text-center"
+                    >
+                        <ArrowRotate className="size-4" strokeWidth={2} />Recalibrate
+                    </button>
+                </div>
+                {renderNorthOnCompass()}
+            </div>
+        </div>
+    )
+}
+
+export default function Main() {
+    const {
+        permission: geolocationPermission,
+        position,
+        requestPermission: requestGeolocationPermission,
+    } = useGeolocation()
+    const {
+        permission: compassPermission,
+        direction,
+        setDirection,
+        hasSupport: hasDeviceOrientationSupport,
+        requestPermission: requestCompassPermission,
+        magneticDeclination,
+        offsetRef,
+    } = useCompass({ userPosition: position })
+
+    async function onRequestPermission() {
+        await requestCompassPermission()
+        await requestGeolocationPermission()
+    }
+
+    return (
+        <div className="not-prose md:pt-8 max-w-screen-sm mx-auto space-y-4">
+            {!hasDeviceOrientationSupport && (
+                <Block className="font-mono" variant="tertiary" caretPosition="left-top">
+                    <p className="!my-0">
+                        <b>Your device does not support the orientation API.</b>
+                        <br />
+                        You can manually input your heading by clicking on the heading
+                        indicator in the centre of the compass.
+                    </p>
+                </Block>
+            )}
+            {compassPermission !== 'granted' ? (
+                <Button
+                    onClick={onRequestPermission}
+                    className="w-full"
+                    variant="tertiary"
+                >
+                    Enable Compass and Location
+                </Button>
+            ) : (
+                <div className="p-4 border-2 border-dark border-dashed font-mono">
+                    <div className="pt-4 pb-4 pl-4 pr-4 md:pt-4 md:pb-12 md:pl-8 md:pr-8 w-full space-y-4 bg-dark">
+                        <Compass
+                            geolocationPermission={geolocationPermission}
+                            position={position}
+                            compassPermission={compassPermission}
+                            direction={direction}
+                            setDirection={setDirection}
+                            hasDeviceOrientationSupport={hasDeviceOrientationSupport}
+                            magneticDeclination={magneticDeclination}
+                            offsetRef={offsetRef}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+```
