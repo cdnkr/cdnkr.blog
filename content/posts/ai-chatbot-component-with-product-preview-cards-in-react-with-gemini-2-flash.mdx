@@ -36,7 +36,7 @@ This tutorial assumes you have a basic understanding of React and have a develop
 ### Getting Your Gemini API Key
 
 1.  Go to: [https://aistudio.google.com/](https://aistudio.google.com/)
-2.  Click on "Get API Key" in the top right corner.
+2.  Click on "Get API Key" in the top left corner.
 3.  Follow the prompts to create a new project and generate an API key.
 
 **Important Security Measure:** After obtaining your API key, it's crucial to restrict its usage to prevent abuse. Follow these steps:
@@ -246,13 +246,13 @@ This component is responsible for rendering the content of a chat message.  It's
 ```javascript
 function MessageContent({ content }) {
     // Split content by product ID pattern
-    const parts = content.split(/(%\{[\d]+\}%)/);
+    const parts = content.split(/(%[\d]+%)/);
 
     return (
         <>
             {parts.map((part, index) => {
                 // Check if this part matches the product ID pattern
-                const match = part.match(/^%\{([\d]+)\}%$/);
+                const match = part.match(/^%([\d]+)%$/);
                 if (match) {
                     // If it's a product ID, render the CardPreview
                     return <CardPreview key={index} productId={match[1]} />;
@@ -348,7 +348,7 @@ ${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
 FAQ Information:
 ${JSON.stringify(SAMPLE_FAQ, null, 2)}
 
-Important: When referring to specific shoes, include the shoe ID in the format %{shoeId}%. For example, if discussing the Nike Air Max 90, include %{1003}% in your response.
+Important: When referring to specific shoes, include the shoe ID in the format %shoeId%. For example, if discussing the Nike Air Max 90, include %1003% in your response.
 
 Please provide helpful, friendly responses about our shoes, sizing, shipping, returns, and any other customer inquiries. If a customer asks about specific shoes, make sure to reference them using the ID format mentioned above.`;
 
@@ -599,7 +599,7 @@ ${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
 FAQ Information:
 ${JSON.stringify(SAMPLE_FAQ, null, 2)}
 
-Important: When referring to specific shoes, include the shoe ID in the format %shoeId%. For example, if discussing the Nike Air Max 90, include %{1003}% in your response.
+Important: When referring to specific shoes, include the shoe ID in the format %shoeId%. For example, if discussing the Nike Air Max 90, include %1003% in your response.
 
 Please provide helpful, friendly responses about our shoes, sizing, shipping, returns, and any other customer inquiries. If a customer asks about specific shoes, make sure to reference them using the ID format mentioned above.`;
 
