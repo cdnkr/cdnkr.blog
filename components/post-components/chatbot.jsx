@@ -197,18 +197,6 @@ export default function Chatbot() {
     const messagesEndRef = useRef(null);
 
     /**
-     * Scrolls the chat container to the latest message
-     */
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    };
-
-    // Auto-scroll when new messages are added
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
-
-    /**
      * Sends a message to the Gemini API and handles the response streaming
      * @param {string} userInput - The message text from the user
      */
