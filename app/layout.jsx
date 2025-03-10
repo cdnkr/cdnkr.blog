@@ -62,11 +62,7 @@ export default function RootLayout({ children }) {
               </a>
             </div>
             <div className="flex lg:hidden items-center gap-4">
-              <span
-                className="uppercase text-xs text-white"
-              >
-                {"////"}
-              </span>
+              <span className="uppercase text-xs text-white">{"////"}</span>
             </div>
             <Me className="block" />
           </div>

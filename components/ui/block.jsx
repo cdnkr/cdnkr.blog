@@ -1,27 +1,36 @@
 import { cn } from "@/utils/cn";
 import { ChevronUp } from "./icons";
 
-export function Block({ children, className, _ref, caretPosition = "top-right", variant = "primary" }) {
-    const variants = {
-        primary: "bg-primary text-dark",
-        secondary: "bg-secondary text-dark",
-        tertiary: "bg-tertiary text-dark",
-        dark: "bg-dark text-white",
-    }
+export function Block({
+  children,
+  className,
+  _ref,
+  caretPosition = "top-right",
+  variant = "primary",
+}) {
+  const variants = {
+    primary: "bg-primary text-dark",
+    secondary: "bg-secondary text-dark",
+    tertiary: "bg-tertiary text-dark",
+    dark: "bg-dark text-white",
+    light: "bg-white text-dark",
+  };
 
-    const caretVariants = {
-        primary: "fill-primary",
-        secondary: "fill-secondary",
-        tertiary: "fill-tertiary",
-        dark: "fill-dark",
-    }
+  const caretVariants = {
+    primary: "fill-primary",
+    secondary: "fill-secondary",
+    tertiary: "fill-tertiary",
+    dark: "fill-dark",
+    light: "fill-white",
+  };
 
-    const hideBorderVariants = {
-        primary: "bg-primary",
-        secondary: "bg-secondary",
-        tertiary: "bg-tertiary",
-        dark: "bg-dark",
-    }
+  const hideBorderVariants = {
+    primary: "bg-primary",
+    secondary: "bg-secondary",
+    tertiary: "bg-tertiary",
+    dark: "bg-dark",
+    light: "bg-white",
+  };
 
   const caretPositionClass = {
     "top-left": "-left-2 -top-[2rem]",
@@ -61,6 +70,5 @@ export function Block({ children, className, _ref, caretPosition = "top-right", 
       />
       {children}
     </div>
-  )
+  );
 }
-

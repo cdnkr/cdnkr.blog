@@ -211,8 +211,8 @@ export const clearPrompt = () => {
   deferredPrompt = null;
 };
 
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeinstallprompt', (e) => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
   });
@@ -260,12 +260,8 @@ export default function PWAInstallButton() {
   };
 
   if (!isInstallable) return null;
-  
-  return (
-    <Button onClick={handleInstallClick}>
-      Install App
-    </Button>
-  );
+
+  return <Button onClick={handleInstallClick}>Install App</Button>;
 }
 ```
 
@@ -333,9 +329,10 @@ Not all browsers support PWA installation in the same way:
 **Chrome, Edge, and other Chromium-based browsers**: Full PWA support with the install prompt
 
 **Safari (iOS and macOS)**: No native install prompt, but users can manually add the site to their home screen:
-  1. Click the share button (box with arrow) in the browser toolbar
-  2. Select "Add to Home Screen"
-  3. Customize the name and click "Add"
+
+1. Click the share button (box with arrow) in the browser toolbar
+2. Select "Add to Home Screen"
+3. Customize the name and click "Add"
 
 **Firefox**: Limited PWA support, varies by platform
 

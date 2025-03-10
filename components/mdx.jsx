@@ -40,9 +40,10 @@ const components = {
   },
   code: ({ children, className }) => {
     // check if this code element is inside a pre element
-    const isInPre = 
-    Array.isArray(children) && children.some(child => child.type === 'span')
-    || (typeof children === 'object' && children?.type === 'span');
+    const isInPre =
+      (Array.isArray(children) &&
+        children.some((child) => child.type === "span")) ||
+      (typeof children === "object" && children?.type === "span");
 
     if (!className && !isInPre) {
       return (
@@ -51,9 +52,7 @@ const components = {
         </code>
       );
     }
-    return (
-      <code className={className}>{children}</code>
-    );
+    return <code className={className}>{children}</code>;
   },
   ...postComponents,
 };

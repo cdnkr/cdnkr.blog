@@ -28,7 +28,7 @@ export default function PWAInstallButton() {
       clearPrompt();
       console.log(`User response to the install prompt: ${outcome}`);
     } catch (error) {
-      console.error('PWA installation failed:', error);
+      console.error("PWA installation failed:", error);
       setIsInstallable(false);
     }
   };
