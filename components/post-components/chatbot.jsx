@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 
 // Sample FAQ data for our demo shoe store
 const SAMPLE_FAQ = [
@@ -141,13 +141,32 @@ const INITIAL_MESSAGES = [
     }
 ];
 
+const DEMO_USER_MESSAGE = [
+    {
+        role: "user",
+        content: "Hey there, I'm looking for some running shoes. Can you help?"
+    }
+];
+
+const DEMO_RESPONSE = [
+    {
+        "role": "assistant",
+        // "content": "Hi there! I can definitely help you find some running shoes.\n\nTo give you the best recommendations, could you tell me a little more about what you're looking for? For example:\n\n*   **What kind of running do you do?** (e.g., everyday runs, trail running, marathons)\n*   **Do you have any preferences for brand, color, or price range?**\n*   **Do you have any specific needs, like extra cushioning or support?**\n\nIn the meantime, I can tell you about some of our popular running shoes:\n\n*   The Adidas Cloudfoam Racer TR21 %100% is a lightweight running shoe with Cloudfoam cushioning, great for everyday runs and gym workouts. It's priced at $79.99.\n*   The ASICS GEL-KAYANO® 28 %100% is designed for a stable and balanced stride, featuring FLYTEFOAM™ Blast cushioning for a springy rebound. These are priced at $160.\n\nOnce I know more about your needs, I can give you some more tailored recommendations!\n "
+        "content": "Hi there! I can definitely help you find some running shoes.\n\nTo give you the best recommendations, could you tell me a little more about what you're looking for?\n\nIn the meantime, I can tell you about some of our popular running shoes:\n\nThe Adidas Cloudfoam Racer TR21 %1001% is a lightweight running shoe with Cloudfoam cushioning, great for everyday runs and gym workouts. It's priced at $79.99.\nThe ASICS GEL-KAYANO® 28 %1007% is designed for a stable and balanced stride, featuring FLYTEFOAM™ Blast cushioning for a springy rebound. These are priced at $160.\n\nOnce I know more about your needs, I can give you some more tailored recommendations!\n "
+    }
+];
+
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // Product ID's returned from the Gemini API response (detailed in prompt) will be replaced with this CardPreview component
 function CardPreview({ productId }) {
     const product = SAMPLE_PRODUCTS.find(p => p.id === productId);
     if (!product) return null;
 
     return (
-        <div className="border-2 cursor-pointer bg-white p-4 mt-2 mb-4 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300">
+        <div className="border-2 cursor-pointer bg-white p-4 mt-4 mb-6 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300">
             <img 
                 src={product.imageUrl}
                 alt={product.name}
@@ -169,13 +188,13 @@ function CardPreview({ productId }) {
 // Uses regex to find product ID's in the Gemini API response and replace them with the product CardPreview component
 function MessageContent({ content }) {
     // Split content by product ID pattern
-    const parts = content.split(/(%\{[\d]+\}%)/);
+    const parts = content.split(/(%[\d]+%)/);
     
     return (
         <>
             {parts.map((part, index) => {
                 // Check if this part matches the product ID pattern
-                const match = part.match(/^%\{([\d]+)\}%$/);
+                const match = part.match(/^%([\d]+)%$/);
                 if (match) {
                     // If it's a product ID, render the CardPreview
                     return <CardPreview key={index} productId={match[1]} />;
@@ -191,7 +210,7 @@ function MessageContent({ content }) {
 export default function Chatbot() {
     // State for managing chat messages, user input, and loading state
     const [messages, setMessages] = useState(INITIAL_MESSAGES);
-    const [input, setInput] = useState("");
+    const [input, setInput] = useState(DEMO_USER_MESSAGE[0].content);
     const [isLoading, setIsLoading] = useState(false);
     // Ref for auto-scrolling to the latest message
     const messagesEndRef = useRef(null);
@@ -223,7 +242,7 @@ ${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
 FAQ Information:
 ${JSON.stringify(SAMPLE_FAQ, null, 2)}
 
-Important: When referring to specific shoes, include the shoe ID in the format %{shoeId}%. For example, if discussing the Nike Air Max 90, include %{1003}% in your response.
+Important: When referring to specific shoes, include the shoe ID in the format %{shoeI%. For example, if discussing the Nike Air Max 90, include %{100% in your response.
 
 Please provide helpful, friendly responses about our shoes, sizing, shipping, returns, and any other customer inquiries. If a customer asks about specific shoes, make sure to reference them using the ID format mentioned above.`;
 
@@ -292,6 +311,53 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
         }
     }
 
+    async function sendMessage__Demo(userInput) {
+        // Don't process empty messages
+        if (!userInput.trim()) return;
+    
+        // Add user's message to the chat
+        setMessages(prev => [...prev, { role: "user", content: userInput }]);
+        setInput(""); // Clear input field
+        setIsLoading(true); // Show loading state
+        await delay(800);
+    
+        try {
+            // Get the demo response text
+            const text = DEMO_RESPONSE[0].content;
+    
+            // Store the index where we'll insert the assistant's message
+            const messageIndex = messages.length;
+            setMessages(prev => [...prev, { role: "assistant", content: "" }]);
+    
+            // Simulate streaming by splitting response into words
+            const chunks = text.split(" ");
+            let currentContent = "";
+    
+            // Add each word with a delay to create a typing effect
+            for (let i = 0; i < chunks.length; i++) {
+                currentContent += chunks[i] + " ";
+                setMessages(prev => {
+                    const newMessages = [...prev];
+                    newMessages[messageIndex + 1] = { 
+                        role: "assistant", 
+                        content: currentContent 
+                    };
+                    return newMessages;
+                });
+                // Add a small delay between words
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            setMessages(prev => [...prev, {
+                role: "assistant",
+                content: "Sorry, I encountered an error. Please try again."
+            }]);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
         <div className="p-4 not-prose">
             <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2">
@@ -299,7 +365,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {messages.map((message, index) => (
                         <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                            <div className={`max-w-[80%] p-3 ${
+                            <div className={`max-w-[80%] p-3 whitespace-pre-line ${
                                 message.role === "user"
                                     ? "bg-black text-white"
                                     : "bg-gray-100 text-gray-800"
@@ -321,7 +387,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                 <div className="border-t-2 p-4">
                     <form onSubmit={(e) => {
                         e.preventDefault();
-                        sendMessage(input);
+                        sendMessage__Demo(input);
                     }} className="flex gap-2">
                         <input
                             type="text"
@@ -330,11 +396,14 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                             placeholder="Ask about our shoes..."
                             className="flex-1 p-2 border-2"
                             disabled={isLoading}
+                            // For demo purposes, disable the input field
+                            // don't need my Google API bill running through the roof
+                            readOnly
                         />
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="px-4 py-2 cursor-pointer bg-black text-white hover:bg-black/90 disabled:bg-black/50"
+                            className="px-4 py-2 cursor-pointer bg-black text-white hover:bg-black/90 disabled:bg-black/50 font-mono uppercase"
                         >
                             Send
                         </button>
