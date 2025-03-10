@@ -7,7 +7,7 @@ export async function getAllPosts() {
     const postsDirectory = path.join(process.cwd(), "content/posts");
     const files = fs.readdirSync(postsDirectory);
 
-    const posts = files.map((fileName) => {
+    let posts = files.map((fileName) => {
       const filePath = path.join(postsDirectory, fileName);
       const fileContent = fs.readFileSync(filePath, "utf8");
 
@@ -26,6 +26,8 @@ export async function getAllPosts() {
         sectionTitles,
       };
     });
+
+    posts = posts.filter((post) => !post.frontmatter?.archived);
 
     posts.forEach((post, index) => {
       post.previous = posts[index - 1];
