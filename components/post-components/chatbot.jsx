@@ -427,7 +427,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
   }
 
   return (
-    <div className="not-prose">
+    <div className="not-prose py-4">
       <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
         {/* Add ref to the messages container instead of using end element */}
         <div
@@ -440,7 +440,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[80%] p-3 whitespace-pre-line ${
+                className={`max-w-[95%] lg:max-w-[80%] p-3 whitespace-pre-line ${
                   message.role === "user"
                     ? "bg-black text-white"
                     : "bg-gray-100 text-gray-800"
