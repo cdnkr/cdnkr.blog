@@ -95,7 +95,7 @@ export default function PostSectionNav({ sectionTitles, className }) {
   return (
     <div className={cn("w-full", className)}>
       <div className="flex flex-col gap-2">
-        {sectionTitles.map((title, i) => (
+        {sectionTitles.filter(title => !title.includes("<Block")).map((title, i) => (
           <span
             onClick={() => onSectionClick(title)}
             key={i}
@@ -105,7 +105,7 @@ export default function PostSectionNav({ sectionTitles, className }) {
                 "text-dark font-bold",
             )}
           >
-            {title.replace(/#/g, "")}
+            {title?.replace(/#|(\*\*)|`/g, "")?.split(":")?.[0]}
           </span>
         ))}
       </div>
