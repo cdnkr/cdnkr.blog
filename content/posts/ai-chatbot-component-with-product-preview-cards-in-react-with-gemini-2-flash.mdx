@@ -288,7 +288,7 @@ This is the main component that orchestrates the chatbot functionality.
     *   `input`: The text currently entered in the input field.
     *   `isLoading`: A boolean indicating whether the chatbot is currently processing a request.
 *   **Refs:**
-    *   `messagesEndRef`: A ref used to scroll the chat container to the bottom when new messages are added.
+    *   `messagesContainerRef`: A ref used to scroll the chat container to the bottom when new messages are added.
     *   **`useEffect` Hook:** This hook is used to automatically scroll the chat container to the bottom whenever the `messages` state changes.
     *   **`sendMessage` Function:** This is the core function that sends the user's message to the Gemini API and handles the response.
 
@@ -303,14 +303,20 @@ export default function Chatbot() {
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     // Ref for auto-scrolling to the latest message
-    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
 
     /**
-     * Scrolls the chat container to the latest message
+     * Scrolls the messages container to the bottom
      */
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scroll({
+                top: messagesContainerRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
     };
+    
 
     // Auto-scroll when new messages are added
     useEffect(() => {
@@ -417,7 +423,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
         <div className="p-4">
             <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2">
                 {/* Chat messages container */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
                     {messages.map((message, index) => (
                         <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                             <div className={`max-w-[80%] p-3 ${
@@ -434,8 +440,6 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                             </div>
                         </div>
                     ))}
-                    {/* Invisible element for auto-scrolling */}
-                    <div ref={messagesEndRef} />
                 </div>
 
                 {/* Chat input form */}
@@ -684,8 +688,20 @@ export default function Chatbot() {
     const [input, setInput] = useState(DEMO_USER_MESSAGE[0].content);
     const [isLoading, setIsLoading] = useState(false);
     // Ref for auto-scrolling to the latest message
-    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
 
+    /**
+     * Scrolls the messages container to the bottom
+     */
+    const scrollToBottom = () => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scroll({
+                top: messagesContainerRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    };
+    
     /**
      * Sends a message to the Gemini API and handles the response streaming
      * @param {string} userInput - The message text from the user
@@ -785,7 +801,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     return (
         <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2">
             {/* Chat messages container */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((message, index) => (
                     <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
                         <div className={`max-w-[80%] p-3 whitespace-pre-line ${
@@ -802,8 +818,6 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                         </div>
                     </div>
                 ))}
-                {/* Invisible element for auto-scrolling */}
-                <div ref={messagesEndRef} />
             </div>
 
             {/* Chat input form */}

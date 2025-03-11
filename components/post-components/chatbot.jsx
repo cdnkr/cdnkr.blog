@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Sample FAQ data for our demo shoe store
 const SAMPLE_FAQ = [
@@ -167,7 +167,7 @@ function CardPreview({ productId }) {
 
     return (
         <div className="border-2 cursor-pointer bg-white p-4 mt-4 mb-6 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300">
-            <img 
+            <img
                 src={product.imageUrl}
                 alt={product.name}
                 className="w-24 h-24 object-cover hidden lg:block"
@@ -189,7 +189,7 @@ function CardPreview({ productId }) {
 function MessageContent({ content }) {
     // Split content by product ID pattern
     const parts = content.split(/(%[\d]+%)/);
-    
+
     return (
         <>
             {parts.map((part, index) => {
@@ -208,12 +208,48 @@ function MessageContent({ content }) {
 
 // Main component for the chatbot
 export default function Chatbot() {
-    // State for managing chat messages, user input, and loading state
     const [messages, setMessages] = useState(INITIAL_MESSAGES);
     const [input, setInput] = useState(DEMO_USER_MESSAGE[0].content);
     const [isLoading, setIsLoading] = useState(false);
-    // Ref for auto-scrolling to the latest message
-    const messagesEndRef = useRef(null);
+    const messagesContainerRef = useRef(null);
+    const inputRef = useRef();
+    const [hasTriggeredDemo, setHasTriggeredDemo] = useState(false);
+
+    // Add intersection observer effect
+    useEffect(() => {
+        if (!inputRef.current || hasTriggeredDemo) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !hasTriggeredDemo) {
+                    sendMessage__Demo(DEMO_USER_MESSAGE[0].content);
+                    setHasTriggeredDemo(true);
+                }
+            },
+            { threshold: 0.75 } // Trigger when 50% of the element is visible
+        );
+
+        observer.observe(inputRef.current);
+
+        return () => observer.disconnect();
+    }, [hasTriggeredDemo]); // Only re-run if hasTriggeredDemo changes
+
+    /**
+     * Scrolls the messages container to the bottom
+     */
+    const scrollToBottom = () => {
+        if (messagesContainerRef.current) {
+            messagesContainerRef.current.scroll({
+                top: messagesContainerRef.current.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    // Auto-scroll when new messages are added
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     /**
      * Sends a message to the Gemini API and handles the response streaming
@@ -288,9 +324,9 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                 currentContent += chunks[i] + " ";
                 setMessages(prev => {
                     const newMessages = [...prev];
-                    newMessages[messageIndex + 1] = { 
-                        role: "assistant", 
-                        content: currentContent 
+                    newMessages[messageIndex + 1] = {
+                        role: "assistant",
+                        content: currentContent
                     };
                     return newMessages;
                 });
@@ -314,33 +350,33 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     async function sendMessage__Demo(userInput) {
         // Don't process empty messages
         if (!userInput.trim()) return;
-    
+
         // Add user's message to the chat
         setMessages(prev => [...prev, { role: "user", content: userInput }]);
         setInput(""); // Clear input field
         setIsLoading(true); // Show loading state
         await delay(800);
-    
+
         try {
             // Get the demo response text
             const text = DEMO_RESPONSE[0].content;
-    
+
             // Store the index where we'll insert the assistant's message
             const messageIndex = messages.length;
             setMessages(prev => [...prev, { role: "assistant", content: "" }]);
-    
+
             // Simulate streaming by splitting response into words
             const chunks = text.split(" ");
             let currentContent = "";
-    
+
             // Add each word with a delay to create a typing effect
             for (let i = 0; i < chunks.length; i++) {
                 currentContent += chunks[i] + " ";
                 setMessages(prev => {
                     const newMessages = [...prev];
-                    newMessages[messageIndex + 1] = { 
-                        role: "assistant", 
-                        content: currentContent 
+                    newMessages[messageIndex + 1] = {
+                        role: "assistant",
+                        content: currentContent
                     };
                     return newMessages;
                 });
@@ -361,12 +397,11 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     return (
         <div className="p-4 not-prose">
             <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
-                {/* Chat messages container */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {/* Add ref to the messages container instead of using end element */}
+                <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
                     {messages.map((message, index) => (
                         <div key={index} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                            <div className={`max-w-[80%] p-3 whitespace-pre-line ${
-                                message.role === "user"
+                            <div className={`max-w-[80%] p-3 whitespace-pre-line ${message.role === "user"
                                     ? "bg-black text-white"
                                     : "bg-gray-100 text-gray-800"
                                 }`}>
@@ -379,8 +414,6 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                             </div>
                         </div>
                     ))}
-                    {/* Invisible element for auto-scrolling */}
-                    <div ref={messagesEndRef} />
                 </div>
 
                 {/* Chat input form */}
@@ -390,6 +423,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                         sendMessage__Demo(input);
                     }} className="flex gap-2">
                         <input
+                            ref={inputRef}
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
