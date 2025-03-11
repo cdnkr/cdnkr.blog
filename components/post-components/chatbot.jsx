@@ -429,7 +429,11 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
   return (
     <div className="not-prose py-4">
       <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
-        {/* Add ref to the messages container instead of using end element */}
+        <div className="w-full border-b-2 p-4 bg-dark text-white">
+          <p className="font-bold font-mono uppercase">
+            Find-a-Shoe
+          </p>
+        </div>
         <div
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto p-4 space-y-4"
@@ -458,7 +462,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
         </div>
 
         {/* Chat input form */}
-        <div className="border-t-2 p-4">
+        <div className="border-t-2 p-4 bg-dark text-white">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -472,7 +476,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about our shoes..."
-              className="flex-1 p-2 border-2"
+              className="flex-1 p-2 border-2 bg-white text-dark"
               disabled={isLoading}
               // For demo purposes, disable the input field
               // don't need my Google API bill running through the roof
@@ -481,7 +485,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 cursor-pointer bg-black text-white hover:bg-black/90 disabled:bg-black/50 font-mono uppercase"
+              className="px-4 py-2 cursor-pointer bg-tertiary text-white hover:bg-tertiary/90 disabled:bg-tertiary/80 font-mono uppercase"
             >
               Send
             </button>
