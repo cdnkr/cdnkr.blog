@@ -7,6 +7,7 @@ export function Block({
   _ref,
   caretPosition = "top-right",
   variant = "primary",
+  showCaret = true,
 }) {
   const variants = {
     primary: "bg-primary text-dark",
@@ -53,21 +54,25 @@ export function Block({
         className,
       )}
     >
-      <ChevronUp
-        strokeWidth={1}
-        className={cn(
-          "absolute stroke-dark size-12",
-          caretVariants[variant],
-          caretPositionClass,
-        )}
-      />
-      <div
-        className={cn(
-          "absolute w-7",
-          hideBorderVariants[variant],
-          hideBorderClass,
-        )}
-      />
+      {showCaret && (
+        <>
+          <ChevronUp
+            strokeWidth={1}
+            className={cn(
+              "absolute stroke-dark size-12",
+              caretVariants[variant],
+              caretPositionClass,
+            )}
+          />
+          <div
+            className={cn(
+              "absolute w-7",
+              hideBorderVariants[variant],
+              hideBorderClass,
+            )}
+          />
+        </>
+      )}
       {children}
     </div>
   );
