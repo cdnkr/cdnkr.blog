@@ -360,7 +360,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
 
     return (
         <div className="p-4 not-prose">
-            <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2">
+            <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
                 {/* Chat messages container */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
                     {messages.map((message, index) => (
