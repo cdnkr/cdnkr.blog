@@ -60,7 +60,7 @@ export default function Post({ post }) {
         <div className="w-full flex flex-col-reverse lg:flex-row justify-between gap-4 lg:gap-8 mt-8">
           {post?.previous ? (
             <Link href={post.previous?.slug}>
-              <Button className="gap-3 w-full lg:w-auto">
+              <Button className="gap-3 w-full lg:w-auto lg:max-w-60">
                 <ArrowLeft className="shrink-0" />
                 <span className="truncate">
                   {post.previous?.frontmatter?.title}
@@ -72,7 +72,7 @@ export default function Post({ post }) {
           )}
           {post?.next && (
             <Link href={post.next?.slug}>
-              <Button className="gap-3 w-full lg:w-auto">
+              <Button className="gap-3 w-full lg:w-auto lg:max-w-60">
                 <span className="truncate">
                   {post.next?.frontmatter?.title}
                 </span>
