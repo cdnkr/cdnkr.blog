@@ -58,6 +58,7 @@ export default function Button({
   onClick,
   className,
   variant = "primary",
+  ...rest
 }) {
   const variants = {
     primary:
@@ -76,6 +77,7 @@ export default function Button({
         variants[variant],
         className,
       )}
+      {...rest}
     >
       {children}
     </button>
