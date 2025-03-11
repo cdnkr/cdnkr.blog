@@ -1,5 +1,6 @@
 import CopyButton from "@/components/copybutton";
 import postComponents from "@/components/post-components";
+import { cn } from "@/utils/cn";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 
@@ -72,7 +73,18 @@ const prettyCodeOptions = {
 
 export default function MDX({ source }) {
   return (
-    <div className="prose prose-headings:text-dark prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-a:hover:text-tertiary/80 prose-a:font-bold prose-pre:rounded-none prose-pre:my-0">
+    <div className={
+      cn(
+        "prose prose:max-w-full prose:break-words prose-headings:text-dark",
+        "prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark",
+        "prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary",
+        "prose-a:hover:text-tertiary/80 prose-a:font-bold prose-pre:rounded-none prose-pre:my-0",
+        "prose-ul:[padding-inline-start:1.2rem]",
+        "prose-ol:[padding-inline-start:1.2rem]",
+        "prose-li:[padding-inline-start:0]",
+        "prose-ul:[list-style-type:square]"
+      )
+    }>
       <MDXRemote
         source={source}
         components={components}
