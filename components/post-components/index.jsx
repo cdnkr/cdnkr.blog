@@ -11,7 +11,7 @@ const postComponents = {
   QRCodeGenerator: QRCodeGenerator,
   Compass: Compass,
   Chatbot: Chatbot,
-  Block: Block
+  Block: Block,
 };
 
 export default postComponents;

@@ -73,8 +73,8 @@ const prettyCodeOptions = {
 
 export default function MDX({ source }) {
   return (
-    <div className={
-      cn(
+    <div
+      className={cn(
         "prose prose:max-w-full prose:break-words prose-headings:text-dark",
         "prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark",
         "prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary",
@@ -82,9 +82,9 @@ export default function MDX({ source }) {
         "prose-ul:[padding-inline-start:1.2rem]",
         "prose-ol:[padding-inline-start:1.2rem]",
         "prose-li:[padding-inline-start:0]",
-        "prose-ul:[list-style-type:square]"
-      )
-    }>
+        "prose-ul:[list-style-type:square]",
+      )}
+    >
       <MDXRemote
         source={source}
         components={components}
