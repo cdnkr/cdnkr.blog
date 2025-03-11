@@ -23,8 +23,7 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage() {
-  const posts = await getAllPosts();
-  const tags = await getTags(posts);
+  const [posts, tags] = await Promise.all([getAllPosts(), getTags()]);
 
   return <Home posts={posts} tags={tags} />;
 }
