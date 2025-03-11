@@ -7,13 +7,12 @@ tags: [AI, Chatbot, React, Gemini, Gemini Flash]
 slug: ai-chatbot-component-with-product-preview-cards-in-react-with-gemini-2-flash
 ---
 
-#### PLEASE NOTE:
-This is not the recommended implementation, as it exposes environment keys client side. While this tutorial details how to restrict your API key to only your site, the Next.js implementation is favored as API keys are never exposed to the client. See [THIS EXAMPLE](/post/ai-chatbot-component-with-product-preview-cards-in-next-with-gemini-2-flash) for the full Next.js approach. 
-
----
-
 I've been experimenting with Google's Gemini 2.0 Flash model, and I have to say—it's seriously impressive. It’s blazing fast, cost-effective, and comes with massive context windows. So, I put together a quick tutorial on how to use it in a simple chatbot. I also dive into tokenization to swap out response IDs with preview cards, which looks pretty damn cool.
 
+<Block className="not-prose text-tertiary mt-6" variant="dark" caretPosition="top-left">
+    <h3 className="text-xl uppercase font-bold">Please note</h3>
+    <p>This is not the recommended implementation, as it exposes environment keys client side.<br />While this tutorial details how to restrict your API key to only your site, the Next.js implementation is favored as API keys are never exposed to the client. See <a href="/post/ai-chatbot-component-with-product-preview-cards-in-next-with-gemini-2-flash" className="uppercase underline font-bold">this example</a> for the full Next.js approach.</p>
+</Block>
 ---
 
 ### Here's what we'll build:
