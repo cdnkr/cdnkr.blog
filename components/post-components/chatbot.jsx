@@ -170,7 +170,7 @@ function CardPreview({ productId }) {
             <img 
                 src={product.imageUrl}
                 alt={product.name}
-                className="w-24 h-24 object-cover"
+                className="w-24 h-24 object-cover hidden lg:block"
             />
             <div className="flex-1">
                 <h3 className="font-bold">{product.name}</h3>
