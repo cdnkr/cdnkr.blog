@@ -73,7 +73,7 @@ export default function Button({
     <button
       onClick={onClick}
       className={cn(
-        "font-mono max-h-[52px] max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
+        "font-mono max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
         variants[variant],
         className,
       )}

@@ -375,10 +375,10 @@ export default function Main() {
         // Request permission to use compass and location
         <Button
           onClick={onRequestPermission}
-          className="w-full"
+          className="w-full px-2"
           variant="tertiary"
         >
-          Enable Compass and Location
+          Enable Compass & Location
         </Button>
       ) : (
         <div className="p-4 border-2 border-dark border-dashed font-mono">
