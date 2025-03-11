@@ -395,7 +395,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     }
 
     return (
-        <div className="p-4 not-prose">
+        <div className="not-prose">
             <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
                 {/* Add ref to the messages container instead of using end element */}
                 <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -421,7 +421,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         sendMessage__Demo(input);
-                    }} className="flex gap-2">
+                    }} className="flex flex-col sm:flex-row gap-2">
                         <input
                             ref={inputRef}
                             type="text"
