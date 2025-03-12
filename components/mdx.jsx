@@ -2,6 +2,7 @@ import CopyButton from "@/components/copybutton";
 import postComponents from "@/components/post-components";
 import { cn } from "@/utils/cn";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import Link from "next/link";
 import rehypePrettyCode from "rehype-pretty-code";
 
 const components = {
@@ -64,6 +65,15 @@ const components = {
         className={cn(className, "border-2 border-dark max-w-full lg:max-w-md mx-auto text-center")}
       />
     );
+  },
+  a: ({ href, children }) => {
+    const isExternal = href.startsWith("http");
+
+    if (isExternal) {
+      return <a href={href} className="text-tertiary" target="_blank" rel="noopener noreferrer">{children}</a>;
+    }
+
+    return <Link href={href} className="text-tertiary">{children}</Link>;
   },
   ...postComponents,
 };
