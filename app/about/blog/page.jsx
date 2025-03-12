@@ -15,10 +15,10 @@ export async function generateMetadata() {
   return {
     title: post.frontmatter.title,
     keywords: config.keywords,
-    description: config.description,
+    description: post.frontmatter.description,
     openGraph: {
       title: post.frontmatter.title,
-      description: config.description,
+      description: post.frontmatter.description,
       images: [
         {
           url: `${config.url}/${config.image}`,
