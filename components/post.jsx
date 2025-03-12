@@ -36,7 +36,7 @@ export default function Post({ post, layout = "default" }) {
               ))}
             </div>
           )}
-          {frontmatter?.description && (
+          {frontmatter?.description && (layout !== "full") && (
             <p>{frontmatter.description}</p>
           )}
           {frontmatter?.date && (
