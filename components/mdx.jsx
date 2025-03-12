@@ -55,6 +55,16 @@ const components = {
     }
     return <code className={className}>{children}</code>;
   },
+  img: ({ src, alt, className }) => {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className={cn(className, "border-2 border-dark max-w-full lg:max-w-md mx-auto text-center")}
+      />
+    );
+  },
   ...postComponents,
 };
 
@@ -71,11 +81,11 @@ const prettyCodeOptions = {
   keepBackground: true,
 };
 
-export default function MDX({ source }) {
+export default function MDX({ source, layout }) {
   return (
     <div
       className={cn(
-        "prose prose:max-w-full prose:break-words prose-headings:text-dark",
+        "prose max-w-full lg:max-w-[65ch] break-words prose-headings:text-dark",
         "prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark",
         "prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary",
         "prose-a:hover:text-tertiary/80 prose-a:font-bold prose-pre:rounded-none prose-pre:my-0",

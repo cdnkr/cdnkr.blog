@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-export async function getAllPosts() {
+export async function getAllPosts(directory = "posts") {
   try {
-    const postsDirectory = path.join(process.cwd(), "content/posts");
+    const postsDirectory = path.join(process.cwd(), `content/${directory}`);
     const files = fs.readdirSync(postsDirectory);
 
     let posts = files.map((fileName) => {
@@ -64,4 +64,9 @@ export async function getTags(posts) {
   const tags = [...new Set(allTags)];
 
   return tags;
+}
+
+export async function getAboutPost() {
+  const posts = await getAllPosts("about");
+  return posts?.[0];
 }
