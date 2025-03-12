@@ -23,7 +23,7 @@ Most of the interesting components and learnings I’ve had come from React and 
 
 This had me wrestling with [Babel](https://babeljs.io/) for hours. I eventually got it working, but it was finicky as hell. _Could I have just used Next.js from the start?_ Yeah… good question. I guess I just wanted to see if I could do it.  
 
-After an *eight-hour* battle with [Babel](https://babeljs.io/) (which refused to render any [MDX](https://mdxjs.com/) content properly for reasons unknown), I scrapped the whole project. Instead, I switched to Next.js 15’s App Router with a static export. At work, the main Next.js site I work on uses a standalone server, so static output was not something I used very often, but it turned out to be exactly what I needed.  
+After an *eight-hour* battle with [Babel](https://babeljs.io/) (which refused to render any [MDX](https://mdxjs.com/) content properly for reasons unknown), I scrapped the whole project. Instead, I switched to [Next.js 15’s](https://nextjs.org/docs/app) App Router with a [static export](https://nextjs.org/docs/app/building-your-application/deploying/static-exports). At work, the main Next.js site I work on uses a [standalone server](https://nextjs.org/docs/14/app/api-reference/next-config-js/output), so static output was not something I used very often, but it turned out to be exactly what I needed.  
 
 Then I wanted to embed React components inside markdown files, so I used [`mdx-remote`](https://www.npmjs.com/package/next-mdx-remote/v/0.5.1)—only to later discover that Next.js has built-in [MDX](https://mdxjs.com/) support. At that point, it was too late (or I was too lazy) to switch. Whatever… it worked.  
 
