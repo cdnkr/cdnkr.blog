@@ -88,20 +88,19 @@ export async function getAllPosts(directory = "posts") {
       const { data: frontmatter, content } = matter(fileContent);
       const slug = fileName.replace(/\.mdx$/, "");
 
-      const sectionTitles = content
-        .split("***")
+      const sections = content.split("***");
+
+      const sectionTitles = sections
         .map((section) => section.trim().split("\n")[0]);
 
       return {
         slug,
         frontmatter,
         content,
-        sections: content.split("***"),
+        sections,
         sectionTitles,
       };
     });
-
-    posts = posts.filter((post) => !post.frontmatter?.archived);
 
     // sort posts by date
     const sortedPosts = posts.sort((a, b) => {
