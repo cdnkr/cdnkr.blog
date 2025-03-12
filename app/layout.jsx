@@ -8,7 +8,6 @@ import {
 import "./globals.css";
 
 import Header from "@/components/header";
-import Me from "@/components/me";
 
 import "@/utils/pwa-handler";
 import Link from "next/link";
@@ -46,27 +45,33 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#111111" />
       </head>
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
-        <div className="w-full py-4 bg-dark flex justify-center font-mono text-gray-200 text-xs uppercase">
-          <div className="w-full max-w-[1260px] flex justify-end lg:justify-between flex-wrap py-0 px-6 lg:px-8 gap-4">
-            <div className="hidden lg:flex items-center gap-4">
+        <div className="w-full py-3 bg-dark flex justify-center text-white text-xs uppercase">
+          <div className="w-full max-w-[1260px] flex justify-between flex-wrap py-0 px-6 lg:px-8 gap-4">
+            <div className="flex items-center gap-4">
               <a
                 href="https://github.com/cdnkr"
                 className="hover:text-tertiary transition-all duration-300"
               >
-                github.com/cdnkr
+                github
               </a>
               <a
                 href="https://linkedin.com/in/cdnkr"
-                className="hidden lg:block hover:text-tertiary transition-all duration-300"
+                className="block hover:text-tertiary transition-all duration-300"
               >
-                linkedin.com/in/cdnkr
+                linkedin
+              </a>
+              <a
+                href="https://x.com/chaddanker"
+                className="block hover:text-tertiary transition-all duration-300"
+              >
+                x
               </a>
             </div>
             <div className="flex items-center gap-4">
               <Link href="/about/blog" className="hover:text-tertiary transition-all duration-300">
-                  About_This_Blog
+                About This Blog
               </Link>
-              <Me className="block" />
+              {/* <Me className="block" /> */}
             </div>
           </div>
         </div>
@@ -74,9 +79,9 @@ export default function RootLayout({ children }) {
           <Header className="z-[1]" />
           {children}
         </div>
-        <div className="absolute bottom-0 w-full py-2 bg-dark flex justify-center font-mono text-gray-200 text-xs uppercase">
+        <div className="absolute bottom-0 w-full py-2 bg-dark flex justify-center text-white text-xs uppercase">
           <div className="w-full max-w-[1260px] flex justify-start items-center flex-wrap py-0 px-6 lg:px-8 gap-4">
-              © {new Date().getFullYear()} cdnkr
+            © {new Date().getFullYear()} cdnkr
           </div>
         </div>
       </body>

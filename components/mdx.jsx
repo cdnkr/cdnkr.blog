@@ -56,14 +56,20 @@ const components = {
     }
     return <code className={className}>{children}</code>;
   },
-  img: ({ src, alt, className }) => {
+  img: ({ src, alt, className, caption }) => {
     return (
-      <img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        className={cn(className, "border-2 border-dark max-w-full lg:max-w-md mx-auto text-center")}
-      />
+      <div>
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={cn(className, "border-2 border-dark max-w-full lg:max-w-md mx-auto text-center")}
+        />
+        {caption && (
+          <p className="text-sm text-gray-600 italic font-mono mt-2">{caption}</p>
+        )}
+      </div>
+
     );
   },
   a: ({ href, children }) => {
