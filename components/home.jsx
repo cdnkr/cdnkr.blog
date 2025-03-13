@@ -4,8 +4,6 @@ import { useState } from "react";
 import PostList from "./postlist";
 import TagSelection from "./tagselection";
 import Input from "./ui/input";
-import Masonry from "./masonry";
-import PostCard from "./postcard";
 
 export default function Home({ posts, tags }) {
   const [search, setSearch] = useState("");
@@ -19,18 +17,10 @@ export default function Home({ posts, tags }) {
   });
 
   return (
-    <div className="w-full flex flex-col gap-12 pb-12 pt-8">
+    <div className="w-full flex flex-col gap-12 pb-12 pt-10">
       <div className="w-full flex flex-col-reverse lg:flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
-        <div className="w-full gap-y-8 gap-x-4 lg:col-span-8">
-          <Masonry
-            className="not-prose"
-            items={filteredPosts}
-            renderItem={(post) => (
-              <PostCard post={post} key={post.slug} />
-            )}
-            columnWidth={300}
-            gap={24}
-          />
+        <div className="w-full flex flex-col gap-y-8 gap-x-4 lg:col-span-8">
+          <PostList posts={filteredPosts} />
         </div>
         <div className="hidden lg:flex lg:col-span-4 flex-col gap-8">
           <Filters

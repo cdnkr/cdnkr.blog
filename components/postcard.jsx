@@ -12,7 +12,7 @@ export default function PostCard({ post, className }) {
         id={encodeURIComponent(frontmatter.title)}
         className={cn(className, "flex flex-row-reverse gap-0 group relative p-0")}
       >
-        <span className="leading-none absolute -top-4 left-0 inline-block bg-background px-3">
+        <span className="leading-none absolute -top-4 left-3 inline-block bg-background px-3">
           {frontmatter.date && (
             <time
               dateTime={frontmatter.date}

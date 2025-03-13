@@ -52,5 +52,6 @@ const patterns = [
 const shuffledPatterns = patterns.sort(() => Math.random() - 0.5);
 
 export const getPattern = (index) => {
-    return shuffledPatterns[index % shuffledPatterns.length];
+    return "pattern-zigzag-md";
+    // return shuffledPatterns[index % shuffledPatterns.length];
 };

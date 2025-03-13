@@ -10,7 +10,7 @@ export default function Post({ post, layout = "default" }) {
   const { frontmatter } = post;
 
   return (
-    <div className="w-full flex flex-col gap-12 pt-6">
+    <div className="w-full flex flex-col gap-12 pt-8">
       <div className="w-full flex flex-col gap-4">
         <div className={cn(
           "relative flex flex-col gap-4 py-8 text-primary bg-secondary/20 -left-4 w-screen lg:left-0 lg:w-full",
@@ -39,7 +39,7 @@ export default function Post({ post, layout = "default" }) {
               layout === "full" ? "lg:col-span-12" : "lg:col-span-8"
             )}>
             <div className="mb-4">
-              {frontmatter?.date && (
+              {frontmatter?.date && layout !== "full" && (
                 <span className={
                   cn(
                     "text-dark leading-none block pb-2",
@@ -65,29 +65,31 @@ export default function Post({ post, layout = "default" }) {
                   ))}
                 </div>
               )}
-              <h3 className={cn(
-                "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
-                layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left mt-6"
-              )}>
-                <span className="text-dark">
-                  {" "}{frontmatter.description}
-                </span>
-              </h3>
+              {layout !== "full" && (
+                <h3 className={cn(
+                  "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
+                  layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left mt-6"
+                )}>
+                  <span className="text-dark">
+                    {" "}{frontmatter.description}
+                  </span>
+                </h3>
+              )}
             </div>
             <div className="flex flex-col gap-8">
               {post.sections.map((section, i) => (
                 <div
                   key={i}
-                id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
-                className={
-                  cn(
-                    "w-full",
-                    layout === "full" ? "flex justify-center" : ""
-                  )}
-              >
-                <MDX source={section} layout={layout} />
-              </div>
-            ))}
+                  id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
+                  className={
+                    cn(
+                      "w-full",
+                      layout === "full" ? "flex justify-center" : ""
+                    )}
+                >
+                  <MDX source={section} layout={layout} />
+                </div>
+              ))}
             </div>
           </article>
           <PostSectionNav
