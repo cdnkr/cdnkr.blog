@@ -487,7 +487,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               type="submit"
               disabled={isLoading}
               variant="primary"
-              className="px-4 uppercase font-mono font-bold bg-secondary border-none shadow-[3px_3px_0_0_rgba(255,255,255,0.3)] active:shadow-[1px_1px_0_0_rgba(255,255,255,0.3)] hover:shadow-[5px_5px_0_0_rgba(255,255,255,0.3)]"
+              className="px-4 uppercase font-mono font-bold bg-primary border-none shadow-[3px_3px_0_0_rgba(255,255,255,0.3)] active:shadow-[1px_1px_0_0_rgba(255,255,255,0.3)] hover:shadow-[5px_5px_0_0_rgba(255,255,255,0.3)]"
             >
               Send
             </Button>

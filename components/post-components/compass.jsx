@@ -375,8 +375,8 @@ export default function Main() {
         // Request permission to use compass and location
         <Button
           onClick={onRequestPermission}
-          className="w-full px-2"
-          variant="primary"
+          className="w-full px-2 "
+          variant="tertiary"
         >
           Enable Compass & Location
         </Button>

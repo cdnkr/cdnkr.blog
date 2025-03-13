@@ -38,8 +38,7 @@ export default function PWAInstallButton() {
       <div className="p-4 border-2 border-dashed border-dark my-8">
         <div className="flex w-full justify-center">
           <Button
-            variant="tertiary"
-            className="max-w-fit uppercase"
+            className="max-w-fit uppercase bg-primary border-none shadow-[3px_3px_0_0_rgba(255,255,255,0.3)] active:shadow-[1px_1px_0_0_rgba(255,255,255,0.3)] hover:shadow-[5px_5px_0_0_rgba(255,255,255,0.3)]"
             onClick={handleInstallClick}
           >
             <Install />

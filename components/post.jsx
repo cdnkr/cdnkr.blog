@@ -10,10 +10,10 @@ export default function Post({ post, layout = "default" }) {
   const { frontmatter } = post;
 
   return (
-    <div className="w-full flex flex-col gap-12">
-      <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-12 pt-6">
+      <div className="w-full flex flex-col gap-4">
         <div className={cn(
-          "relative w-full flex flex-col gap-4 py-8 text-secondary bg-background",
+          "relative flex flex-col gap-4 py-8 text-primary bg-secondary/20 -left-4 w-screen lg:left-0 lg:w-full",
           post.pattern,
           layout === "full" ? "" : ""
         )}>
@@ -30,50 +30,54 @@ export default function Post({ post, layout = "default" }) {
               </span>
             </h3>
           </div>
-          {frontmatter?.tags && (
-            <div className="w-full flex max-w-md mx-auto items-center justify-center flex-wrap gap-2">
-              {frontmatter?.tags?.map((tag, i) => (
-                <Tag key={tag + i}>{tag}</Tag>
-              ))}
-            </div>
-          )}
-          {frontmatter?.date && (
-            <span className={
-              cn(
-                "text-dark leading-none inline-block px-3",
-                layout === "full" ? "text-center bg-transparent" : "absolute -top-3 -right-2 bg-dark text-white transform rotate-2 z-1"
-              )
-            }>
-              <time
-                dateTime={frontmatter.date}
-                className="font-gochi-hand text-xl"
-              >
-                {new Date(frontmatter.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </time>
-            </span>
-          )}
+
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
           <article className={
             cn(
-              "w-full flex flex-col gap-8",
+              "w-full",
               layout === "full" ? "lg:col-span-12" : "lg:col-span-8"
             )}>
-            <h3 className={cn(
-              "text-2xl lg:text-4xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
-              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
-            )}>
-              <span className="text-gray-800">
-                {" "}{frontmatter.description}
-              </span>
-            </h3>
-            {post.sections.map((section, i) => (
-              <div
-                key={i}
+            <div className="mb-4">
+              {frontmatter?.date && (
+                <span className={
+                  cn(
+                    "text-dark leading-none inline-block pb-2",
+                    layout === "full" ? "text-center bg-transparent" : "bg-background text-dark z-1"
+                  )
+                }>
+                  <time
+                    dateTime={frontmatter.date}
+                    className="font-gochi-hand text-xl"
+                  >
+                    {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
+                </span>
+              )}
+              {frontmatter?.tags && (
+                <div className="w-full flex mx-auto items-center justify-start flex-wrap gap-2">
+                  {frontmatter?.tags?.map((tag, i) => (
+                    <Tag key={tag + i}>{tag}</Tag>
+                  ))}
+                </div>
+              )}
+              <h3 className={cn(
+                "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold mt-6",
+                layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
+              )}>
+                <span className="text-dark">
+                  {" "}{frontmatter.description}
+                </span>
+              </h3>
+            </div>
+            <div className="flex flex-col gap-8">
+              {post.sections.map((section, i) => (
+                <div
+                  key={i}
                 id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
                 className={
                   cn(
@@ -84,6 +88,7 @@ export default function Post({ post, layout = "default" }) {
                 <MDX source={section} layout={layout} />
               </div>
             ))}
+            </div>
           </article>
           <PostSectionNav
             sectionTitles={post.sectionTitles}
