@@ -93,7 +93,7 @@ export default function Masonry({
       }}
     >
       {getColumnItems().map((column, columnIndex) => (
-        <div key={columnIndex} className="flex flex-col gap-4">
+        <div key={columnIndex} className="flex flex-col" style={{ gap }}>
           {column.map((item, itemIndex) => (
             <div key={itemIndex}>
               {renderItem(item)}

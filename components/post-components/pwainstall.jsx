@@ -38,8 +38,8 @@ export default function PWAInstallButton() {
       <div className="p-4 border-2 border-dashed border-dark my-8">
         <div className="flex w-full justify-center">
           <Button
-            variant="tertiary"
             className="max-w-fit uppercase"
+            variant="tertiary"
             onClick={handleInstallClick}
           >
             <Install />

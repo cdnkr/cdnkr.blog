@@ -375,7 +375,7 @@ export default function Main() {
         // Request permission to use compass and location
         <Button
           onClick={onRequestPermission}
-          className="w-full px-2"
+          className="w-full px-2 "
           variant="tertiary"
         >
           Enable Compass & Location
@@ -454,7 +454,7 @@ export default function Main() {
       {/* Display a message if the device does not support the orientation API */}
       {!hasDeviceOrientationSupport && (
         <Block
-          className="font-mono text-tertiary mt-6"
+          className="font-mono text-primary mt-6"
           variant="dark"
           caretPosition="top-right"
         >

@@ -10,74 +10,87 @@ export default function Post({ post, layout = "default" }) {
   const { frontmatter } = post;
 
   return (
-    <div className="w-full flex flex-col gap-12">
-      <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-12 pt-8">
+      <div className="w-full flex flex-col gap-4">
         <div className={cn(
-          "relative w-full flex flex-col gap-4 bg-dotted py-8",
-          layout === "full" ? "" : "border-b-2 border-dark"
+          "relative flex flex-col gap-4 py-8 text-primary bg-secondary/20 -left-4 w-screen lg:left-0 lg:w-full",
+          post.pattern,
+          layout === "full" ? "" : ""
         )}>
           <div className={cn(
             "w-full flex",
-            layout === "full" ? "justify-center" : "justify-between"
+            layout === "full" ? "justify-center" : "justify-center"
           )}>
             <h3 className={cn(
-              "text-2xl lg:text-4xl max-w-xl text-wrap break-words leading-snug font-libre-franklin",
-              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
+              "text-3xl lg:text-5xl max-w-xl text-wrap break-words leading-snug font-libre-franklin font-bold",
+              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-center"
             )}>
-              <span className="text-white bg-dark px-2 font-bold">
+              <span className={cn("text-white px-2 font-black bg-dark")}>
                 {frontmatter.title}
               </span>
             </h3>
           </div>
-          {frontmatter?.tags && (
-            <div className="w-full flex items-center flex-wrap gap-2">
-              {frontmatter?.tags?.map((tag, i) => (
-                <Tag key={tag + i}>{tag}</Tag>
-              ))}
-            </div>
-          )}
-          {frontmatter?.description && (layout !== "full") && (
-            <p>{frontmatter.description}</p>
-          )}
-          {frontmatter?.date && (
-            <span className={
-              cn(
-                "text-dark leading-none inline-block px-3",
-                layout === "full" ? "text-center bg-transparent" : "absolute -bottom-3 bg-background"
-              )
-            }>
-              <time
-                dateTime={frontmatter.date}
-                className="font-gochi-hand text-xl"
-              >
-                {new Date(frontmatter.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </time>
-            </span>
-          )}
+
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
           <article className={
             cn(
-              "w-full flex flex-col gap-8",
+              "w-full",
               layout === "full" ? "lg:col-span-12" : "lg:col-span-8"
             )}>
-            {post.sections.map((section, i) => (
-              <div
-                key={i}
-                id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
-                className={
+            <div className="mb-4">
+              {frontmatter?.date && layout !== "full" && (
+                <span className={
                   cn(
-                    "w-full",
-                    layout === "full" ? "flex justify-center" : ""
-                  )}
-              >
-                <MDX source={section} layout={layout} />
-              </div>
-            ))}
+                    "text-dark leading-none block pb-2",
+                    layout === "full" ? "text-center bg-transparent" : "bg-background text-dark z-1"
+                  )
+                }>
+                  <time
+                    dateTime={frontmatter.date}
+                    className="font-gochi-hand text-xl"
+                  >
+                    {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
+                </span>
+              )}
+              {frontmatter?.tags && (
+                <div className="w-full flex mx-auto items-center justify-start flex-wrap gap-2">
+                  {frontmatter?.tags?.map((tag, i) => (
+                    <Tag key={tag + i}>{tag}</Tag>
+                  ))}
+                </div>
+              )}
+              {layout !== "full" && (
+                <h3 className={cn(
+                  "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
+                  layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left mt-6"
+                )}>
+                  <span className="text-dark">
+                    {" "}{frontmatter.description}
+                  </span>
+                </h3>
+              )}
+            </div>
+            <div className="flex flex-col gap-8">
+              {post.sections.map((section, i) => (
+                <div
+                  key={i}
+                  id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
+                  className={
+                    cn(
+                      "w-full",
+                      layout === "full" ? "flex justify-center" : ""
+                    )}
+                >
+                  <MDX source={section} layout={layout} />
+                </div>
+              ))}
+            </div>
           </article>
           <PostSectionNav
             sectionTitles={post.sectionTitles}

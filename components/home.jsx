@@ -17,7 +17,7 @@ export default function Home({ posts, tags }) {
   });
 
   return (
-    <div className="w-full flex flex-col gap-12 py-12">
+    <div className="w-full flex flex-col gap-12 pb-12 pt-10">
       <div className="w-full flex flex-col-reverse lg:flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
         <div className="w-full flex flex-col gap-y-8 gap-x-4 lg:col-span-8">
           <PostList posts={filteredPosts} />

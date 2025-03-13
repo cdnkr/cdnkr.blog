@@ -66,7 +66,7 @@ export default function Button({
     secondary:
       "bg-white border-dark text-dark shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
     tertiary:
-      "bg-tertiary border-tertiary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
+      "bg-primary border-primary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
   };
 
   return (
