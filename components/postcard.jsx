@@ -26,7 +26,7 @@ export default function PostCard({ post, className }) {
             </time>
           )}
         </span>
-        <div className={`h-auto w-12 lg:w-44 aspect-square shrink-0 bg-dark text-secondary ${post.pattern}`} />
+        <div className={`h-auto w-12 lg:w-44 aspect-square shrink-0 bg-background text-secondary ${post.pattern}`} />
         <div className="w-full flex flex-col gap-2 p-4">
           <div className="w-full group">
             <h3 className="text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin">
@@ -36,7 +36,9 @@ export default function PostCard({ post, className }) {
           <p>{frontmatter.description}</p>
           <div className="w-full flex items-center flex-wrap gap-2">
             {frontmatter?.tags?.map((tag, i) => (
-              <Tag key={tag + i}>{tag}</Tag>
+              <Tag key={tag + i}>
+                {tag}
+              </Tag>
             ))}
           </div>
         </div>

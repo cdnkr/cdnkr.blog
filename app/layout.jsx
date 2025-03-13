@@ -50,25 +50,25 @@ export default function RootLayout({ children }) {
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/cdnkr"
-                className="hover:text-tertiary transition-all duration-300"
+                className="hover:text-primary transition-all duration-300"
               >
                 github
               </a>
               <a
                 href="https://linkedin.com/in/cdnkr"
-                className="block hover:text-tertiary transition-all duration-300"
+                className="block hover:text-primary transition-all duration-300"
               >
                 linkedin
               </a>
               <a
                 href="https://x.com/chaddanker"
-                className="block hover:text-tertiary transition-all duration-300"
+                className="block hover:text-primary transition-all duration-300"
               >
                 x
               </a>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/about/blog" className="hover:text-tertiary transition-all duration-300">
+              <Link href="/about/blog" className="hover:text-primary transition-all duration-300">
                 About This Blog
               </Link>
               {/* <Me className="block" /> */}

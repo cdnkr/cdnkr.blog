@@ -2,14 +2,14 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary: coral;
-  --color-secondary: #2eabb0;
-  --color-tertiary: #f4442e;
+  --color-primary: #ff384c;
+  --color-secondary: #79b8ff;
+  --color-tertiary: #0d5eba;
   --color-muted: #424242;
   --color-dark: #111111;
   --color-text: #333;
   --color-background: #fafafa;
-  --color-shadow: 244, 68, 46, 0.75;
+  --color-shadow: 255, 56, 76, 0.75;
   --color-pattern: rgba(244, 68, 46, 1);
   --color-pattern-alt: var(--color-background);
   --color-gray-50: #fafafa;
@@ -63,7 +63,7 @@
     var(--dot-color);
 }
 
-/* Patterns */
+/*  */
 
 .pattern-checks-sm {
   background-image: repeating-linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor), repeating-linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor);
