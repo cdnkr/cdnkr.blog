@@ -13,37 +13,35 @@ export default function Post({ post, layout = "default" }) {
     <div className="w-full flex flex-col gap-12">
       <div className="w-full flex flex-col gap-8">
         <div className={cn(
-          "relative w-full flex flex-col gap-4 bg-dotted py-8",
-          layout === "full" ? "" : "border-b-2 border-dark"
+          "relative w-full flex flex-col gap-4 py-8 text-secondary bg-background",
+          post.pattern,
+          layout === "full" ? "" : ""
         )}>
           <div className={cn(
             "w-full flex",
-            layout === "full" ? "justify-center" : "justify-between"
+            layout === "full" ? "justify-center" : "justify-center"
           )}>
             <h3 className={cn(
-              "text-2xl lg:text-4xl max-w-xl text-wrap break-words leading-snug font-libre-franklin",
-              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
+              "text-3xl lg:text-5xl max-w-xl text-wrap break-words leading-snug font-libre-franklin font-bold",
+              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-center"
             )}>
-              <span className="text-white bg-dark px-2 font-bold">
+              <span className={cn("text-white px-2 font-black bg-dark")}>
                 {frontmatter.title}
               </span>
             </h3>
           </div>
           {frontmatter?.tags && (
-            <div className="w-full flex items-center flex-wrap gap-2">
+            <div className="w-full flex max-w-md mx-auto items-center justify-center flex-wrap gap-2">
               {frontmatter?.tags?.map((tag, i) => (
                 <Tag key={tag + i}>{tag}</Tag>
               ))}
             </div>
           )}
-          {frontmatter?.description && (layout !== "full") && (
-            <p>{frontmatter.description}</p>
-          )}
           {frontmatter?.date && (
             <span className={
               cn(
                 "text-dark leading-none inline-block px-3",
-                layout === "full" ? "text-center bg-transparent" : "absolute -bottom-3 bg-background"
+                layout === "full" ? "text-center bg-transparent" : "absolute -top-3 -right-2 bg-dark text-white transform rotate-2 z-1"
               )
             }>
               <time
@@ -65,6 +63,14 @@ export default function Post({ post, layout = "default" }) {
               "w-full flex flex-col gap-8",
               layout === "full" ? "lg:col-span-12" : "lg:col-span-8"
             )}>
+            <h3 className={cn(
+              "text-2xl lg:text-4xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
+              layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
+            )}>
+              <span className="text-gray-800">
+                {" "}{frontmatter.description}
+              </span>
+            </h3>
             {post.sections.map((section, i) => (
               <div
                 key={i}

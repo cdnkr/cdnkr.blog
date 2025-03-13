@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
         <div className="w-full py-3 bg-dark flex justify-center text-white text-xs uppercase">
-          <div className="w-full max-w-[1260px] flex justify-between flex-wrap py-0 px-6 lg:px-8 gap-4">
+          <div className="w-full max-w-[1260px] flex justify-between flex-wrap py-0 px-4 lg:px-8 gap-4">
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/cdnkr"
@@ -75,12 +75,12 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
-        <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
+        <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-4 lg:px-8">
           <Header className="z-[1]" />
           {children}
         </div>
         <div className="absolute bottom-0 w-full py-2 bg-dark flex justify-center text-white text-xs uppercase">
-          <div className="w-full max-w-[1260px] flex justify-start items-center flex-wrap py-0 px-6 lg:px-8 gap-4">
+          <div className="w-full max-w-[1260px] flex justify-start items-center flex-wrap py-0 px-4 lg:px-8 gap-4">
             © {new Date().getFullYear()} cdnkr
           </div>
         </div>

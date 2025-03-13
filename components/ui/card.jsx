@@ -16,8 +16,7 @@ function Card({ children, id, className }) {
     <div
       id={id}
       className={cn(
-        "w-full p-4 border-2 border-dark shadow-[6px_6px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[8px_8px_0_0_rgba(var(--color-shadow))] transition-all duration-300",
-        "bg-dotted",
+        "w-full p-4 border-2 border-dark shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300",
         className,
       )}
     >
