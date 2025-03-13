@@ -42,7 +42,7 @@ export default function Post({ post, layout = "default" }) {
               {frontmatter?.date && (
                 <span className={
                   cn(
-                    "text-dark leading-none inline-block pb-2",
+                    "text-dark leading-none block pb-2",
                     layout === "full" ? "text-center bg-transparent" : "bg-background text-dark z-1"
                   )
                 }>
@@ -66,8 +66,8 @@ export default function Post({ post, layout = "default" }) {
                 </div>
               )}
               <h3 className={cn(
-                "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold mt-6",
-                layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left"
+                "text-2xl lg:text-3xl max-w-5xl mx-auto text-wrap break-words leading-snug font-libre-franklin font-bold",
+                layout === "full" ? "text-center text-3xl lg:text-5xl" : "text-left mt-6"
               )}>
                 <span className="text-dark">
                   {" "}{frontmatter.description}
