@@ -34,7 +34,7 @@ const patterns = [
     "pattern-horizontal-stripes-sm",
     "pattern-horizontal-stripes-md",
     "pattern-horizontal-stripes-lg",
-    "pattern-horizontal-stripes-xl",
+    // "pattern-horizontal-stripes-xl",
     "pattern-diagonal-stripes-sm",
     "pattern-diagonal-stripes-md",
     "pattern-diagonal-stripes-lg",
