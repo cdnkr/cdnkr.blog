@@ -50,19 +50,19 @@ export default function RootLayout({ children }) {
             <div className="flex items-center gap-4">
               <a
                 href="https://github.com/cdnkr"
-                className="hover:underline hover:decoration-wavy hover:underline-offset-2 transition-all duration-300"
+                className="hover:text-primary"
               >
                 github
               </a>
               <a
                 href="https://linkedin.com/in/cdnkr"
-                className="block hover:underline hover:decoration-wavy hover:underline-offset-2 transition-all duration-300"
+                className="block hover:text-primary"
               >
                 linkedin
               </a>
               <a
                 href="https://x.com/chaddanker"
-                className="block hover:underline hover:decoration-wavy hover:underline-offset-2 transition-all duration-300"
+                className="block hover:text-primary"
               >
                 x
               </a>
@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
                 About This Blog
               </Link>
             </div> */}
-            <ThemeToggle className="block hover:underline hover:decoration-wavy hover:underline-offset-2 transition-all duration-300" />
+            <ThemeToggle className="block hover:text-primary" />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
