@@ -9,6 +9,7 @@ const PostCard = forwardRef(({ post, className, isActive, ...rest }, ref) => {
   return (
     <Link href={`/post/${slug}`}>
       <Card
+        ref={ref}
         id={encodeURIComponent(frontmatter.title)}
         className={cn(className, "group flex flex-col items-center gap-2 group relative text-dark/70 hover:text-primary transition-all duration-300 px-4 lg:px-0 py-24 lg:py-12", isActive && "text-primary lg:text-dark/70", post.pattern)}
         {...rest}
