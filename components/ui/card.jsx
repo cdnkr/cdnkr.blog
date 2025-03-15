@@ -1,10 +1,11 @@
 import { cn } from "@/utils/cn";
 
-function Card_Simple({ children, id, className }) {
+function Card_Simple({ children, id, className, ...rest }) {
   return (
     <div
       id={id}
       className={cn("w-full transition-all duration-300", className)}
+      {...rest}
     >
       {children}
     </div>
@@ -26,4 +27,4 @@ function Card({ children, id, className }) {
   );
 }
 
-export default Card;
+export default Card_Simple;

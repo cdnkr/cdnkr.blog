@@ -103,7 +103,7 @@ export default function MDX({ source, layout }) {
       className={cn(
         "prose max-w-full lg:max-w-[65ch] break-words prose-headings:text-dark",
         "prose-p:text-dark prose-li:text-dark prose-ul:text-dark prose-ol:text-dark",
-        "prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary",
+        "prose-ol:marker:text-dark prose-ul:marker:text-dark prose-a:text-tertiary prose-strong:text-dark",
         "prose-a:hover:text-tertiary/80 prose-a:font-bold prose-pre:rounded-none prose-pre:my-0",
         "prose-ul:[padding-inline-start:1.2rem]",
         "prose-ol:[padding-inline-start:1.2rem]",

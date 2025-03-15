@@ -99,7 +99,7 @@ export function UtilityButton({
     <button
       onClick={onClick}
       className={cn(
-        "font-mono px-2 py-1 text-sm border-2 shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] transition-all duration-300 cursor-pointer",
+        "font-mono px-2 py-1 text-sm border-2 shadow-[3px_3px_0_0_rgba(var(--color-utility-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-utility-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-utility-shadow))] transition-all duration-300 cursor-pointer",
         variants[variant],
         className,
       )}

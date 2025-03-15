@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import getPattern from "./pattern";
 
 export async function getAllPosts(directory = "posts") {
   try {
     const postsDirectory = path.join(process.cwd(), `content/${directory}`);
     const files = fs.readdirSync(postsDirectory);
 
-    let posts = files.map((fileName) => {
+    let posts = files.map((fileName, index) => {
       const filePath = path.join(postsDirectory, fileName);
       const fileContent = fs.readFileSync(filePath, "utf8");
 
@@ -18,12 +19,14 @@ export async function getAllPosts(directory = "posts") {
         .split("---")
         .map((section) => section.trim().split("\n")[0]);
 
+      const pattern = getPattern(index);
       return {
         slug,
         frontmatter,
         content,
         sections: content.split("---"),
         sectionTitles,
+        pattern,
       };
     });
 
@@ -68,5 +71,5 @@ export async function getTags(posts) {
 
 export async function getAboutPost() {
   const posts = await getAllPosts("about");
-  return posts?.[0];
+  return { ...posts?.[0], pattern: getPattern(0) };
 }

@@ -17,12 +17,9 @@ export default function Home({ posts, tags }) {
   });
 
   return (
-    <div className="w-full flex flex-col gap-12 py-12">
-      <div className="w-full flex flex-col-reverse lg:flex-col gap-16 lg:gap-8 lg:grid lg:grid-cols-12 relative">
-        <div className="w-full flex flex-col gap-y-8 gap-x-4 lg:col-span-8">
-          <PostList posts={filteredPosts} />
-        </div>
-        <div className="hidden lg:flex lg:col-span-4 flex-col gap-8">
+    <div className="w-full flex flex-col gap-12 py-8 lg:py-12">
+      <div className="w-full flex flex-col gap-8 lg:gap-16 relative">
+        <div className="flex lg:col-span-4 flex-col gap-8">
           <Filters
             search={search}
             setSearch={setSearch}
@@ -30,6 +27,9 @@ export default function Home({ posts, tags }) {
             tag={tag}
             setTag={setTag}
           />
+        </div>
+        <div className="w-full flex justify-center flex-col gap-y-8 lg:gap-y-16 gap-x-42">
+          <PostList posts={filteredPosts} />
         </div>
       </div>
     </div>
@@ -39,12 +39,7 @@ export default function Home({ posts, tags }) {
 function Filters({ search, setSearch, tags, tag, setTag }) {
   return (
     <>
-      <Input
-        placeholder="Search posts..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <div className="w-full flex flex-wrap gap-2 lg:px-4">
+      <div className="w-full flex justify-center flex-wrap gap-2 lg:px-4">
         <TagSelection tags={tags} selectedTag={tag} setSelectedTag={setTag} />
       </div>
     </>
