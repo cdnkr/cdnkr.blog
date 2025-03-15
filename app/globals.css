@@ -2,11 +2,16 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-primary: #c4a219;
+  --color-primary: #f4442e;
   --color-secondary: #2eabb0;
-  --color-tertiary: #c4a219;
+  --color-tertiary: #f4442e;
   --color-muted: #424242;
   --color-dark: #111111;
+  --color-background: #fafafa;
+  --color-pattern: var(--color-dark);
+  --color-pattern-background: var(--color-background);
+  --color-shadow: 0, 0, 0, 0.75;
+  --color-utility-shadow: 244, 68, 46, 0.75;
   --color-pre-bg: #111;
   --color-text: #333;
   --color-text-alt: #fafafa;
@@ -17,11 +22,6 @@
   --color-button-border: #000;
   --color-button-text: #fff;
   --color-button-tertiary-text: #fff;
-  --color-background: #fafafa;
-  --color-pattern: var(--color-dark);
-  --color-pattern-background: var(--color-background);
-  --color-shadow: 0, 0, 0, 0.65;
-  --color-utility-shadow: 254, 230, 133, 0.95;
   --color-gray-50: #fafafa;
   --color-gray-100: #f5f5f5;
   --color-gray-200: #eeeeee;
@@ -42,7 +42,7 @@
   --color-primary: #fee685;
   --color-secondary: #c4a219;
   --color-tertiary: #fee685;
-  --color-background: #111111;
+  --color-background: #222;
   --color-text: #fafafa;
   --color-text-secondary: #fff;
   --color-dark: #fafafa;
