@@ -3,10 +3,12 @@
 
 @theme {
   --color-primary: #f4442e;
+  --color-primary-rgb: 244, 68, 46;
   --color-secondary: #2eabb0;
   --color-tertiary: #f4442e;
   --color-muted: #424242;
   --color-dark: #111111;
+  --color-dark-rgb: 17, 17, 17;
   --color-background: #fafafa;
   --color-pattern: var(--color-dark);
   --color-pattern-background: var(--color-background);
@@ -40,12 +42,14 @@
 
 .dark {
   --color-primary: #fee685;
+  --color-primary-rgb: 254, 230, 133;
   --color-secondary: #c4a219;
   --color-tertiary: #fee685;
   --color-background: #222;
   --color-text: #fafafa;
   --color-text-secondary: #fff;
   --color-dark: #fafafa;
+  --color-dark-rgb: 250, 250, 250;
   --color-muted: #757575;
   --color-text-title: #fff;
   --color-text-alt: #111;
