@@ -29,7 +29,7 @@ const patterns = [
     "pattern-diagonal-lines-xl",
     "pattern-vertical-stripes-sm",
     "pattern-vertical-stripes-md",
-    "pattern-vertical-stripes-lg",
+    // "pattern-vertical-stripes-lg",
     // "pattern-vertical-stripes-xl",
     "pattern-horizontal-stripes-sm",
     "pattern-horizontal-stripes-md",
