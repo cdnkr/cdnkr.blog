@@ -10,12 +10,23 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
 
   const ref = useRef(null);
   const [isFullyVisible, setIsFullyVisible] = useState(false);
+  const [debug, setDebug] = useState(null);
 
   const isElementFullyVisible = (el) => {
     const rect = el.getBoundingClientRect();
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
     const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
+    setDebug({
+      top: rect.top,
+      left: rect.left,
+      bottom: rect.bottom,
+      right: rect.right,
+      viewportHeight,
+      viewportWidth,
+      scrollY: window.scrollY,
+    })
+    
     return (
       rect.top >= 0 &&
       rect.left >= 0 &&
@@ -48,6 +59,7 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
           <span className="bg-title-text-bg text-text-title">{frontmatter.title}</span>
         </h3>
       </Card>
+      <div className="font-mono text-xs mt-1">{debug?.top?.toFixed()}{" "}{debug?.left?.toFixed()}{" "}{debug?.bottom?.toFixed()}{" "}{debug?.right?.toFixed()}{" "}{debug?.viewportHeight}{" "}{debug?.viewportWidth}{" "}{debug?.scrollY?.toFixed()}{" "}{isFullyVisible ? "true" : "false"}</div>
     </Link>
   );
 };
