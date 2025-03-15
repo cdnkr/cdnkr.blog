@@ -10,6 +10,7 @@ export default function TagSelection({ tags, selectedTag, setSelectedTag }) {
         <Tag
           key={tag + i}
           className={cn(
+            "cursor-pointer",
             "hover:text-primary",
             selectedTag === tag && "text-primary",
           )}
