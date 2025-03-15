@@ -30,7 +30,7 @@ export default function Post({ post, layout = "default" }) {
               "text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin",
               "text-center text-3xl lg:text-5xl"
             )}>
-              <span className="text-white bg-dark uppercase font-bold leading-snug">
+              <span className="text-text-title bg-title-text-bg uppercase font-bold leading-snug">
                 {frontmatter.title}
               </span>
             </h3>
@@ -56,7 +56,7 @@ export default function Post({ post, layout = "default" }) {
               </div>
             ))}
           </article>
-          <div className="flex flex-col gap-6 lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pt-7">
+          <div className="flex flex-col gap-6 lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:pt-1">
             <ShareButton />
             <PostSectionNav
               sectionTitles={post.sectionTitles}

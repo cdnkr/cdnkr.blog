@@ -10,7 +10,7 @@ import "./globals.css";
 import Header from "@/components/header";
 
 import "@/utils/pwa-handler";
-import Link from "next/link";
+import ThemeToggle from "@/components/themetoggle";
 
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono",
@@ -72,6 +72,7 @@ export default function RootLayout({ children }) {
                 About This Blog
               </Link>
             </div> */}
+            <ThemeToggle className="block hover:underline hover:decoration-wavy hover:underline-offset-2 transition-all duration-300" />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">

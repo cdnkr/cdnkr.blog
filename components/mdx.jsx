@@ -33,7 +33,7 @@ const components = {
       <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark my-8">
         <div className="relative">
           <CopyButton text={text} className="absolute right-2 top-2" />
-          <pre className="group p-4 overflow-x-auto text-white bg-dark">
+          <pre className="group p-4 overflow-x-auto text-white bg-pre-bg">
             {children}
           </pre>
         </div>
@@ -49,7 +49,7 @@ const components = {
 
     if (!className && !isInPre) {
       return (
-        <code className="px-0.5 bg-dark/10 relative before:content-[''] after:content-['']">
+        <code className="px-0.5 bg-dark/10 text-text relative before:content-[''] after:content-['']">
           {children}
         </code>
       );

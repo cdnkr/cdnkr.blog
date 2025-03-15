@@ -13,7 +13,7 @@ export function Block({
     primary: "bg-primary text-dark",
     secondary: "bg-secondary text-dark",
     tertiary: "bg-tertiary text-dark",
-    dark: "bg-dark text-white",
+    dark: "bg-[#111] text-white",
     light: "bg-white text-dark",
   };
 
