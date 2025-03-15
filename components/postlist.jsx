@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import PostCard from "./PostCard";
+import PostCard from "./postcard";
 
 export default function PostList({ posts }) {
   const [activeIndex, setActiveIndex] = useState(null);
