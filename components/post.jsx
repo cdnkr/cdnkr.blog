@@ -21,10 +21,10 @@ export default function Post({ post, layout = "default" }) {
       )}
       <div className="w-full flex flex-col gap-8">
         <div className={cn(
-          "relative w-full flex flex-col justify-center min-h-[357px] lg:min-h-[294px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary", post.pattern, layout === "full" ? "lg:py-24" : ""
+          "relative w-full flex flex-col justify-center min-h-[357px] lg:min-h-[360px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary", post.pattern, layout === "full" ? "lg:py-24" : ""
         )}>
           <div className={cn(
-            "w-full flex justify-center"
+            "w-full flex flex-col justify-center items-center"
           )}>
             <h3 className={cn(
               "text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin",
@@ -34,6 +34,18 @@ export default function Post({ post, layout = "default" }) {
                 {frontmatter.title}
               </span>
             </h3>
+            <div className="mt-[3px] w-full flex justify-center">
+              <time
+                dateTime={frontmatter.date}
+                className="font-mono text-xs bg-title-text-bg text-text-title px-2 py-1"
+              >
+                {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
           </div>
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
