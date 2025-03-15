@@ -1,26 +1,31 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/utils/cn";
+import useLocalStorage from "@/hooks/uselocalstorage";
+import { useEffect } from "react";
 
 export default function ThemeToggle({
     className,
 }) {
-  const [mode, setMode] = useState("light");
+  const [theme, setTheme] = useLocalStorage("theme", "light");
 
-  const toggleMode = () => {
-    setMode(mode === "light" ? "dark" : "light");
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
-    if (mode === "light") {
+  useEffect(() => {
+    if (theme === "light") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  };
+
+    console.log(theme);
+  }, [theme])
 
   return (
-    <span className={cn("cursor-pointer text-text", className)} onClick={toggleMode}>
-        {mode === "light" ? "dark" : "light"}
+    <span className={cn("cursor-pointer text-text", className)} onClick={toggleTheme}>
+        {theme === "light" ? "dark" : "light"}
     </span>
   );
 }
