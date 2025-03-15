@@ -429,7 +429,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
 
   return (
     <div className="not-prose py-4">
-      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-white">
+      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-white border-2 border-[#111]">
         <div className="w-full border-b-2 p-4 bg-gray-800 text-white">
           <p className="font-bold font-mono uppercase">
             Find-a-Shoe
@@ -487,7 +487,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               type="submit"
               disabled={isLoading}
               variant="primary"
-              className="px-4"
+              className="px-4 border-none"
             >
               Send
             </Button>
