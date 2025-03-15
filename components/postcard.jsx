@@ -45,16 +45,13 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
           className, 
           "group relative min-h-[357px] lg:min-h-[294px]",
           "flex flex-col justify-center items-center gap-2",
+          "px-4 lg:px-0 py-24 lg:py-12",
           "transition-all duration-300",
           "text-dark/70 hover:text-primary active:text-primary",
-          "px-4 lg:px-0 py-24 lg:py-12",
-          "force-repaint", 
+          "force-repaint",
           isFullyVisible && "text-primary lg:text-dark/70", 
           post.pattern
         )}
-        style={{
-          "--pattern-color": isFullyVisible ? "var(--color-primary)" : "rgba(var(--color-dark-rgb), 0.7)"
-        }}
         {...rest}
       >
         <h3 className="text-center font-bold uppercase text-gray-800 transition-all duration-300 hover:text-dark leading-snug text-3xl lg:text-5xl max-w-xl text-wrap break-words font-libre-franklin">
