@@ -2,7 +2,7 @@ import { cn } from "@/utils/cn";
 import Link from "next/link";
 import Card from "./ui/card";
 
-export default function PostCard({ post, className, isActive, ...rest }) {
+function PostCard({ post, className, isActive, ...rest }) {
   const { slug, frontmatter } = post;
 
   return (
@@ -19,3 +19,7 @@ export default function PostCard({ post, className, isActive, ...rest }) {
     </Link>
   );
 }
+
+PostCard.displayName = "PostCard"; // Required when using `forwardRef`
+
+export default PostCard;
