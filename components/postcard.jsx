@@ -43,7 +43,12 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
         id={encodeURIComponent(frontmatter.title)}
         className={cn(
           className, 
-          "group flex flex-col justify-center min-h-[357px] lg:min-h-[294px] items-center gap-2 group relative text-dark/70 hover:text-primary active:text-primary transition-all duration-300 px-4 lg:px-0 py-24 lg:py-12", 
+          "group relative min-h-[357px] lg:min-h-[294px]",
+          "flex flex-col justify-center items-center gap-2",
+          "transition-all duration-300",
+          "text-dark/70 hover:text-primary active:text-primary",
+          "px-4 lg:px-0 py-24 lg:py-12",
+          "force-repaint", 
           isFullyVisible && "text-primary lg:text-dark/70", 
           post.pattern
         )}

@@ -348,3 +348,12 @@
   background-clip: text;
   -webkit-text-fill-color: transparent
 }
+
+@keyframes forceRepaint {
+  0% { opacity: 0.9999; }
+  100% { opacity: 1; }
+}
+
+.force-repaint {
+  animation: forceRepaint 0.1s;
+}
