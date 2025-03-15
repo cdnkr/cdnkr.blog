@@ -15,12 +15,10 @@ export default function ThemeToggle({
 
   useEffect(() => {
     if (theme === "light") {
-      document.documentElement.classList.add("dark");
-    } else {
       document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
     }
-
-    console.log(theme);
   }, [theme])
 
   return (
