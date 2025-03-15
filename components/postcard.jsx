@@ -11,7 +11,7 @@ const PostCard = forwardRef(({ post, className, isActive, ...rest }, ref) => {
       <Card
         ref={ref}
         id={encodeURIComponent(frontmatter.title)}
-        className={cn(className, "group flex flex-col items-center gap-2 group relative text-dark/70 hover:text-primary transition-all duration-300 px-4 lg:px-0 py-24 lg:py-12", isActive && "text-primary lg:text-dark/70", post.pattern)}
+        className={cn(className, "group flex flex-col items-center gap-2 group relative text-dark/70 hover:text-primary active:text-primary transition-all duration-300 px-4 lg:px-0 py-24 lg:py-12", isActive && "text-primary lg:text-dark/70", post.pattern)}
         {...rest}
       >
         <h3 className="text-center font-bold uppercase text-gray-800 transition-all duration-300 hover:text-dark leading-snug text-3xl lg:text-5xl max-w-xl text-wrap break-words font-libre-franklin">
