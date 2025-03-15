@@ -3,7 +3,7 @@ import Link from "next/link";
 import Card from "./ui/card";
 import { forwardRef } from "react";
 
-function PostCard({ post, className, isActive, ...rest }) {
+const PostCard = forwardRef(({ post, className, isActive, ...rest }, ref) => {
   const { slug, frontmatter } = post;
 
   return (
@@ -19,8 +19,8 @@ function PostCard({ post, className, isActive, ...rest }) {
       </Card>
     </Link>
   );
-}
+});
 
 PostCard.displayName = "PostCard";
 
-export default forwardRef(PostCard);
+export default PostCard;
