@@ -17,7 +17,7 @@ export default function useOnScreen(ref, options = {}) {
         isFullyVisible: entry.intersectionRatio === 1
       });
     },
-    { threshold: [0, 1], ...options }
+    { threshold: Array.from({ length: 11 }, (_, i) => i / 10), ...options }
   );
 
   useEffect(() => {
