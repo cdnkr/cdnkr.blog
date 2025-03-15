@@ -51,18 +51,24 @@ export default function RootLayout({ children }) {
               <a
                 href="https://github.com/cdnkr"
                 className="hover:text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 github
               </a>
               <a
                 href="https://linkedin.com/in/cdnkr"
                 className="block hover:text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 linkedin
               </a>
               <a
                 href="https://x.com/chaddanker"
                 className="block hover:text-primary"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 x
               </a>
