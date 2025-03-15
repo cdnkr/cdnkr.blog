@@ -42,7 +42,7 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="p-4 border-2 border-dashed border-dark mb-8 lg:my-8 max-w-sm mx-auto">
+    <div className="p-4 border-2 border-dashed border-muted mb-8 lg:my-8 max-w-sm mx-auto">
       <div className="w-full flex justify-start">
         <div className="w-full flex flex-col  gap-4">
           <QRCodeSVG

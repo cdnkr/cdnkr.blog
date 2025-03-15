@@ -30,7 +30,7 @@ const components = {
     const text = getTextContent(children);
 
     return (
-      <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark my-8">
+      <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-muted my-8">
         <div className="relative">
           <CopyButton text={text} className="absolute right-2 top-2" />
           <pre className="group p-4 overflow-x-auto text-white bg-pre-bg">

@@ -21,7 +21,7 @@ export function Block({
     <div
       ref={_ref}
       className={cn(
-        "w-full p-4 border-2 border-dark transition-all duration-300 relative",
+        "w-full p-4 transition-all duration-300 relative",
         variants[variant],
         className,
       )}

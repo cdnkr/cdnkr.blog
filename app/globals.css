@@ -46,14 +46,15 @@
   --color-text: #fafafa;
   --color-text-secondary: #fff;
   --color-dark: #fafafa;
+  --color-muted: #757575;
   --color-text-title: #fff;
   --color-text-alt: #111;
   --color-title-text-bg: #000;
   --color-button: #000;
-  --color-button-border: #fff;
+  --color-button-border: #000;
   --color-button-text: #fff;
   --color-button-tertiary-text: #000;
-  --color-shadow: 254, 230, 133, 0.75;
+  --color-shadow: 0, 0, 0, 1;
   --color-utility-shadow: 254, 230, 133, 0.75;
   --color-pre-bg: #000;
 }
