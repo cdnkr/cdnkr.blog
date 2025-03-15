@@ -8,17 +8,22 @@ export default function PostList({ posts }) {
   const postRefs = useRef([]);
 
   useEffect(() => {
+    // Ensure postRefs is clean
+    postRefs.current = postRefs.current.slice(0, posts.length);
+
     const observerOptions = {
       root: null, // Viewport
-      rootMargin: "-35% 0px -65% 0px", // Triggers when 35% from the top
-      threshold: 0,
+      rootMargin: "-35% 0px -65% 0px", // Adjusted for better cross-browser support
+      threshold: 0, // Trigger as soon as it enters the viewport
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const index = postRefs.current.indexOf(entry.target);
-          setActiveIndex(index);
+          const index = postRefs.current.findIndex((el) => el === entry.target);
+          if (index !== -1) {
+            setActiveIndex(index);
+          }
         }
       });
     }, observerOptions);
@@ -28,16 +33,18 @@ export default function PostList({ posts }) {
     });
 
     const handleScroll = () => {
-      const scrollPosition = window.innerHeight + window.scrollY;
-      const pageHeight = document.documentElement.scrollHeight;
+      const scrollPosition = Math.ceil(window.innerHeight + window.scrollY);
+      const pageHeight = Math.ceil(document.documentElement.scrollHeight);
 
-      if (scrollPosition >= pageHeight - 5) {
-        // User reached the bottom
+      console.log("Scroll Position:", scrollPosition);
+      console.log("Page Height:", pageHeight);
+
+      if (scrollPosition >= pageHeight - 2) {
         setActiveIndex(posts.length - 1);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       observer.disconnect();
@@ -52,7 +59,9 @@ export default function PostList({ posts }) {
           key={i}
           post={post}
           isActive={i === activeIndex}
-          ref={(el) => (postRefs.current[i] = el)}
+          ref={(el) => {
+            if (el) postRefs.current[i] = el;
+          }}
         />
       ))}
     </>
