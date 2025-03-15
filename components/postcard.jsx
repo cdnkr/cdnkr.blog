@@ -1,6 +1,7 @@
 import { cn } from "@/utils/cn";
 import Link from "next/link";
 import Card from "./ui/card";
+import { forwardRef } from "react";
 
 function PostCard({ post, className, isActive, ...rest }) {
   const { slug, frontmatter } = post;
@@ -20,6 +21,6 @@ function PostCard({ post, className, isActive, ...rest }) {
   );
 }
 
-PostCard.displayName = "PostCard"; // Required when using `forwardRef`
+PostCard.displayName = "PostCard";
 
-export default PostCard;
+export default forwardRef(PostCard);
