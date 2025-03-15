@@ -10,6 +10,7 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
 
   const ref = useRef(null);
   const [isFullyVisible, setIsFullyVisible] = useState(false);
+  const [key, setKey] = useState(0); // Add a key to force complete re-render
 
   const isElementFullyVisible = (el) => {
     const rect = el.getBoundingClientRect();
@@ -25,20 +26,26 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
+    const checkVisibility = () => {
       if (!ref.current) return;
 
-      if (isElementFullyVisible(ref.current)) {
-        setIsFullyVisible(() => true);
-      } else {
-        setIsFullyVisible(() => false);
+      const nowVisible = isElementFullyVisible(ref.current);
+      if (nowVisible !== isFullyVisible) {
+        setIsFullyVisible(nowVisible);
+        setKey(prev => prev + 1); // Force re-render when visibility changes
       }
-    });
-  }, [ref.current]);
+    };
+
+    window.addEventListener("scroll", checkVisibility);
+    checkVisibility(); // Check on mount
+    
+    return () => window.removeEventListener("scroll", checkVisibility);
+  }, [isFullyVisible]);
 
   return (
     <Link href={`/post/${slug}`}>
       <Card
+        key={key} // This forces a complete re-render when visibility changes
         ref={ref}
         id={encodeURIComponent(frontmatter.title)}
         className={cn(
