@@ -2,15 +2,39 @@
 
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import Card from "./ui/card";
-import { useRef } from "react";
-import useOnScreen from "@/hooks/useonscreen";
+import { useRef, useState, useEffect } from "react";
+import { Card_Simple as Card } from "./ui/card";
 
 const PostCard = ({ post, className, isActive, ...rest }) => {
   const { slug, frontmatter } = post;
 
   const ref = useRef(null);
-  const { isFullyVisible } = useOnScreen(ref);
+  const [isFullyVisible, setIsFullyVisible] = useState(false);
+
+  const isElementFullyVisible = (el) => {
+    const rect = el.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= viewportHeight &&
+      rect.right <= viewportWidth
+    );
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      if (!ref.current) return;
+
+      if (isElementFullyVisible(ref.current)) {
+        setIsFullyVisible(() => true);
+      } else {
+        setIsFullyVisible(() => false);
+      }
+    });
+  }, [ref.current]);
 
   return (
     <Link href={`/post/${slug}`}>
