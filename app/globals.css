@@ -2,15 +2,16 @@
 @plugin "@tailwindcss/typography";
 
 /* Theme */
-
 @theme {
   --color-primary: #2eabb0;
-  --color-primary-rgb: 244, 68, 46;
+  --color-primary-rgb: 46, 171, 176;
   --color-secondary: #2eabb0;
   --color-tertiary: #f4442e;
   --color-muted: #424242;
   --color-dark: #111111;
   --color-dark-rgb: 17, 17, 17;
+  --color-component-dark: #000;
+  --color-component-light: #fff;
   --color-background: #fafafa;
   --color-pattern: var(--color-dark);
   --color-pattern-background: var(--color-background);
@@ -41,6 +42,27 @@
   --font-mono: var(--font-jetbrains-mono);
   --font-gochi-hand: var(--font-gochi-hand);
   --font-oswald: var(--font-oswald);
+  /* Chatbot */
+  --color-chatbot-border: var(--color-gray-800);
+  --color-chatbot-background: rgb(255,255,255);
+  --color-chatbot-section-bg: var(--color-gray-800);
+  --color-chatbot-text: #fff;
+  --color-chatbot-user-text: #fff;
+  --color-chatbot-user-background: rgba(0, 0, 0, 1);
+  --color-chatbot-assistant-text: rgb(0, 0, 0);
+  --color-chatbot-assistant-background: var(--color-gray-200);
+  --color-chatbot-input-border: rgba(255, 255, 255, 1);
+  --color-chatbot-input-background: rgba(255, 255, 255, 1);
+  --color-chatbot-input-text: rgba(0, 0, 0, 1);
+  --color-chatbot-card-background: rgba(255, 255, 255, 1);
+  --color-chatbot-card-text: rgba(0, 0, 0, 1);
+  --color-chatbot-card-shadow: 0,0,0;
+  --color-chatbot-card-border: rgba(0, 0, 0, 1);
+  --color-chatbot-card-category-text: rgba(117, 117, 117, 1);
+  --color-chatbot-card-description-text: rgba(97, 97, 97, 1); 
+  --color-chatbot-button: #000;
+  --color-chatbot-button-text: #fff;
+  --color-chatbot-button-shadow: 0,0,0;
 }
 
 .dark {
@@ -64,6 +86,29 @@
   --color-shadow: 0, 0, 0, 1;
   --color-utility-shadow: 254, 230, 133, 0.75;
   --color-pre-bg: #000;
+  --color-component-dark: #fff;
+  --color-component-light: #616161;
+  /* Chatbot */
+  --color-chatbot-border: #000;
+  --color-chatbot-background: rgba(0, 0, 0, 0.4);
+  --color-chatbot-section-bg: rgba(0, 0, 0, 1);
+  --color-chatbot-text: #fff;
+  --color-chatbot-user-text: #fff;
+  --color-chatbot-user-background: rgba(0, 0, 0, 0.5);
+  --color-chatbot-assistant-text: rgb(237, 237, 237);
+  --color-chatbot-assistant-background: rgba(0, 0, 0, 1);
+  --color-chatbot-input-border: rgba(255, 255, 255, 1);
+  --color-chatbot-input-background: rgba(255, 255, 255, 0.1);
+  --color-chatbot-input-text: rgba(255, 255, 255, 1);
+  --color-chatbot-card-background: rgba(0, 0, 0, 0.4);
+  --color-chatbot-card-text: rgb(237, 237, 237);
+  --color-chatbot-card-shadow: 66,66,66;
+  --color-chatbot-card-border: rgba(66, 66, 66, 1);
+  --color-chatbot-card-category-text: rgb(167, 167, 167);
+  --color-chatbot-card-description-text: rgb(167, 167, 167);
+  --color-chatbot-button: #333;
+  --color-chatbot-button-text: #fff;
+  --color-chatbot-button-shadow: 66,66,66;
 }
 
 /* Scrollbar */
