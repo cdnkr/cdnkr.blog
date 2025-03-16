@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Button from "../ui/button";
 
 // Sample FAQ data for our demo shoe store
 const SAMPLE_FAQ = [
@@ -428,8 +429,8 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
 
   return (
     <div className="not-prose py-4">
-      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto border-2 bg-white">
-        <div className="w-full border-b-2 p-4 bg-dark text-white">
+      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-white border-2 border-[#111]">
+        <div className="w-full border-b-2 p-4 bg-gray-800 text-white">
           <p className="font-bold font-mono uppercase">
             Find-a-Shoe
           </p>
@@ -462,13 +463,13 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
         </div>
 
         {/* Chat input form */}
-        <div className="border-t-2 p-4 bg-dark text-white">
+        <div className="border-t-2 px-4 py-4 pb-5 lg:pb-4 lg:px-4 lg:py-4 bg-gray-800 text-white">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               sendMessage__Demo(input);
             }}
-            className="flex flex-col sm:flex-row gap-2"
+            className="flex flex-col sm:flex-row gap-3 lg:gap-2"
           >
             <input
               ref={inputRef}
@@ -476,19 +477,20 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about our shoes..."
-              className="flex-1 p-2 border-2 bg-white text-dark"
+              className="flex-1 p-2 border-2 bg-white text-[#111]"
               disabled={isLoading}
               // For demo purposes, disable the input field
               // don't need my Google API bill running through the roof
               readOnly
             />
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 cursor-pointer bg-tertiary text-white hover:bg-tertiary/90 disabled:bg-tertiary/80 font-mono uppercase"
+              variant="primary"
+              className="px-4 border-none"
             >
               Send
-            </button>
+            </Button>
           </form>
         </div>
       </div>

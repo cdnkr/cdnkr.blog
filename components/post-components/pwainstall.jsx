@@ -35,7 +35,7 @@ export default function PWAInstallButton() {
 
   return (
     <>
-      <div className="p-4 border-2 border-dashed border-dark my-8">
+      <div className="p-4 border-2 border-dashed border-muted my-8">
         <div className="flex w-full justify-center">
           <Button
             variant="tertiary"

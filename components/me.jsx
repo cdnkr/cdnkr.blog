@@ -38,7 +38,7 @@ export default function Me({ className }) {
           className,
         )}
       >
-        about me
+        about_me
       </span>
     </Popover>
   );

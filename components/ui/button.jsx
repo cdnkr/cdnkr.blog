@@ -62,19 +62,19 @@ export default function Button({
 }) {
   const variants = {
     primary:
-      "bg-dark border-dark text-white shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
+      "bg-button border-button-border text-button-text shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
     secondary:
       "bg-white border-dark text-dark shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))]",
     tertiary:
-      "bg-tertiary border-tertiary text-white shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
+      "bg-tertiary border-tertiary text-button-tertiary-text shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] active:shadow-[1px_1px_0_0_rgba(0,0,0,0.5)] hover:shadow-[5px_5px_0_0_rgba(0,0,0,0.5)]",
   };
 
   return (
     <button
       onClick={onClick}
       className={cn(
-        "font-mono max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
-        variants[variant],
+        " bg-button border-button-border text-button-text uppercase font-mono shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
+        // variants[variant],
         className,
       )}
       {...rest}
@@ -91,15 +91,15 @@ export function UtilityButton({
   variant = "primary",
 }) {
   const variants = {
-    primary: "bg-white border-white text-dark",
+    primary: "bg-white border-white text-[#111]",
     secondary: "bg-white text-primary border-dark",
-    tertiary: "bg-tertiary border-tertiary text-white",
+    tertiary: "bg-tertiary border-tertiary text-button-tertiary-text",
   };
   return (
     <button
       onClick={onClick}
       className={cn(
-        "font-mono px-2 py-1 text-sm border-2 shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] transition-all duration-300 cursor-pointer",
+        "font-mono px-2 py-1 text-sm border-2 shadow-[3px_3px_0_0_rgba(var(--color-utility-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-utility-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-utility-shadow))] transition-all duration-300 cursor-pointer",
         variants[variant],
         className,
       )}

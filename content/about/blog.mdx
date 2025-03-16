@@ -1,0 +1,153 @@
+---
+title: About This Blog
+description: The journey of how this blog came to be. The tech stack, the design, the process.
+date: 2025-03-12
+author: Chad Danker
+---
+
+I'm Chad—a front-end developer, based in South Africa. I love building, I love software engineering, I love design, I love the web. I'm passionate about pretty much everything JavaScript, design & front-end related.
+
+![Me](/images/content/about/me/7.png)
+
+I finally made a blog. I’ve always wanted to, but like… what would I even write about? I’m not some super interesting person with wild takes on the tech ecosystem. Honestly, I just love all things tech and appreciate even the most obscure—[Brainfuck](https://en.wikipedia.org/wiki/Brainfuck), [Emojilang](https://github.com/grininja/emojilang), you name it.  
+
+### But one day, I was bored, so I did it anyway.  
+
+I work as a professional front-end developer at [forgood](https://www.forgood.co.za), mostly with Next.js, React, and occasionally Node.js. Over the years, I’ve built some pretty interesting projects, and I figured, why not share some of the cool stuff I’ve learned? Yeah, yeah, there are a million blogs already doing this, but I didn’t really care if my articles or tutorials ever got seen. I just wanted to keep myself busy—playing [Call of Duty](https://en.wikipedia.org/wiki/Call_of_Duty) every evening wasn’t cutting it anymore.  
+
+Recently, I built a Node.js documentation app that pulls markdown files, generates HTML output with an index page to easily navigate different sections. It was surprisingly simple with just CommonJS and Node, and I thought, "Damn, you can actually get really far with this." That inspired me to take it further—I built a Node.js tool that converts markdown into HTML, generates an index listing, and adds basic tag filtering and search. It worked. And again, I thought, “Cool… now what?”  
+
+Most of the interesting components and learnings I’ve had come from React and Next.js. But with my original Node/HTML/JS setup, I couldn’t properly showcase interactive React components, which was crucial. So I thought, "Let me build a custom React bundler." That way, I could still pre-render content while keeping client-side interactivity. The idea was simple: bundle React locally using my Node.js tool, then push the output HTML files to GitHub Pages.  
+
+### It was hell.  
+
+This had me wrestling with [Babel](https://babeljs.io/) for hours. I eventually got it working, but it was finicky as hell. _Could I have just used Next.js from the start?_ Yeah… good question. I guess I just wanted to see if I could do it.  
+
+After an *eight-hour* battle with [Babel](https://babeljs.io/) (which refused to render any [MDX](https://mdxjs.com/) content properly for reasons unknown), I scrapped the whole project. Instead, I switched to [Next.js 15’s](https://nextjs.org/docs/app) App Router with a [static export](https://nextjs.org/docs/app/building-your-application/deploying/static-exports). At work, the main Next.js site I work on uses a [standalone server](https://nextjs.org/docs/14/app/api-reference/next-config-js/output), so static output was not something I used very often, but it turned out to be exactly what I needed.  
+
+Then I wanted to embed React components inside markdown files, so I used [`mdx-remote`](https://www.npmjs.com/package/next-mdx-remote/v/0.5.1)—only to later discover that Next.js has built-in [MDX](https://mdxjs.com/) support. At that point, it was too late (or I was too lazy) to switch. Whatever… it worked.  
+
+Next, I wanted nice-looking code blocks. I went with [`rehype-pretty-code`](https://rehype-pretty.pages.dev/) (which uses [Shiki](https://shiki.matsu.io/) under the hood) and put together a simple test article on generating UUIDs—partly because I needed it for work (manually populating SQL seed queries, the joys), and partly to validate my setup. Code highlighting worked great. The components displayed properly. Everything came together quickly.  
+
+Then came the copy button for code snippets. This was more of a pain than expected because of how [`rehype-pretty-code`](https://rehype-pretty.pages.dev/) structures the output—wrapping each line/token in spans inside a `<code>` block, inside a `<pre>` tag. I had to extract the text from the `<pre>` element’s children and add it to `navigator.clipboard`. There's probably a far better way to do this, but eventually, I got it working.  
+
+```javascript
+const components = {
+  pre: ({ children }) => {
+    const getTextContent = (node) => {
+      // if it"s a string, return it directly
+      if (typeof node === "string") return node;
+      // if null/undefined, return empty string
+      if (!node) return "";
+
+      // if it"s an array, map through it
+      if (Array.isArray(node)) {
+        return node.map(getTextContent).join("");
+      }
+
+      // if it has children in props, recurse
+      if (node.props?.children) {
+        return getTextContent(node.props.children);
+      }
+
+      // fallback
+      return "";
+    };
+
+    const text = getTextContent(children);
+
+    return (
+      <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-dark my-8">
+        <div className="relative">
+          <CopyButton text={text} className="absolute right-2 top-2" />
+          <pre className="group p-4 overflow-x-auto text-white bg-dark">
+            {children}
+          </pre>
+        </div>
+      </div>
+    );
+  },
+  // ...other components
+}
+```
+
+Now I had a somewhat functional blog. It looked pretty plain, but it worked.  
+
+The next step was an index page listing all the articles, with search and tag filtering—basic React stuff. The only slightly tricky part was fetching all the posts: I used `fs` to read the markdown files, split out the [frontmatter](https://jekyllrb.com/docs/front-matter/) (because frontmatter is awesome for metadata), formatted everything into an array, and returned it. Dope—a functional blog.  
+
+```javascript
+export async function getAllPosts(directory = "posts") {
+  try {
+    const postsDirectory = path.join(process.cwd(), `content/${directory}`);
+    const files = fs.readdirSync(postsDirectory);
+
+    let posts = files.map((fileName) => {
+      const filePath = path.join(postsDirectory, fileName);
+      const fileContent = fs.readFileSync(filePath, "utf8");
+
+      const { data: frontmatter, content } = matter(fileContent);
+      const slug = fileName.replace(/\.mdx$/, "");
+
+      const sections = content.split("***");
+
+      const sectionTitles = sections
+        .map((section) => section.trim().split("\n")[0]);
+
+      return {
+        slug,
+        frontmatter,
+        content,
+        sections,
+        sectionTitles,
+      };
+    });
+
+    // sort posts by date
+    const sortedPosts = posts.sort((a, b) => {
+      if (!a.frontmatter?.date || !b.frontmatter?.date) return 0;
+      return (
+        new Date(b.frontmatter.date).getTime() -
+        new Date(a.frontmatter.date).getTime()
+      );
+    });
+
+    return sortedPosts;
+  } catch (error) {
+    console.error("Error getting posts:", error);
+    return [];
+  }
+}
+```
+
+Now, I like minimalistic design, but this was *too* plain. So I styled it.  
+
+Version one? Weird. Finn from [*Adventure Time*](https://en.wikipedia.org/wiki/Adventure_Time) was on the homepage, with animated clouds in the background. My girlfriend took one look and said, *“Yeah, this isn’t inviting.”* So I scrapped it.  
+
+Next, I tried a dark theme with a subtle background pattern. Better, but something still felt off. It wasn’t super readable. It just wasn’t *it.* So I went and scoured [Dribbble](https://dribbble.com/) and [CodePen](https://codepen.io/) for inspiration. At one point, I even tried a neumorphic design, but I wasn’t feeling it.  
+
+Then, after a trip to [Kauai](https://kauai.co.za/)—a South African fast food restaurant, unfortunately not the island lol—I wish! I noticed their simple yet beautiful design aesthetic. 
+
+That led me back to [Dribbble](https://dribbble.com/) and [CodePen](https://codepen.io/), where I found a few concepts I liked. Shoutout to [@dwinawan](https://dribbble.com/dwinawan) and [@oliviale](https://codepen.io/oliviale) - I really, really liked their [blog design](https://dribbble.com/shots/24983782-Design-Exploration-Blog-Website) and [pen](https://codepen.io/oliviale/pen/XWbJZy). I drew a lot of inspiration from it. One evening later, I restyled the entire blog into *this* version.  
+
+<ImageMasonry images={[
+  { src: "/images/content/about/designrefdribbble.png", alt: "Design Ref Dribbble", caption: "dwinawan's design I liked from Dribbble." },
+  { src: "/images/content/about/codependesignref.png", alt: "CodePen Design Ref", caption: "oliviale's design I liked from CodePen." },
+]} />
+
+And you know when something just *works*? When you’re not stuck tweaking padding for eight hours? Yeah, I like that.  
+
+That’s a lesson I’ve learned—if something isn’t working, if you’re not feeling it, scrap it and start over. Not the whole project but like, realize when you're in a rabbit whole and get th f*ck out of there! This applies to everything: development, styling, problem-solving. It keeps momentum going, and momentum is everything. For me at least.
+
+Once I was happy with the design, I put together a few more posts—some [old gists](https://gist.github.com/cdnkr) I recycled, a [simple QR component](https://cdnkr.blog/post/qr-generator). Then I added more complex stuff like the [AI chatbot with Gemini](https://cdnkr.blog/post/ai-chatbot-component-with-product-preview-cards-in-next-with-gemini-2-flash) and the [interactive compass component](https://cdnkr.blog/post/build-a-compass-with-the-device-orientation-api). That’s when I noticed some formatting and readability issues, especially on mobile.  
+
+So I stripped out all my custom [MDX](https://mdxjs.com/) elements and let [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography) work its magic. A few tweaks later… here we are.  
+
+Oh yeah—shoutout to [GitHub Pages](https://pages.github.com/). I considered [Vercel](https://vercel.com/), but their firewall blocks Google’s search indexing crawlers unless you pay per request to whitelist their IPs. With GitHub Pages? None of that. Super easy custom domain setup. GitHub Actions work like a dream. No server, no edge functions—but that’s fine. I come from the pre-Next.js era, where everything was client-side anyway. This feels like home.  
+
+And that’s the story of this pretty average blog. If it helps just one other dev, I’ll be happy. And if it doesn’t? Whatever. The most important thing is that this has been an absolute blast to build.  
+
+Thanks for reading. Thanks for being here.  
+
+**Peace.** 
+
+— CDNKR

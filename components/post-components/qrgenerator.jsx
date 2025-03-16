@@ -42,7 +42,7 @@ export default function QRCodeGenerator() {
   };
 
   return (
-    <div className="p-4 border-2 border-dashed border-dark mb-8 lg:my-8 max-w-sm mx-auto">
+    <div className="p-4 border-2 border-dashed border-muted mb-8 lg:my-8 max-w-sm mx-auto">
       <div className="w-full flex justify-start">
         <div className="w-full flex flex-col  gap-4">
           <QRCodeSVG
@@ -50,8 +50,8 @@ export default function QRCodeGenerator() {
             value={text || config.url}
             size={512}
             className="w-full  h-auto"
-            bgColor="transparent"
-            fgColor="#111111"
+            bgColor="var(--color-background)"
+            fgColor="var(--color-dark)"
           />
           <div className="w-full flex flex-col gap-4">
             <Input
@@ -59,6 +59,7 @@ export default function QRCodeGenerator() {
               onChange={(e) => setText(e.target.value)}
               placeholder="Enter something to encode..."
               variant="secondary"
+              className="bg-white text-black"
             />
             <Button
               onClick={downloadQRCode}

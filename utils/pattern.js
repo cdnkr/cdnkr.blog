@@ -1,0 +1,58 @@
+const patterns = [
+    // "pattern-checks-sm",
+    // "pattern-checks-md",
+    // "pattern-checks-lg",
+    // "pattern-checks-xl",
+    // "pattern-grid-sm",
+    // "pattern-grid-md",
+    // "pattern-grid-lg",
+    // "pattern-grid-xl",
+    // "pattern-dots-sm",
+    // "pattern-dots-md",
+    // "pattern-dots-lg",
+    // "pattern-dots-xl",
+    // "pattern-cross-dots-sm",
+    // "pattern-cross-dots-md",
+    // "pattern-cross-dots-lg",
+    // "pattern-cross-dots-xl",
+    // "pattern-vertical-lines-sm",
+    // "pattern-vertical-lines-md",
+    // "pattern-vertical-lines-lg",
+    // "pattern-vertical-lines-xl",
+    // "pattern-horizontal-lines-sm",
+    // "pattern-horizontal-lines-md",
+    // "pattern-horizontal-lines-lg",
+    // "pattern-horizontal-lines-xl",
+    "pattern-diagonal-lines-sm",
+    "pattern-diagonal-lines-md",
+    "pattern-diagonal-lines-lg",
+    "pattern-diagonal-lines-xl",
+    "pattern-vertical-stripes-sm",
+    "pattern-vertical-stripes-md",
+    // "pattern-vertical-stripes-lg",
+    // "pattern-vertical-stripes-xl",
+    "pattern-horizontal-stripes-sm",
+    "pattern-horizontal-stripes-md",
+    "pattern-horizontal-stripes-lg",
+    // "pattern-horizontal-stripes-xl",
+    "pattern-diagonal-stripes-sm",
+    "pattern-diagonal-stripes-md",
+    "pattern-diagonal-stripes-lg",
+    "pattern-diagonal-stripes-xl",
+    "pattern-zigzag-sm",
+    "pattern-zigzag-md",
+    "pattern-zigzag-lg",
+    "pattern-zigzag-xl",
+    // "pattern-triangles-sm",
+    // "pattern-triangles-md",
+    // "pattern-triangles-lg",
+    // "pattern-triangles-xl",
+]
+
+const shuffled = patterns.sort(() => Math.random() - 0.5);
+
+const getPattern = (index) => {
+    return shuffled[index % shuffled.length];
+}
+
+export default getPattern;

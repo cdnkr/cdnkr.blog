@@ -381,8 +381,8 @@ export default function Main() {
           Enable Compass & Location
         </Button>
       ) : (
-        <div className="p-4 border-2 border-dark border-dashed font-mono">
-          <div className="pt-4 pb-4 pl-4 pr-4 md:pt-4 md:pb-12 md:pl-8 md:pr-8 w-full space-y-4 bg-dark">
+        <div className="font-mono">
+          <div className="pt-4 pb-4 pl-4 pr-4 md:pt-4 md:pb-12 md:pl-8 md:pr-8 w-full space-y-4 bg-[#111]">
             <div className="text-white w-full flex flex-col items-center mt-4">
               <div className="h-auto my-16 w-[280px] aspect-square relative bg-white/10 flex items-center justify-center rounded-full">
                 <div className="flex flex-col items-center justify-center">
