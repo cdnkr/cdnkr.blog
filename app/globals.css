@@ -43,9 +43,9 @@
   --font-gochi-hand: var(--font-gochi-hand);
   --font-oswald: var(--font-oswald);
   /* Chatbot */
-  --color-chatbot-border: #000;
+  --color-chatbot-border: var(--color-gray-800);
   --color-chatbot-background: rgb(255,255,255);
-  --color-chatbot-section-bg: rgba(0, 0, 0, 1);
+  --color-chatbot-section-bg: var(--color-gray-800);
   --color-chatbot-text: #fff;
   --color-chatbot-user-text: #fff;
   --color-chatbot-user-background: rgba(0, 0, 0, 1);
@@ -60,9 +60,9 @@
   --color-chatbot-card-border: rgba(0, 0, 0, 1);
   --color-chatbot-card-category-text: rgba(117, 117, 117, 1);
   --color-chatbot-card-description-text: rgba(97, 97, 97, 1); 
-  --color-chatbot-button: #333;
+  --color-chatbot-button: #000;
   --color-chatbot-button-text: #fff;
-  --color-chatbot-button-shadow: 66,66,66;
+  --color-chatbot-button-shadow: 0,0,0;
 }
 
 .dark {
