@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
       <body className="relative antialiased font-sans text-text flex flex-col items-center w-full min-h-screen bg-background pb-16">
         <div className="w-full py-3 bg-background flex justify-center text-dark text-xs uppercase">
           <div className="w-full max-w-[1260px] flex justify-center flex-wrap py-0 px-6 lg:px-8 gap-4">
-            <ThemeToggle className="block hover:text-primary" />
+            <ThemeToggle />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
