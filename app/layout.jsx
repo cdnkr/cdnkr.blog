@@ -78,7 +78,7 @@ export default function RootLayout({ children }) {
                 About This Blog
               </Link>
             </div> */}
-            <ThemeToggle className="block hover:text-primary" />
+            <ThemeToggle />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">

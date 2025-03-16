@@ -22,8 +22,9 @@ export default function ThemeToggle({
   }, [theme])
 
   return (
-    <span className={cn("cursor-pointer text-text", className)} onClick={toggleTheme}>
-        {theme === "light" ? "dark" : "light"}
-    </span>
+    <div className={cn("text-text flex gap-1", className)}>
+        <span className={theme === "light" ? "line-through decoration-2" : "hover:text-primary cursor-pointer"} onClick={() => setTheme("light")}>{"light"}</span>
+        <span className={theme === "dark" ? "line-through decoration-2" : "hover:text-primary cursor-pointer"} onClick={() => setTheme("dark")}>{"dark"}</span>
+    </div>
   );
 }
