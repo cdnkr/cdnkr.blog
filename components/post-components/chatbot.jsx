@@ -190,7 +190,7 @@ function CardPreview({ productId }) {
   if (!product) return null;
 
   return (
-    <div className="border-2 cursor-pointer bg-white p-4 mt-4 mb-6 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_#000] active:shadow-[1px_1px_0_0_#000] hover:shadow-[8px_8px_0_0_#000] transition-all duration-300">
+    <div className="border-2 text-chatbot-card-text border-chatbot-card-border cursor-pointer bg-chatbot-card-background p-4 mt-4 mb-6 flex gap-4 max-w-[400px] shadow-[6px_6px_0_0_rgba(var(--color-chatbot-card-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-chatbot-card-shadow))] hover:shadow-[8px_8px_0_0_rgba(var(--color-chatbot-card-shadow))] transition-all duration-300">
       <img
         src={product.imageUrl}
         alt={product.name}
@@ -198,9 +198,9 @@ function CardPreview({ productId }) {
       />
       <div className="flex-1">
         <h3 className="font-bold">{product.name}</h3>
-        <p className="text-sm text-gray-600">{product.category}</p>
+        <p className="text-sm text-chatbot-card-category-text">{product.category}</p>
         <p className="font-semibold">${product.price.toFixed(2)}</p>
-        <p className="text-sm text-gray-700 mt-1">
+        <p className="text-sm text-chatbot-card-description-text mt-1">
           {product.description.slice(0, 100)}
           {product.description.length > 100 ? "..." : ""}
         </p>
@@ -429,8 +429,8 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
 
   return (
     <div className="not-prose py-4">
-      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-white border-2 border-[#111]">
-        <div className="w-full border-b-2 p-4 bg-gray-800 text-white">
+      <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-chatbot-background border-2 border-chatbot-border">
+        <div className="w-full border-b-2 border-chatbot-border p-4 bg-chatbot-section-bg text-chatbot-text">
           <p className="font-bold font-mono uppercase">
             Find-a-Shoe
           </p>
@@ -447,8 +447,8 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               <div
                 className={`max-w-[95%] lg:max-w-[80%] p-3 whitespace-pre-line ${
                   message.role === "user"
-                    ? "bg-black text-white"
-                    : "bg-gray-100 text-gray-800"
+                    ? "bg-chatbot-user-background text-chatbot-user-text"
+                    : "bg-chatbot-assistant-background text-chatbot-assistant-text"
                 }`}
               >
                 {/* Render message content with product previews for assistant messages */}
@@ -463,13 +463,13 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
         </div>
 
         {/* Chat input form */}
-        <div className="border-t-2 px-4 py-4 pb-5 lg:pb-4 lg:px-4 lg:py-4 bg-gray-800 text-white">
+        <div className="border-t-2 border-chatbot-border px-4 py-4 pb-5 lg:pb-4 lg:px-4 lg:py-4 bg-chatbot-section-bg text-chatbot-text">
           <form
             onSubmit={(e) => {
               e.preventDefault();
               sendMessage__Demo(input);
             }}
-            className="flex flex-col sm:flex-row gap-3 lg:gap-2"
+            className="flex flex-col sm:flex-row gap-3 lg:gap-4"
           >
             <input
               ref={inputRef}
@@ -477,7 +477,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about our shoes..."
-              className="flex-1 p-2 border-2 bg-white text-[#111]"
+              className="flex-1 p-2 border-none bg-chatbot-input-background text-chatbot-input-text border-chatbot-input-border"
               disabled={isLoading}
               // For demo purposes, disable the input field
               // don't need my Google API bill running through the roof
@@ -487,7 +487,8 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               type="submit"
               disabled={isLoading}
               variant="primary"
-              className="px-4 border-none"
+              className="px-4 font-bold bg-chatbot-button text-chatbot-button-text border-none"
+              shadowColor="var(--color-chatbot-card-shadow)"
             >
               Send
             </Button>

@@ -58,6 +58,7 @@ export default function Button({
   onClick,
   className,
   variant = "primary",
+  shadowColor,
   ...rest
 }) {
   const variants = {
@@ -73,10 +74,13 @@ export default function Button({
     <button
       onClick={onClick}
       className={cn(
-        " bg-button border-button-border text-button-text uppercase font-mono shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
+        "bg-button border-button-border text-button-text uppercase font-mono shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
         // variants[variant],
         className,
       )}
+      style={shadowColor && {
+        "--color-shadow": shadowColor,
+      }}
       {...rest}
     >
       {children}
