@@ -488,7 +488,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
               disabled={isLoading}
               variant="primary"
               className="px-4 font-bold bg-chatbot-button text-chatbot-button-text border-none"
-              shadowColor="var(--color-chatbot-card-shadow)"
+              shadowColor="var(--color-chatbot-button-shadow)"
             >
               Send
             </Button>

@@ -60,8 +60,9 @@
   --color-chatbot-card-border: rgba(0, 0, 0, 1);
   --color-chatbot-card-category-text: rgba(117, 117, 117, 1);
   --color-chatbot-card-description-text: rgba(97, 97, 97, 1); 
-  --color-chatbot-button: var(--color-tertiary);
-  --color-chatbot-button-text: var(--color-dark);
+  --color-chatbot-button: #333;
+  --color-chatbot-button-text: #fff;
+  --color-chatbot-button-shadow: 66,66,66;
 }
 
 .dark {
@@ -105,8 +106,9 @@
   --color-chatbot-card-border: rgba(66, 66, 66, 1);
   --color-chatbot-card-category-text: rgb(167, 167, 167);
   --color-chatbot-card-description-text: rgb(167, 167, 167);
-  --color-chatbot-button: var(--color-primary);
-  --color-chatbot-button-text: #000;
+  --color-chatbot-button: #333;
+  --color-chatbot-button-text: #fff;
+  --color-chatbot-button-shadow: 66,66,66;
 }
 
 /* Scrollbar */
