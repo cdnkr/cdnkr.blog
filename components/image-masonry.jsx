@@ -12,7 +12,7 @@ export default function ImageMasonry({ images }) {
                     <img
                         src={item.src}
                         alt={item.alt}
-                        className="w-full h-auto object-cover border-2 border-dark"
+                        className="w-full h-auto object-cover border-2 border-dark shadow-[4px_4px_0_0_#000]"
                         loading="lazy"
                     />
                     {item.caption && (
