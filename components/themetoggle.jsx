@@ -9,11 +9,9 @@ export default function ThemeToggle({
 }) {
   const [theme, setTheme] = useLocalStorage("theme", "light");
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     if (theme === "light") {
       document.documentElement.classList.remove("dark");
     } else {
