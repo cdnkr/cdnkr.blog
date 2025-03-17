@@ -19,7 +19,7 @@ export default function Post({ post, layout = "default" }) {
           ))}
         </div>
       )}
-      <div className="w-full flex flex-col gap-8">
+      <div className="w-full flex flex-col gap-10">
         <div className={cn(
           "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary",
           post.pattern,

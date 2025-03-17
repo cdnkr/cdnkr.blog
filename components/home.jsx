@@ -18,7 +18,7 @@ export default function Home({ posts, tags }) {
 
   return (
     <div className="w-full flex flex-col gap-12 py-8 lg:py-12">
-      <div className="w-full flex flex-col gap-8 lg:gap-16 relative">
+      <div className="w-full flex flex-col gap-8 lg:gap-12 relative">
         <div className="flex lg:col-span-4 flex-col gap-8">
           <Filters
             search={search}
