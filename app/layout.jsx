@@ -11,6 +11,7 @@ import Header from "@/components/header";
 
 import "@/utils/pwa-handler";
 import ThemeToggle from "@/components/themetoggle";
+import Link from "next/link";
 
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono",
@@ -73,11 +74,11 @@ export default function RootLayout({ children }) {
                 x
               </a>
             </div>
-            {/* <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
               <Link href="/about/blog" className="hover:text-tertiary transition-all duration-300">
                 About This Blog
               </Link>
-            </div> */}
+            </div>
             <ThemeToggle />
           </div>
         </div>
