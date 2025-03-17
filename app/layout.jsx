@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
             </div>
             <div className="flex items-center gap-4">
               <Link href="/about/blog" className="hover:text-tertiary transition-all duration-300">
-                About This Blog
+                About
               </Link>
             </div>
             <ThemeToggle />
