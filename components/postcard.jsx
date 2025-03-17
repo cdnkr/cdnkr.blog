@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import Link from "next/link";
 import { useRef, useState, useEffect } from "react";
 import { Card_Simple as Card } from "./ui/card";
+import { ArrowUpRight } from "./ui/icons";
 
 const PostCard = ({ post, className, isActive, ...rest }) => {
   const { slug, frontmatter } = post;
@@ -54,15 +55,16 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
           "flex flex-col justify-center items-center",
           "px-4 lg:px-0 py-24 lg:py-12",
           "transition-all duration-300",
-          "text-dark/40 hover:text-primary active:text-primary",
-          "force-repaint",
-          isFullyVisible && "text-primary lg:text-dark/40",
+          "text-dark/40",
+          "hover:text-primary/70",
+          // "active:shadow-[9px_9px_0_0_rgba(var(--color-shadow))] hover:shadow-[18px_18px_0_0_rgba(var(--color-shadow))]",
+          isFullyVisible && "text-primary/70 lg:text-dark/40",
           post.pattern
         )}
         {...rest}
       >
         <h3 className="text-center font-bold uppercase text-gray-800 transition-all duration-300 hover:text-dark leading-snug text-3xl lg:text-5xl max-w-xl text-wrap break-words font-libre-franklin">
-          <span className="bg-title-text-bg text-text-title">{frontmatter.title}</span>
+          <span className="bg-title-text-bg group-hover:bg-black text-text-title">{frontmatter.title}</span>
         </h3>
         <div className="mt-[3px] w-full flex justify-center">
           <time
