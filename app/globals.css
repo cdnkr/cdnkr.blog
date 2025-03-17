@@ -63,6 +63,8 @@
   --color-chatbot-button: #000;
   --color-chatbot-button-text: #fff;
   --color-chatbot-button-shadow: 0,0,0;
+
+  --color-image-shadow: 0,0,0;
 }
 
 .dark {
@@ -109,6 +111,8 @@
   --color-chatbot-button: #333;
   --color-chatbot-button-text: #fff;
   --color-chatbot-button-shadow: 66,66,66;
+
+  --color-image-shadow: 237,237,237;
 }
 
 /* Scrollbar */

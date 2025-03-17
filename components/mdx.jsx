@@ -63,7 +63,7 @@ const components = {
           src={src}
           alt={alt}
           loading="lazy"
-          className={cn(className, "border-2 border-dark max-w-full lg:max-w-md mx-auto text-center shadow-[4px_4px_0_0_#000]")}
+          className={cn(className, "border-2 max-w-full lg:max-w-md mx-auto text-center border-[rgba(var(--color-image-shadow))] shadow-[6px_6px_0_0_rgba(var(--color-image-shadow))]")}
         />
         {caption && (
           <p className="text-sm text-gray-600 italic font-mono mt-2">{caption}</p>
