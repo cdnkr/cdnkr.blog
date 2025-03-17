@@ -22,7 +22,7 @@ export default function Post({ post, layout = "default" }) {
       <div className="w-full flex flex-col gap-8">
         <div className={cn(
           "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary",
-          post.pattern, 
+          post.pattern,
           layout === "full" ? "lg:py-16 min-h-auto" : "lg:min-h-[360px]"
         )}>
           <div className={cn(
@@ -70,16 +70,18 @@ export default function Post({ post, layout = "default" }) {
               </div>
             ))}
           </article>
-          <div className="flex flex-col gap-6 lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:pt-1">
-            <ShareButton />
-            <PostSectionNav
-              sectionTitles={post.sectionTitles}
-              className={cn(
-                "hidden lg:block",
-                layout === "full" ? "lg:hidden" : "lg:col-span-4"
-              )}
-            />
-          </div>
+          {layout !== "full" && (
+            <div className="flex flex-col gap-6 lg:col-span-4 lg:sticky lg:top-24 lg:max-h-[calc(100vh-6rem)] lg:pt-1">
+              <ShareButton />
+              <PostSectionNav
+                sectionTitles={post.sectionTitles}
+                className={cn(
+                  "hidden lg:block",
+                  layout === "full" ? "lg:hidden" : "lg:col-span-4"
+                )}
+              />
+            </div>
+          )}
         </div>
         <div className="w-full flex flex-col-reverse lg:flex-row justify-between gap-4 lg:gap-8 mt-8">
           {post?.previous ? (
