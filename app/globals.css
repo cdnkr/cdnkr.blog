@@ -42,6 +42,7 @@
   --font-mono: var(--font-jetbrains-mono);
   --font-gochi-hand: var(--font-gochi-hand);
   --font-oswald: var(--font-oswald);
+  --font-tiny5: var(--font-tiny5);
   /* Chatbot */
   --color-chatbot-border: var(--color-gray-800);
   --color-chatbot-background: rgb(255,255,255);

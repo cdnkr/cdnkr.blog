@@ -294,7 +294,8 @@ export default function Chatbot() {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
       // Construct the system prompt with product catalog and FAQ data
-      const systemPrompt = `You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
+      const systemPrompt = 
+`You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
 
 Product Catalog:
 ${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}
@@ -431,7 +432,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     <div className="not-prose py-4">
       <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-chatbot-background border-2 border-chatbot-border">
         <div className="w-full border-b-2 border-chatbot-border p-4 bg-chatbot-section-bg text-chatbot-text">
-          <p className="font-bold font-mono uppercase">
+          <p className="text-3xl font-bold font-tiny5 uppercase">
             Find-a-Shoe
           </p>
         </div>
