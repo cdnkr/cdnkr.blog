@@ -28,14 +28,14 @@ export default function Post({ post, layout = "default" }) {
           <div className={cn(
             "w-full flex flex-col justify-center items-center"
           )}>
-            <h3 className={cn(
+            <h2 className={cn(
               "text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin",
               "text-center text-3xl lg:text-5xl"
             )}>
               <span className="text-text-title bg-title-text-bg uppercase font-bold leading-snug">
                 {frontmatter.title}
               </span>
-            </h3>
+            </h2>
             <div className="mt-[3px] w-full flex justify-center">
               <time
                 dateTime={frontmatter.date}
