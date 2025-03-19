@@ -432,7 +432,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     <div className="not-prose py-4">
       <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-chatbot-background border-2 border-chatbot-border">
         <div className="w-full border-b-2 border-chatbot-border p-4 bg-chatbot-section-bg text-chatbot-text">
-          <p className="text-2xl lg:text-3xl font-bold font-tiny5 uppercase">
+          <p className="text-2xl lg:text-3xl font-bold font-oswald uppercase">
             Find-a-Shoe
           </p>
         </div>
