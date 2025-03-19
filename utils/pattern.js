@@ -47,6 +47,13 @@ const patterns = [
     // "pattern-triangles-md",
     // "pattern-triangles-lg",
     // "pattern-triangles-xl",
+    "pattern-isometric",
+    "pattern-isometric-lg",
+    "pattern-cross",
+    "pattern-gottagetthatpaper",
+    "pattern-zigzag-3d",
+    "pattern-triangle",
+    "pattern-moon",
 ]
 
 const shuffled = patterns.sort(() => Math.random() - 0.5);
