@@ -52,7 +52,7 @@ const patterns = [
     "pattern-cross",
     "pattern-gottagetthatpaper",
     "pattern-zigzag-3d",
-    "pattern-triangle",
+    // "pattern-triangle",
     "pattern-moon",
 ]
 
