@@ -10,6 +10,7 @@ function useLocalStorage(key, initialValue) {
   // Get stored value from localStorage or use initialValue
   const getStoredValue = () => {
     try {
+      if (typeof window === "undefined") return initialValue;
       // Get from localStorage by key
       const item = window.localStorage.getItem(key);
       // Parse stored json or return initialValue if null
@@ -27,6 +28,7 @@ function useLocalStorage(key, initialValue) {
   // persists the new value to localStorage
   const setValue = (value) => {
     try {
+      if (typeof window === "undefined") return;
       // Allow value to be a function so we have the same API as useState
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
