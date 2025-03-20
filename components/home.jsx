@@ -38,10 +38,8 @@ export default function Home({ posts, tags }) {
 
 function Filters({ search, setSearch, tags, tag, setTag }) {
   return (
-    <>
-      <div className="w-full flex justify-center flex-wrap gap-2 lg:px-4 max-w-5xl mx-auto">
-        <TagSelection tags={tags} selectedTag={tag} setSelectedTag={setTag} />
-      </div>
-    </>
+    <div className="w-full flex justify-center flex-wrap gap-2 lg:px-4 max-w-5xl mx-auto">
+      <TagSelection tags={tags} selectedTag={tag} setSelectedTag={setTag} />
+    </div>
   );
 }
