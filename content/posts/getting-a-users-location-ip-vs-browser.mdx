@@ -144,6 +144,8 @@ You'll also need a Mapbox API key.  You can get one by signing up at [Mapbox](ht
 Let's render a map using `react-map-gl` and `mapbox-gl`. This is the bare minimum you need to get a Mapbox map on the screen.
 
 ```jsx
+"use client"
+
 import React from "react";
 import ReactMapGL from "react-map-gl";
 
@@ -272,6 +274,7 @@ function MapComponent() {
         longitude: DEFAULTS.longitude,
         zoom: DEFAULTS.zoom,
     });
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [ipLocation, setIpLocation] = useState(null);
 
@@ -332,6 +335,7 @@ function MapComponent() {
             {error && <div className="text-red-500">{error}</div>}
             <ReactMapGL
                 ref={mapRef}
+                onMove={evt => setViewState(evt.viewState)}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
                 style={{ width: "100%", height: "500px" }}
                 mapStyle={MAP_STYLE}
@@ -508,6 +512,7 @@ function MapComponent() {
             {error && <div className="text-red-500">{error}</div>}
             <ReactMapGL
                 ref={mapRef}
+                onMove={evt => setViewState(evt.viewState)}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
                 style={{ width: "100%", height: "500px" }}
                 mapStyle={MAP_STYLE}
@@ -710,6 +715,7 @@ function MapComponent() {
             {error && <div className="text-red-500">{error}</div>}
             <ReactMapGL
                 ref={mapRef}
+                onMove={evt => setViewState(evt.viewState)}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
                 style={{ width: "100%", height: "500px" }}
                 mapStyle={MAP_STYLE}
@@ -1009,6 +1015,7 @@ function MapComponent() {
             {error && <div className="text-red-500">{error}</div>}
             <ReactMapGL
                 ref={mapRef}
+                onMove={evt => setViewState(evt.viewState)}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
                 style={{ width: "100%", height: "500px" }}
                 mapStyle={MAP_STYLE}
