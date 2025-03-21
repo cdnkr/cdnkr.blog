@@ -2,7 +2,7 @@ import MDX from "@/components/mdx";
 import Link from "next/link";
 import PostSectionNav from "./postsectionnav";
 import Button from "./ui/button";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "./ui/icons";
+import { ArrowLeft, ArrowRight } from "./ui/icons";
 import Tag from "./ui/tag";
 import { cn } from "@/utils/cn";
 import ShareButton from "./share";
@@ -11,7 +11,7 @@ export default function Post({ post, layout = "default" }) {
   const { frontmatter } = post;
 
   return (
-    <div className="w-full flex flex-col gap-6 lg:gap-6 mt-8">
+    <div className="w-full flex flex-col gap-6 lg:gap-4 mt-6">
       {frontmatter?.tags && (
         <div className="w-full flex justify-center items-center flex-wrap gap-2">
           {frontmatter?.tags?.map((tag, i) => (
@@ -36,18 +36,20 @@ export default function Post({ post, layout = "default" }) {
                 {frontmatter.title}
               </span>
             </h2>
-            <div className="mt-[3px] w-full flex justify-center">
-              <time
-                dateTime={frontmatter.date}
-                className="font-mono text-xs bg-title-text-bg text-text-title px-2 py-1"
-              >
-                {new Date(frontmatter.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            </div>
+            {frontmatter.date && (
+              <div className="mt-[3px] w-full flex justify-center">
+                <time
+                  dateTime={frontmatter.date}
+                  className="font-mono text-xs bg-title-text-bg text-text-title px-2 py-1"
+                >
+                  {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              </div>
+            )}
           </div>
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
