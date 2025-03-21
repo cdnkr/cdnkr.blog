@@ -1,35 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import ReactMapGL, { Layer, Marker, Source } from "react-map-gl";
 import mapboxgl from "mapbox-gl";
-import ReactMapGL, { Marker, Source, Layer } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+
 import Button from "../ui/button";
+import { Block } from "../ui/block";
 
-// API function for IP location using native fetch
-const getIpApiData = async () => {
-    try {
-        const response = await fetch(`https://ipapi.co/json`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (err) {
-        console.error("Error fetching IP data:", err);
-        return defaultResponse;
-    }
-};
+import "mapbox-gl/dist/mapbox-gl.css";
 
 // Default response if IP API fails
-const defaultResponse = {
-    latitude: 51.5074, // London coordinates as fallback
+const DEFAULTS = {
+    latitude: 51.5074, // London coordinates as default centre
     longitude: -0.1278,
-    country_code: "GB",
-    ip: "0.0.0.0"
+    zoom: 10
 };
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
 
 // Calculate distance between two points using Haversine formula
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -57,18 +44,18 @@ const calculateMidpoint = (lat1, lng1, lat2, lng2) => {
     };
 };
 
-const MapComponent = () => {
+function MapComponent() {
+    const mapRef = useRef();
+    const [viewState, setViewState] = useState({
+        latitude: DEFAULTS.latitude,
+        longitude: DEFAULTS.longitude,
+        zoom: DEFAULTS.zoom,
+    });
     const [ipLocation, setIpLocation] = useState(null);
     const [preciseLocation, setPreciseLocation] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [distance, setDistance] = useState(null);
-    const [viewState, setViewState] = useState({
-        longitude: -0.1278,
-        latitude: 51.5074,
-        zoom: 10
-    });
-    const mapRef = useRef(null);
 
     // Get initial location based on IP
     useEffect(() => {
@@ -76,7 +63,13 @@ const MapComponent = () => {
             try {
                 setLoading(true);
                 // Get location data from IP
-                const ipData = await getIpApiData();
+                const response = await fetch(`https://ipapi.co/json`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const ipData = await response.json();
 
                 const location = {
                     lat: ipData.latitude,
@@ -94,8 +87,8 @@ const MapComponent = () => {
                 setError("Failed to get location from IP");
                 // Use default location
                 setIpLocation({
-                    lat: defaultResponse.latitude,
-                    lng: defaultResponse.longitude
+                    lat: DEFAULTS.latitude,
+                    lng: DEFAULTS.longitude
                 });
             } finally {
                 setLoading(false);
@@ -155,6 +148,24 @@ const MapComponent = () => {
         }
     };
 
+    // Custom Marker component
+    const CustomMarker = ({ color, children }) => (
+        <div className="flex flex-col items-center">
+            {children}
+            <div
+                className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
+                style={{ backgroundColor: color }}
+            />
+        </div>
+    );
+
+    // Custom Distance Label component
+    const DistanceLabel = ({ distance }) => (
+        <div className="bg-black px-2 py-1 text-white text-xs font-mono uppercase">
+            <p className="font-bold">{distance.toFixed(2)} km</p>
+        </div>
+    );
+
     // Mapbox route line between points
     const routeData = {
         type: "Feature",
@@ -179,99 +190,76 @@ const MapComponent = () => {
         }
     };
 
-    // Custom Marker component
-    const CustomMarkerPin = ({ color, children }) => (
-        <div className="flex flex-col items-center">
-            <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
-                {children}
-            </div>
-            <div
-                className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
-                style={{ backgroundColor: color }}
-            />
-        </div>
-    );
-
-    // Custom Distance Label component
-    const DistanceLabel = ({ distance }) => (
-        <div className="bg-black px-2 py-1 text-white text-xs font-mono uppercase">
-            <p className="font-bold">{distance.toFixed(2)} km</p>
-        </div>
-    );
-
-    // Mapbox dark style
-    const mapStyle = "mapbox://styles/mapbox/dark-v11";
-
-    if (loading && !ipLocation) {
-        return <div>Loading map...</div>;
-    }
-
     return (
-        <div className="not-prose w-full relative">
-            {error && <div className="error-message">{error}</div>}
-
-            {ipLocation && (
-                <div className="border-[rgba(var(--color-image-shadow))] shadow-[6px_6px_0_0_rgba(var(--color-image-shadow))]">
-                    <ReactMapGL
-                        ref={mapRef}
-                        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-                        {...viewState}
-                        onMove={evt => setViewState(evt.viewState)}
-                        style={{ width: "100%", height: "500px" }}
-                        mapStyle={mapStyle}
+        <div className="not-prose w-full">
+            {error && <Block className="text-red-500 mb-4 bg-black font-mono">{error}</Block>}
+            <ReactMapGL
+                ref={mapRef}
+                onMove={evt => setViewState(evt.viewState)}
+                mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+                style={{ width: "100%", height: "500px" }}
+                mapStyle={MAP_STYLE}
+                {...viewState}
+            >
+                {/* IP Location Marker */}
+                {ipLocation && (
+                    <Marker
+                        longitude={ipLocation.lng}
+                        latitude={ipLocation.lat}
+                        anchor="bottom"
                     >
-                        {/* IP Location Marker */}
-                        <Marker
-                            longitude={ipLocation.lng}
-                            latitude={ipLocation.lat}
-                            anchor="bottom"
-                        >
-                            <CustomMarkerPin color="#000000">
+                        <CustomMarker color="#000000">
+                            <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
                                 <p className="text-xs font-mono uppercase font-bold">IP Location</p>
                                 <p className="text-xs font-mono uppercase">
-                                    lat <span className="text-gray-300">{ipLocation.lat.toFixed(2)}</span> lng <span className="text-gray-300">{ipLocation.lng.toFixed(2)}</span>
+                                    lat <span className="text-gray-300">{ipLocation.lat.toFixed(2)}</span>
+                                    &nbsp;
+                                    lng <span className="text-gray-300">{ipLocation.lng.toFixed(2)}</span>
                                 </p>
-                            </CustomMarkerPin>
-                        </Marker>
+                            </div>
+                        </CustomMarker>
+                    </Marker>
+                )}
 
-                        {/* Precise Location Marker */}
-                        {preciseLocation && (
-                            <Marker
-                                longitude={preciseLocation.lng}
-                                latitude={preciseLocation.lat}
-                                anchor="bottom"
-                            >
-                                <CustomMarkerPin color="#000000">
-                                    <p className="text-xs font-mono uppercase font-bold">Precise Location</p>
-                                    <p className="text-xs font-mono uppercase">
-                                        lat <span className="text-gray-300">{preciseLocation.lat.toFixed(2)}</span> lng <span className="text-gray-300">{preciseLocation.lng.toFixed(2)}</span>
-                                    </p>
-                                </CustomMarkerPin>
-                            </Marker>
-                        )}
+                {/* Precise Location Marker */}
+                {preciseLocation && (
+                    <Marker
+                        longitude={preciseLocation.lng}
+                        latitude={preciseLocation.lat}
+                        anchor="bottom"
+                    >
+                        <CustomMarker color="#000000">
+                            <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                                <p className="text-xs font-mono uppercase font-bold">Precise Location</p>
+                                <p className="text-xs font-mono uppercase text-white">
+                                    lat <span className="text-gray-300">{preciseLocation.lat.toFixed(2)}</span>
+                                    &nbsp;
+                                    lng <span className="text-gray-300">{preciseLocation.lng.toFixed(2)}</span>
+                                </p>
+                            </div>
+                        </CustomMarker>
+                    </Marker>
+                )}
 
-                        {/* Distance Label at Midpoint */}
-                        {ipLocation && preciseLocation && distance && (
-                            <Marker
-                                longitude={calculateMidpoint(ipLocation.lng, ipLocation.lng, preciseLocation.lng, preciseLocation.lng).lng}
-                                latitude={calculateMidpoint(ipLocation.lat, ipLocation.lat, preciseLocation.lat, preciseLocation.lat).lat}
-                                anchor="top-right"
-                            >
-                                <DistanceLabel distance={distance} />
-                            </Marker>
-                        )}
+                {/* Dashed line between the two points */}
+                {ipLocation && preciseLocation && (
+                    <Source id="route-source" type="geojson" data={routeData}>
+                        <Layer {...lineLayer} />
+                    </Source>
+                )}
 
-                        {/* Dashed line between the two points */}
-                        {ipLocation && preciseLocation && (
-                            <Source id="route-source" type="geojson" data={routeData}>
-                                <Layer {...lineLayer} />
-                            </Source>
-                        )}
-                    </ReactMapGL>
-                </div>
-            )}
-
-            <div className="w-full flex justify-center mt-6">
+                {/* Distance Label at Midpoint */}
+                {ipLocation && preciseLocation && distance && (
+                    <Marker
+                        longitude={calculateMidpoint(ipLocation.lng, ipLocation.lng, preciseLocation.lng, preciseLocation.lng).lng}
+                        latitude={calculateMidpoint(ipLocation.lat, ipLocation.lat, preciseLocation.lat, preciseLocation.lat).lat}
+                        anchor="top-right"
+                    >
+                        <DistanceLabel distance={distance} />
+                    </Marker>
+                )}
+            </ReactMapGL>
+            <div className="w-full flex justify-center mt-4">
                 <Button
                     onClick={getPreciseLocation}
                     disabled={loading || !ipLocation}
