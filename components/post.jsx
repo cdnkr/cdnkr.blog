@@ -20,18 +20,22 @@ export default function Post({ post, layout = "default" }) {
         </div>
       )}
       <div className="w-full flex flex-col gap-10">
-        <div className={cn(
-          "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary/70",
-          post.pattern,
-          layout === "full" ? "lg:py-16 min-h-auto" : "lg:min-h-[360px]"
-        )}>
-          <div className={cn(
-            "w-full flex flex-col justify-center items-center"
-          )}>
-            <h2 className={cn(
-              "text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin",
-              "text-center text-3xl lg:text-5xl"
-            )}>
+        <div
+          className={cn(
+            "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary/70",
+            post.pattern,
+            layout === "full" ? "lg:py-16 min-h-auto" : "lg:min-h-[360px]",
+          )}
+        >
+          <div
+            className={cn("w-full flex flex-col justify-center items-center")}
+          >
+            <h2
+              className={cn(
+                "text-2xl lg:text-4xl max-w-xl text-wrap break-words font-libre-franklin",
+                "text-center text-3xl lg:text-5xl",
+              )}
+            >
               <span className="text-text-title bg-title-text-bg uppercase font-bold leading-snug">
                 {frontmatter.title}
               </span>
@@ -53,20 +57,20 @@ export default function Post({ post, layout = "default" }) {
           </div>
         </div>
         <div className="w-full flex flex-col-reverse lg:grid lg:grid-cols-12 gap-8 relative">
-          <article className={
-            cn(
+          <article
+            className={cn(
               "w-full flex flex-col gap-8",
-              layout === "full" ? "lg:col-span-12" : "lg:col-span-8"
-            )}>
+              layout === "full" ? "lg:col-span-12" : "lg:col-span-8",
+            )}
+          >
             {post.sections.map((section, i) => (
               <div
                 key={i}
                 id={encodeURIComponent(post.sectionTitles[i].replace(/#/g, ""))}
-                className={
-                  cn(
-                    "w-full",
-                    layout === "full" ? "flex justify-center" : ""
-                  )}
+                className={cn(
+                  "w-full",
+                  layout === "full" ? "flex justify-center" : "",
+                )}
               >
                 <MDX source={section} layout={layout} />
               </div>
@@ -79,7 +83,7 @@ export default function Post({ post, layout = "default" }) {
                 sectionTitles={post.sectionTitles}
                 className={cn(
                   "hidden lg:block",
-                  layout === "full" ? "lg:hidden" : "lg:col-span-4"
+                  layout === "full" ? "lg:hidden" : "lg:col-span-4",
                 )}
               />
             </div>

@@ -198,7 +198,9 @@ function CardPreview({ productId }) {
       />
       <div className="flex-1">
         <h3 className="font-bold">{product.name}</h3>
-        <p className="text-sm text-chatbot-card-category-text">{product.category}</p>
+        <p className="text-sm text-chatbot-card-category-text">
+          {product.category}
+        </p>
         <p className="font-semibold">${product.price.toFixed(2)}</p>
         <p className="text-sm text-chatbot-card-description-text mt-1">
           {product.description.slice(0, 100)}
@@ -294,8 +296,7 @@ export default function Chatbot() {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
       // Construct the system prompt with product catalog and FAQ data
-      const systemPrompt = 
-`You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
+      const systemPrompt = `You are a helpful assistant for an online shoe store. Use the following product catalog and FAQ information to assist customers:
 
 Product Catalog:
 ${JSON.stringify(SAMPLE_PRODUCTS, null, 2)}

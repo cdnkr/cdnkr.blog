@@ -8,20 +8,14 @@ export default function Home({ posts, tags }) {
   const [tag, setTag] = useState("");
 
   const filteredPosts = posts.filter((post) => {
-    return (
-      (tag === "" || post.frontmatter.tags.includes(tag))
-    );
+    return tag === "" || post.frontmatter.tags.includes(tag);
   });
 
   return (
     <div className="w-full flex flex-col gap-12 py-8 lg:py-7">
       <div className="w-full flex flex-col gap-8 lg:gap-12 relative">
         <div className="flex lg:col-span-4 flex-col gap-8">
-          <Filters
-            tags={tags}
-            tag={tag}
-            setTag={setTag}
-          />
+          <Filters tags={tags} tag={tag} setTag={setTag} />
         </div>
         <div className="w-full flex justify-center flex-col gap-y-8 lg:gap-y-16 gap-x-42">
           <PostList posts={filteredPosts} />

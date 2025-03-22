@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 /**
  * Custom hook for persisting state in localStorage
@@ -32,15 +32,15 @@ function useLocalStorage(key, initialValue) {
       // Allow value to be a function so we have the same API as useState
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
-      
+
       // Save state
       setStoredValue(valueToStore);
-      
+
       // Save to localStorage
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
-      
+
       // Dispatch a custom event so other instances can update
-      window.dispatchEvent(new Event('local-storage-change'));
+      window.dispatchEvent(new Event("local-storage-change"));
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error);
     }
@@ -51,16 +51,16 @@ function useLocalStorage(key, initialValue) {
     const handleStorageChange = () => {
       setStoredValue(getStoredValue());
     };
-    
+
     // Listen for the custom event
-    window.addEventListener('local-storage-change', handleStorageChange);
-    
+    window.addEventListener("local-storage-change", handleStorageChange);
+
     // Listen for changes to localStorage from other windows
-    window.addEventListener('storage', handleStorageChange);
-    
+    window.addEventListener("storage", handleStorageChange);
+
     return () => {
-      window.removeEventListener('local-storage-change', handleStorageChange);
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener("local-storage-change", handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, [key]); // Re-run if the key changes
 

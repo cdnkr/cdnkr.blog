@@ -3,7 +3,7 @@ import {
   JetBrains_Mono,
   Libre_Franklin,
   Oswald,
-  Tiny5
+  Tiny5,
 } from "next/font/google";
 
 import "./globals.css";
@@ -82,7 +82,10 @@ export default function RootLayout({ children }) {
               </a>
             </div>
             <div className="flex items-center gap-4">
-              <Link href="/about/blog" className="hover:text-tertiary transition-all duration-300">
+              <Link
+                href="/about/blog"
+                className="hover:text-tertiary transition-all duration-300"
+              >
                 About
               </Link>
             </div>

@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
 import { cn } from "@/utils/cn";
 import { useEffect, useRef, useState } from "react";
 
-export default function Masonry({ 
-  items, 
-  renderItem, 
+export default function Masonry({
+  items,
+  renderItem,
   columnWidth = 300,
   gap = 16,
   loadMore = false,
-  className = ""
+  className = "",
 }) {
   const [columns, setColumns] = useState(1);
   const containerRef = useRef(null);
@@ -20,29 +20,32 @@ export default function Masonry({
     const updateColumns = () => {
       if (!containerRef.current) return;
       const containerWidth = containerRef.current.offsetWidth;
-      
+
       let newColumns;
       // Mobile screens
       if (window.innerWidth <= 640) {
         newColumns = 1;
-      } 
-      
+      }
+
       // Tablet screens
       else if (window.innerWidth <= 1024) {
         newColumns = 2;
       }
       // Desktop and larger
       else {
-        newColumns = Math.max(1, Math.floor((containerWidth + gap) / (columnWidth + gap)));
+        newColumns = Math.max(
+          1,
+          Math.floor((containerWidth + gap) / (columnWidth + gap)),
+        );
       }
-      
-      console.log('Screen width:', window.innerWidth, 'Columns:', newColumns);
+
+      console.log("Screen width:", window.innerWidth, "Columns:", newColumns);
       setColumns(newColumns);
     };
 
     updateColumns();
-    window.addEventListener('resize', updateColumns);
-    return () => window.removeEventListener('resize', updateColumns);
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
   }, [columnWidth, gap]);
 
   // Infinite scroll handler
@@ -61,21 +64,27 @@ export default function Masonry({
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore]);
 
   // Distribute items into columns
   const getColumnItems = () => {
     const columnItems = Array.from({ length: columns }, () => []);
-    
+
     items.forEach((item, index) => {
       const shortestColumn = columnItems.reduce((shortest, current, i) => {
-        const currentHeight = current.reduce((sum, item) => sum + (item.height || 1), 0);
-        const shortestHeight = shortest.reduce((sum, item) => sum + (item.height || 1), 0);
+        const currentHeight = current.reduce(
+          (sum, item) => sum + (item.height || 1),
+          0,
+        );
+        const shortestHeight = shortest.reduce(
+          (sum, item) => sum + (item.height || 1),
+          0,
+        );
         return currentHeight < shortestHeight ? current : shortest;
       }, columnItems[0]);
-      
+
       shortestColumn.push(item);
     });
 
@@ -83,24 +92,22 @@ export default function Masonry({
   };
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className={cn("w-full grid", className)}
       style={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
         gap: `${gap}px`,
-        width: '100%' // Ensure full width
+        width: "100%", // Ensure full width
       }}
     >
       {getColumnItems().map((column, columnIndex) => (
         <div key={columnIndex} className="flex flex-col gap-4">
           {column.map((item, itemIndex) => (
-            <div key={itemIndex}>
-              {renderItem(item)}
-            </div>
+            <div key={itemIndex}>{renderItem(item)}</div>
           ))}
         </div>
       ))}
     </div>
   );
-} 
+}

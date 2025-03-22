@@ -78,9 +78,11 @@ export default function Button({
         // variants[variant],
         className,
       )}
-      style={shadowColor && {
-        "--color-shadow": shadowColor,
-      }}
+      style={
+        shadowColor && {
+          "--color-shadow": shadowColor,
+        }
+      }
       {...rest}
     >
       {children}

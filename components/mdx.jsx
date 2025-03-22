@@ -63,23 +63,40 @@ const components = {
           src={src}
           alt={alt}
           loading="lazy"
-          className={cn(className, "border-2 max-w-full lg:max-w-md mx-auto text-center border-[rgba(var(--color-image-shadow))] shadow-[6px_6px_0_0_rgba(var(--color-image-shadow))]")}
+          className={cn(
+            className,
+            "border-2 max-w-full lg:max-w-md mx-auto text-center border-[rgba(var(--color-image-shadow))] shadow-[6px_6px_0_0_rgba(var(--color-image-shadow))]",
+          )}
         />
         {caption && (
-          <p className="text-sm text-gray-600 italic font-mono mt-2">{caption}</p>
+          <p className="text-sm text-gray-600 italic font-mono mt-2">
+            {caption}
+          </p>
         )}
       </div>
-
     );
   },
   a: ({ href, children }) => {
     const isExternal = href.startsWith("http");
 
     if (isExternal) {
-      return <a href={href} className="text-tertiary" target="_blank" rel="noopener noreferrer">{children}</a>;
+      return (
+        <a
+          href={href}
+          className="text-tertiary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
     }
 
-    return <Link href={href} className="text-tertiary">{children}</Link>;
+    return (
+      <Link href={href} className="text-tertiary">
+        {children}
+      </Link>
+    );
   },
   ...postComponents,
 };

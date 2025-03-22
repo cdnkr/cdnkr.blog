@@ -9,26 +9,29 @@ I’m Chad—a front-end developer based in South Africa. I love building, I lov
 
 ![Me](/images/content/about/me/1.png)
 
-I currently work at [forgood](https://www.forgood.co.za), an online volunteering platform that connects people to charities and causes. My day-to-day stack includes React, Next.js, Node.js, TypeScript, TailwindCSS and VanillaJS.  
+I currently work at [forgood](https://www.forgood.co.za), an online volunteering platform that connects people to charities and causes. My day-to-day stack includes React, Next.js, Node.js, TypeScript, TailwindCSS and VanillaJS.
 
-Like most developers, I’ve spent a ridiculous amount of time scouring dev blogs—not for fun (except when I’m checking out something cool, like a macOS remake or [Bruno Simon’s 3D portfolio](https://bruno-simon.com/)). Usually, it’s because I’m stuck on a problem, and I just need a **straight-up solution**.  
+Like most developers, I’ve spent a ridiculous amount of time scouring dev blogs—not for fun (except when I’m checking out something cool, like a macOS remake or [Bruno Simon’s 3D portfolio](https://bruno-simon.com/)). Usually, it’s because I’m stuck on a problem, and I just need a **straight-up solution**.
 
 ## And that’s what this blog is about
 
-Ever found yourself deep in a debugging session, bouncing between Stack Overflow, ChatGPT, and some random forum post from 2013, only to realize none of them give you **exactly** what you need? Yeah, same.  
+Ever found yourself deep in a debugging session, bouncing between Stack Overflow, ChatGPT, and some random forum post from 2013, only to realize none of them give you **exactly** what you need? Yeah, same.
 
-I hate sifting through unnecessary fluff when I just want **a clear, step-by-step guide** to the answer. No assumptions, no missing steps—just the solution, **plus a working demo** where possible. That's what I'm trying to achieve here:  
-- **Concise, problem-solving posts** based on real issues I’ve run into.  
-- **Minimal distractions**, just well-structured, readable content.  
-- **Code examples that actually work**, without the “figure the rest out yourself” nonsense.  
+I hate sifting through unnecessary fluff when I just want **a clear, step-by-step guide** to the answer. No assumptions, no missing steps—just the solution, **plus a working demo** where possible. That's what I'm trying to achieve here:
+
+- **Concise, problem-solving posts** based on real issues I’ve run into.
+- **Minimal distractions**, just well-structured, readable content.
+- **Code examples that actually work**, without the “figure the rest out yourself” nonsense.
 
 ## The tech stack _(in case you're curious)_
 
-### **Next.js 15 App Router**  
-Generated as a static site—because, honestly, static was all I needed. I originally planned to go with plain HTML, CSS, and JS, and I *100%* would have, but most of the components I use (and want to show demos of) are in React.  
+### **Next.js 15 App Router**
 
-### **Posts are rendered statically at build time**  
-Here’s the Next.js config file. It includes static export, MDX, and PWA setup:  
+Generated as a static site—because, honestly, static was all I needed. I originally planned to go with plain HTML, CSS, and JS, and I _100%_ would have, but most of the components I use (and want to show demos of) are in React.
+
+### **Posts are rendered statically at build time**
+
+Here’s the Next.js config file. It includes static export, MDX, and PWA setup:
 
 ```javascript
 import createMDX from "@next/mdx";
@@ -57,21 +60,26 @@ const withMDX = createMDX({
 export default withPWAConfig(withMDX(nextConfig));
 ```
 
-Technically, this blog didn’t *need* to be a PWA, but I have [a guide](/post/setting-up-a-pwa-in-nextjs) on setting one up and figured I’d demo the install button while I was at it.  
+Technically, this blog didn’t _need_ to be a PWA, but I have [a guide](/post/setting-up-a-pwa-in-nextjs) on setting one up and figured I’d demo the install button while I was at it.
 
 ### **Hosted on GitHub Pages ([Repo here](https://github.com/cdnkr/cdnkr.blog))**
+
 GitHub Pages works great—honestly had it up and running in no time. I considered [Vercel](https://vercel.com/), but their firewall blocks Google’s search indexing crawlers unless you pay per request to whitelist their IPs. With GitHub Pages? None of that. Super easy custom domain setup. GitHub Actions work like a dream. No server, no edge functions—but that’s fine. I come from the pre-Next.js era, where everything was client-side anyway. This feels like home.
 
 ### **JavaScript > TypeScript**
+
 I love TypeScript for large-scale apps—it’s safe and whatever else. But, for a _"weekend"_ project like this, the developer experience plain JS offers, for me at least, is just so quick and efficient. And most importantly, no type gymnastics (my least favorite sport).
 
-### **MDX for content**  
-This allows me to embed interactive demos directly inside posts. I used [`mdx-remote`](https://www.npmjs.com/package/next-mdx-remote/v/0.5.1)—only to later discover that Next.js has built-in [MDX](https://mdxjs.com/) support. At that point, it was too late (or I was too lazy) to switch. Whatever… it works.   
+### **MDX for content**
+
+This allows me to embed interactive demos directly inside posts. I used [`mdx-remote`](https://www.npmjs.com/package/next-mdx-remote/v/0.5.1)—only to later discover that Next.js has built-in [MDX](https://mdxjs.com/) support. At that point, it was too late (or I was too lazy) to switch. Whatever… it works.
 
 ### **Code blocks styled with `rehype-code-prettier`**
-Under the hood, it uses **Shiki** for syntax highlighting.  
 
-The copy code button was a bit more of a pain than expected because of how [`rehype-pretty-code`](https://rehype-pretty.pages.dev/) structures the output—wrapping each line/token in spans inside a `<code>` block, inside a `<pre>` tag. I had to extract the text from the `<pre>` element’s children and add it to `navigator.clipboard`. There's probably a far better way to do this, but eventually, I got it working.  
+Under the hood, it uses **Shiki** for syntax highlighting.
+
+The copy code button was a bit more of a pain than expected because of how [`rehype-pretty-code`](https://rehype-pretty.pages.dev/) structures the output—wrapping each line/token in spans inside a `<code>` block, inside a `<pre>` tag. I had to extract the text from the `<pre>` element’s children and add it to `navigator.clipboard`. There's probably a far better way to do this, but eventually, I got it working.
+
 ```javascript
 const components = {
   pre: ({ children }) => {
@@ -100,20 +108,20 @@ const components = {
 };
 ```
 
-### **Design by me**  
+### **Design by me**
 
-Well kind of, I literally just tweaked Tailwind classes until I was happy. 🤷‍♂️  
+Well kind of, I literally just tweaked Tailwind classes until I was happy. 🤷‍♂️
 
-That said, I *do* appreciate good design. I can spend hours scrolling through [Godly’s](https://godly.website/) insane collection of featured sites, just taking in all the creativity.  
+That said, I _do_ appreciate good design. I can spend hours scrolling through [Godly’s](https://godly.website/) insane collection of featured sites, just taking in all the creativity.
 
-My taste leans toward **simple, minimalistic** designs that stand out in unexpected ways—a blend of technical execution and pure design concepts.  
+My taste leans toward **simple, minimalistic** designs that stand out in unexpected ways—a blend of technical execution and pure design concepts.
 
-For this site, I probably spent more time tweaking the design than actually coding. This is like the *fifth* version, and honestly? I’m still not completely happy with it. 😅 But design is a skill I’m actively working on, and since I don’t usually get the chance to flex that muscle, it’s been dope designing something entirely for myself.  
+For this site, I probably spent more time tweaking the design than actually coding. This is like the _fifth_ version, and honestly? I’m still not completely happy with it. 😅 But design is a skill I’m actively working on, and since I don’t usually get the chance to flex that muscle, it’s been dope designing something entirely for myself.
 
 ### **And that’s it...**
 
-If it helps just one other dev, I’ll be happy. And if it doesn’t? Whatever. The most important thing is that this has been an absolute blast to build.  
+If it helps just one other dev, I’ll be happy. And if it doesn’t? Whatever. The most important thing is that this has been an absolute blast to build.
 
-Thanks for reading. Thanks for being here.  
+Thanks for reading. Thanks for being here.
 
 **Peace.**
