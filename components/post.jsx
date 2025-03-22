@@ -11,7 +11,7 @@ export default function Post({ post, layout = "default" }) {
   const { frontmatter } = post;
 
   return (
-    <div className="w-full flex flex-col gap-6 lg:gap-4 mt-6">
+    <div className="w-full flex flex-col gap-6 lg:gap-4 mt-4">
       {frontmatter?.tags && (
         <div className="w-full flex justify-center items-center flex-wrap gap-2">
           {frontmatter?.tags?.map((tag, i) => (
