@@ -193,72 +193,74 @@ function MapComponent() {
     return (
         <div className="not-prose w-full">
             {error && <Block className="text-red-500 mb-4 bg-black font-mono">{error}</Block>}
-            <ReactMapGL
-                ref={mapRef}
-                onMove={evt => setViewState(evt.viewState)}
-                mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
-                style={{ width: "100%", height: "500px" }}
-                mapStyle={MAP_STYLE}
-                {...viewState}
-            >
-                {/* IP Location Marker */}
-                {ipLocation && (
-                    <Marker
-                        longitude={ipLocation.lng}
-                        latitude={ipLocation.lat}
-                        anchor="bottom"
-                    >
-                        <CustomMarker color="#000000">
-                            <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
-                                <p className="text-xs font-mono uppercase font-bold">IP Location</p>
-                                <p className="text-xs font-mono uppercase">
-                                    lat <span className="text-gray-300">{ipLocation.lat.toFixed(2)}</span>
-                                    &nbsp;
-                                    lng <span className="text-gray-300">{ipLocation.lng.toFixed(2)}</span>
-                                </p>
-                            </div>
-                        </CustomMarker>
-                    </Marker>
-                )}
+            <div className="border-[rgba(var(--color-image-shadow))] shadow-[6px_6px_0_0_rgba(var(--color-image-shadow))]">
+                <ReactMapGL
+                    ref={mapRef}
+                    onMove={evt => setViewState(evt.viewState)}
+                    mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+                    style={{ width: "100%", height: "500px" }}
+                    mapStyle={MAP_STYLE}
+                    {...viewState}
+                >
+                    {/* IP Location Marker */}
+                    {ipLocation && (
+                        <Marker
+                            longitude={ipLocation.lng}
+                            latitude={ipLocation.lat}
+                            anchor="bottom"
+                        >
+                            <CustomMarker color="#000000">
+                                <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                                    <p className="text-xs font-mono uppercase font-bold">IP Location</p>
+                                    <p className="text-xs font-mono uppercase">
+                                        lat <span className="text-gray-300">{ipLocation.lat.toFixed(2)}</span>
+                                        &nbsp;
+                                        lng <span className="text-gray-300">{ipLocation.lng.toFixed(2)}</span>
+                                    </p>
+                                </div>
+                            </CustomMarker>
+                        </Marker>
+                    )}
 
-                {/* Precise Location Marker */}
-                {preciseLocation && (
-                    <Marker
-                        longitude={preciseLocation.lng}
-                        latitude={preciseLocation.lat}
-                        anchor="bottom"
-                    >
-                        <CustomMarker color="#000000">
-                            <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
-                                <p className="text-xs font-mono uppercase font-bold">Precise Location</p>
-                                <p className="text-xs font-mono uppercase text-white">
-                                    lat <span className="text-gray-300">{preciseLocation.lat.toFixed(2)}</span>
-                                    &nbsp;
-                                    lng <span className="text-gray-300">{preciseLocation.lng.toFixed(2)}</span>
-                                </p>
-                            </div>
-                        </CustomMarker>
-                    </Marker>
-                )}
+                    {/* Precise Location Marker */}
+                    {preciseLocation && (
+                        <Marker
+                            longitude={preciseLocation.lng}
+                            latitude={preciseLocation.lat}
+                            anchor="bottom"
+                        >
+                            <CustomMarker color="#000000">
+                                <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                                    <p className="text-xs font-mono uppercase font-bold">Precise Location</p>
+                                    <p className="text-xs font-mono uppercase text-white">
+                                        lat <span className="text-gray-300">{preciseLocation.lat.toFixed(2)}</span>
+                                        &nbsp;
+                                        lng <span className="text-gray-300">{preciseLocation.lng.toFixed(2)}</span>
+                                    </p>
+                                </div>
+                            </CustomMarker>
+                        </Marker>
+                    )}
 
-                {/* Dashed line between the two points */}
-                {ipLocation && preciseLocation && (
-                    <Source id="route-source" type="geojson" data={routeData}>
-                        <Layer {...lineLayer} />
-                    </Source>
-                )}
+                    {/* Dashed line between the two points */}
+                    {ipLocation && preciseLocation && (
+                        <Source id="route-source" type="geojson" data={routeData}>
+                            <Layer {...lineLayer} />
+                        </Source>
+                    )}
 
-                {/* Distance Label at Midpoint */}
-                {ipLocation && preciseLocation && distance && (
-                    <Marker
-                        longitude={calculateMidpoint(ipLocation.lng, ipLocation.lng, preciseLocation.lng, preciseLocation.lng).lng}
-                        latitude={calculateMidpoint(ipLocation.lat, ipLocation.lat, preciseLocation.lat, preciseLocation.lat).lat}
-                        anchor="top-right"
-                    >
-                        <DistanceLabel distance={distance} />
-                    </Marker>
-                )}
-            </ReactMapGL>
+                    {/* Distance Label at Midpoint */}
+                    {ipLocation && preciseLocation && distance && (
+                        <Marker
+                            longitude={calculateMidpoint(ipLocation.lng, ipLocation.lng, preciseLocation.lng, preciseLocation.lng).lng}
+                            latitude={calculateMidpoint(ipLocation.lat, ipLocation.lat, preciseLocation.lat, preciseLocation.lat).lat}
+                            anchor="top-right"
+                        >
+                            <DistanceLabel distance={distance} />
+                        </Marker>
+                    )}
+                </ReactMapGL>
+            </div>
             <div className="w-full flex justify-center mt-4">
                 <Button
                     onClick={getPreciseLocation}
