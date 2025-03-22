@@ -198,7 +198,9 @@ function CardPreview({ productId }) {
       />
       <div className="flex-1">
         <h3 className="font-bold">{product.name}</h3>
-        <p className="text-sm text-chatbot-card-category-text">{product.category}</p>
+        <p className="text-sm text-chatbot-card-category-text">
+          {product.category}
+        </p>
         <p className="font-semibold">${product.price.toFixed(2)}</p>
         <p className="text-sm text-chatbot-card-description-text mt-1">
           {product.description.slice(0, 100)}
@@ -431,7 +433,7 @@ Please provide helpful, friendly responses about our shoes, sizing, shipping, re
     <div className="not-prose py-4">
       <div className="flex flex-col h-[500px] w-full max-w-2xl mx-auto bg-chatbot-background border-2 border-chatbot-border">
         <div className="w-full border-b-2 border-chatbot-border p-4 bg-chatbot-section-bg text-chatbot-text">
-          <p className="font-bold font-mono uppercase">
+          <p className="text-2xl lg:text-3xl font-bold font-oswald uppercase">
             Find-a-Shoe
           </p>
         </div>

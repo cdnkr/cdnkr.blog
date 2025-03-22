@@ -3,6 +3,7 @@ import {
   JetBrains_Mono,
   Libre_Franklin,
   Oswald,
+  Tiny5,
 } from "next/font/google";
 
 import "./globals.css";
@@ -33,11 +34,17 @@ const libreFranklin = Libre_Franklin({
   subsets: ["latin"],
 });
 
+const tiny5 = Tiny5({
+  variable: "--font-tiny5",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${libreFranklin.variable} ${jetBrainsMono.variable} ${gochiHand.variable}`}
+      className={`${oswald.variable} ${libreFranklin.variable} ${jetBrainsMono.variable} ${gochiHand.variable} ${tiny5.variable}`}
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
@@ -50,7 +57,7 @@ export default function RootLayout({ children }) {
             <ThemeToggle />
           </div>
         </div>
-        <div className="w-full max-w-[1260px] flex flex-col items-center py-8 px-6 lg:px-8">
+        <div className="w-full max-w-[1260px] flex flex-col items-center py-2 lg:py-0 px-6 lg:px-8">
           <Header className="z-[1]" />
           {children}
         </div>

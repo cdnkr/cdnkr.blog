@@ -29,7 +29,9 @@ export default function UUIDV4Generator() {
 
   return (
     <div className="lg:p-4 lg:border-2 lg:border-dashed lg:border-muted flex flex-col gap-3 my-8 lg:my-0 lg:mb-8">
-      <pre className="group p-4 overflow-x-auto text-white bg-pre-bg">{uuid}</pre>
+      <pre className="group p-4 overflow-x-auto text-white bg-pre-bg">
+        {uuid}
+      </pre>
       <div className="flex gap-4">
         <CopyButton text={uuid} />
         <Button

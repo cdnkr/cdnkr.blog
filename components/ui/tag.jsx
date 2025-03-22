@@ -6,7 +6,9 @@ export default function Tag({ children, className, onClick }) {
   return (
     <span
       className={cn(
-        "text-text-secondary font-mono py-1 px-2 text-xs font-bold inline-block uppercase transition-all duration-300",
+        "py-1 px-2 inline-block",
+        "font-mono text-xs lg:text-lg font-bold text-text-secondary uppercase",
+        "transition-all duration-300",
         className,
       )}
       onClick={onClick}

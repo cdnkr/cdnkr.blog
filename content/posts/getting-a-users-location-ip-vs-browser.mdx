@@ -1,0 +1,1212 @@
+---
+title: Getting a User's Location—IP vs. Browser (With Mapbox Tutorial)
+description: A detailed guide on obtaining a user's location via IP-based tracking and the Geolocation API, and using them on a Mapbox map.
+date: 2025-03-21
+author: Chad Danker
+tags: [Mapbox, React, IP location, Geolocation API]
+slug: getting-a-users-location-ip-vs-browser
+---
+
+The technical test for my first job as a junior developer involved showing a user's location on a webpage. I decided to use Mapbox to visualize that data on a map. I even made it so the marker would update as they moved around. It was pretty cool seeing something I built actually _do_ something in the real world. I was so hyped I took my bicycle out for a ride around my neighbourhood watching the marker move. I got the job, so it must have been decent enough.
+
+_Quick side note: I did all this on a super old 3rd gen i3 laptop. Point is, getting into web dev doesn't require a crazy powerful machine, especially for front-end stuff._
+
+To kind of revisit that first project, I wanted to put together a guide on getting a user's location, the two main ways to do it, and how to use that info. Like my original, we'll use Mapbox to show a location on a map.
+
+### Here's what we'll build:
+
+<CurrentLocation />
+
+We'll cover how to get a user's approximate location via their IP address and their more precise location using the browser's Geolocation API. We will also cover the differences between these, and their limitations. Finally, we'll use some geographic utilities to calculate the distance between the two and draw a path between them on our Mapbox map.
+
+---
+
+These days, knowing a user's location is pretty useful for applications that need localized features. Think setting default locations on maps, showing the local weather, or for delivery services. There are two main ways to figure out where a user is:
+
+1. **IP-based location tracking:** Using services to _guess_ a user's location based on their IP address.
+2. **Browser-based Geolocation API:** Using the device's GPS, Wi-Fi, or cellular data to get a more exact location (but requires the user's permission).
+
+---
+
+## IP-Based Location Tracking
+
+IP-based tracking figures out a user's _approximate_ location from their IP address. IP addresses themselves don't contain location data, so services like [ipapi.co](https://ipapi.co/) keep big databases that link IP ranges to geographical areas. They get this data from ISPs, network infrastructure, and public records.
+
+### Why can't you just figure out location from an IP address yourself?
+
+It's not that simple. Here's why:
+
+- **ISPs Hold the Key:** Internet Service Providers (ISPs) assign IP addresses dynamically, and they're the only ones who know the _exact_ user-to-IP mapping. We simply don't have access to that.
+- **VPNs and Proxies:** Lots of people use VPNs or proxies, which hide their real IP and mess with location accuracy.
+- **Constantly Changing Data:** IP addresses change all the time, so keeping a database accurate is a never-ending job.
+
+### Fetching the User's Location via IP
+
+```javascript
+const getIpApiData = async () => {
+  try {
+    const response = await fetch(`https://ipapi.co/json`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Error fetching IP data:", err);
+    return { latitude: 51.5074, longitude: -0.1278 }; // Default to London... why not?
+  }
+};
+```
+
+### How It Works
+
+- We make a call to `ipapi.co/json` to grab location data based on the IP address.
+- If all goes well, it returns the latitude and longitude.
+- If something goes wrong (like the service is down), it defaults to London. Better than nothing, right?
+
+**Limitations:**
+
+- It only gives you a rough location, maybe down to the city level.
+- It can be way off because of VPNs, mobile networks, or how ISPs route traffic.
+
+---
+
+## Browser-Based Geolocation API
+
+The **Geolocation API** can give you more precise location data, but it _needs_ the user's permission. This is for privacy reasons (GDPR, CCPA, etc.). It uses the device's GPS, Wi-Fi positioning, or cellular triangulation to get more accurate coordinates.
+
+### Why the Permission Requirement?
+
+- **Privacy:** Unlike IP-based tracking (which is passive), this actively grabs sensitive location data.
+- **Security Risks:** Giving websites free access to user locations could lead to tracking abuse. No one wants that.
+- **User Control:** Browsers make sure users actively say "yes" or "no" to location requests.
+
+### Fetching the User's Location via Browser API
+
+```javascript
+const getPreciseLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        console.log("Precise location:", location);
+      },
+      (error) => {
+        console.error("Error fetching precise location:", error);
+      },
+    );
+  } else {
+    console.error("Geolocation is not supported by this browser");
+  }
+};
+```
+
+### How It Works
+
+- First, it checks if the browser even supports `navigator.geolocation`.
+- Then, it calls `getCurrentPosition`, which asks the user for permission.
+- If the user says yes, it gets the coordinates.
+
+**Limitations:**
+
+- It _requires_ the user's permission.
+- It's useless if the user says no.
+
+---
+
+## Displaying Both Locations with Mapbox
+
+Alright, let's get our hands dirty. We'll use **Mapbox** in a React app to show both the IP-based location and the precise location.
+
+---
+
+### Step 1: Install Dependencies
+
+```sh
+npm install react-map-gl mapbox-gl
+```
+
+[`mapbox-gl`](https://www.npmjs.com/package/mapbox-gl) is a JavaScript library for interactive, customizable vector maps on the web.
+
+[`react-map-gl`](https://visgl.github.io/react-map-gl/) is a library that makes using MapLibre GL JS and Mapbox GL JS in React applications easy. We'll be using it as the set-up is fast, easy and straight forward.
+
+These two work together to make adding maps to your React web app way easier.
+
+You'll also need a Mapbox API key. You can get one by signing up at [Mapbox](https://account.mapbox.com/auth/signup/). Map loads are free up to 50,000 per month, and you don't need to enter payment details to get started. Their generous free tier makes it great for learning how to integrate maps into your web app. Once you've signed up, go to the [Access Tokens page](https://console.mapbox.com/account/access-tokens/) on your developer console. [This guide](https://docs.mapbox.com/help/getting-started/access-tokens/) has more info on this.
+
+---
+
+### Step 2: Create the Map Component
+
+Let's render a map using `react-map-gl` and `mapbox-gl`. This is the bare minimum you need to get a Mapbox map on the screen.
+
+```jsx
+"use client";
+
+import React from "react";
+import ReactMapGL from "react-map-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+function MapComponent() {
+  return (
+    <ReactMapGL
+      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+      latitude={DEFAULTS.latitude}
+      longitude={DEFAULTS.longitude}
+      zoom={DEFAULTS.zoom}
+      style={{ width: "100%", height: "500px" }}
+      mapStyle={MAP_STYLE}
+    />
+  );
+}
+
+export default MapComponent;
+```
+
+- In this example, the default is set to London but ideally it should be something that makes sense to the context you're rendering it in.
+- the default longitude and latitude will be used as the center of the map.
+- The zoom is a scale which determines how zoomed in/out the map is.
+
+---
+
+### Step 3: Updating map state
+
+Next, let's refactor out some of the map config to React state so that we can update the state of the map programmatically.
+
+```jsx
+"use client";
+
+import React, { useRef, useState } from "react";
+import ReactMapGL from "react-map-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+function MapComponent() {
+  const mapRef = useRef();
+  const [viewState, setViewState] = useState({
+    latitude: DEFAULTS.latitude,
+    longitude: DEFAULTS.longitude,
+    zoom: DEFAULTS.zoom,
+  });
+
+  return (
+    <ReactMapGL
+      ref={mapRef}
+      onMove={(evt) => setViewState(evt.viewState)}
+      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+      style={{ width: "100%", height: "500px" }}
+      mapStyle={MAP_STYLE}
+      {...viewState}
+    />
+  );
+}
+
+export default MapComponent;
+```
+
+- We've created a ref for the map element which we can use to update its properties later.
+- We've refactored the longitude, latitude and zoom to React state, we'll be updating this progrommatically.
+- We added an `onMove` prop which will update our component state when the user pans, zooms or the map is updated in another way (i.e. in step 7 we'll use the `mapRef` to change the map bounds). Without this you wouldn't be able to pan around on the map as the values for the map center and zoom are passed as props and controlled by our component.
+- `viewState` is spread as props. If you're unfailiar with this syntax, it's the same as writing:
+
+```jsx
+<ReactMapGL
+  ref={mapRef}
+  mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+  style={{ width: "100%", height: "500px" }}
+  mapStyle={MAP_STYLE}
+  // explicit passing
+  latitude={viewState.latitude}
+  longitude={viewState.longitude}
+  zoom={viewState.zoom}
+/>
+```
+
+---
+
+### Step 4: Getting the IP location and displaying it as a marker
+
+Next, we want to get the users ip location using ipapi and set that as the new center of the map when the component loads so it'll update the `viewState` with the appropriate values. We also add a new state variable: `ipLocation` which stores the response from ipapi, this will be an object with a bunch of data related to their ip address. We only care about the `longitude` and `latitude` which we'll use to render a marker with a label.
+
+```jsx
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import ReactMapGL, { Marker } from "react-map-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+function MapComponent() {
+  const mapRef = useRef();
+  const [viewState, setViewState] = useState({
+    latitude: DEFAULTS.latitude,
+    longitude: DEFAULTS.longitude,
+    zoom: DEFAULTS.zoom,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [ipLocation, setIpLocation] = useState(null);
+
+  // Get initial location based on IP
+  useEffect(() => {
+    const fetchIpLocation = async () => {
+      try {
+        setLoading(true);
+        // Get location data from IP
+        const response = await fetch(`https://ipapi.co/json`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const ipData = await response.json();
+
+        const location = {
+          lat: ipData.latitude,
+          lng: ipData.longitude,
+        };
+
+        setIpLocation(location);
+        setViewState({
+          longitude: location.lng,
+          latitude: location.lat,
+          zoom: 10,
+        });
+      } catch (err) {
+        console.error("Error fetching IP location:", err);
+        setError("Failed to get location from IP");
+        // Use default location
+        setIpLocation({
+          lat: DEFAULTS.latitude,
+          lng: DEFAULTS.longitude,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIpLocation();
+  }, []);
+
+  // Custom Marker component
+  const CustomMarker = ({ color, children }) => (
+    <div className="flex flex-col items-center">
+      {children}
+      <div
+        className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
+        style={{ backgroundColor: color }}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      {error && <div className="text-red-500">{error}</div>}
+      <ReactMapGL
+        ref={mapRef}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        style={{ width: "100%", height: "500px" }}
+        mapStyle={MAP_STYLE}
+        {...viewState}
+      >
+        {/* IP Location Marker */}
+        {ipLocation && (
+          <Marker
+            longitude={ipLocation.lng}
+            latitude={ipLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  IP Location
+                </p>
+                <p className="text-xs font-mono uppercase">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+      </ReactMapGL>
+    </>
+  );
+}
+
+export default MapComponent;
+```
+
+We've added an error state and will show the appropriate error if the fetch fails.
+
+We use a custom marker and label as the defaults look pretty basic and you might want to add some custom styles to the markers rendered. I've used some basic dark theming with a mono style font but you could style this however you want.
+
+The custom class I've added (non-tailwind) is this:
+
+```css
+.marker-pulse {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+  animation: marker-pulse 2s infinite;
+}
+
+@keyframes marker-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+```
+
+Which adds a pulsing effect to the marker. I could've used tailwinds default animate pulse but I prefer how this pulse effect looks.
+
+---
+
+### Step 5: Showing the precise location
+
+Cool, now we have the ip location showing on the map. Next we want to add a button which prompts the user if they consent to sharing their location if they do, we'll set it to component state and render another marker with a label.
+
+```jsx
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import ReactMapGL, { Marker } from "react-map-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+function MapComponent() {
+  const mapRef = useRef();
+  const [viewState, setViewState] = useState({
+    latitude: DEFAULTS.latitude,
+    longitude: DEFAULTS.longitude,
+    zoom: DEFAULTS.zoom,
+  });
+  const [ipLocation, setIpLocation] = useState(null);
+  const [preciseLocation, setPreciseLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Get initial location based on IP
+  useEffect(() => {
+    const fetchIpLocation = async () => {
+      try {
+        setLoading(true);
+        // Get location data from IP
+        const response = await fetch(`https://ipapi.co/json`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const ipData = await response.json();
+
+        const location = {
+          lat: ipData.latitude,
+          lng: ipData.longitude,
+        };
+
+        setIpLocation(location);
+        setViewState({
+          longitude: location.lng,
+          latitude: location.lat,
+          zoom: 10,
+        });
+      } catch (err) {
+        console.error("Error fetching IP location:", err);
+        setError("Failed to get location from IP");
+        // Use default location
+        setIpLocation({
+          lat: DEFAULTS.latitude,
+          lng: DEFAULTS.longitude,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIpLocation();
+  }, []);
+
+  // Get precise location using browser Geolocation API
+  const getPreciseLocation = () => {
+    if (navigator.geolocation) {
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setPreciseLocation(newLocation);
+          setLoading(false);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+          setError(
+            "Failed to get precise location. Please check your browser permissions.",
+          );
+          setLoading(false);
+        },
+      );
+    } else {
+      setError("Geolocation is not supported by your browser");
+    }
+  };
+
+  // Custom Marker component
+  const CustomMarker = ({ color, children }) => (
+    <div className="flex flex-col items-center">
+      {children}
+      <div
+        className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
+        style={{ backgroundColor: color }}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      {error && <div className="text-red-500">{error}</div>}
+      <ReactMapGL
+        ref={mapRef}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        style={{ width: "100%", height: "500px" }}
+        mapStyle={MAP_STYLE}
+        {...viewState}
+      >
+        {/* IP Location Marker */}
+        {ipLocation && (
+          <Marker
+            longitude={ipLocation.lng}
+            latitude={ipLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  IP Location
+                </p>
+                <p className="text-xs font-mono uppercase">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+
+        {/* Precise Location Marker */}
+        {preciseLocation && (
+          <Marker
+            longitude={preciseLocation.lng}
+            latitude={preciseLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  Precise Location
+                </p>
+                <p className="text-xs font-mono uppercase text-white">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+      </ReactMapGL>
+      <div className="w-full flex justify-center mt-6">
+        <button onClick={getPreciseLocation} disabled={loading || !ipLocation}>
+          {loading ? "Getting location..." : "Show precise location"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+export default MapComponent;
+```
+
+We've added `getPreciseLocation` which prompts the user and sets the new state variable `preciseLocation` or `error`. `preciseLocation` is then used to render a second marker on the map with a custom label.
+
+---
+
+### Step 6: Drawing a line between the 2 markers
+
+Now, we have both showing and I thought it would be cool to show the distance between the 2 to demonstrate that they are quite far off each other. We'll first render a dashed line between the 2 location markers. To do this, we'll render a geojson layer to the map. We'll import `Source` and `Layer` from `react-map-gl` to render a dashed line between the points.
+
+```jsx
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import ReactMapGL, { Layer, Marker, Source } from "react-map-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+function MapComponent() {
+  const mapRef = useRef();
+  const [viewState, setViewState] = useState({
+    latitude: DEFAULTS.latitude,
+    longitude: DEFAULTS.longitude,
+    zoom: DEFAULTS.zoom,
+  });
+  const [ipLocation, setIpLocation] = useState(null);
+  const [preciseLocation, setPreciseLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Get initial location based on IP
+  useEffect(() => {
+    const fetchIpLocation = async () => {
+      try {
+        setLoading(true);
+        // Get location data from IP
+        const response = await fetch(`https://ipapi.co/json`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const ipData = await response.json();
+
+        const location = {
+          lat: ipData.latitude,
+          lng: ipData.longitude,
+        };
+
+        setIpLocation(location);
+        setViewState({
+          longitude: location.lng,
+          latitude: location.lat,
+          zoom: 10,
+        });
+      } catch (err) {
+        console.error("Error fetching IP location:", err);
+        setError("Failed to get location from IP");
+        // Use default location
+        setIpLocation({
+          lat: DEFAULTS.latitude,
+          lng: DEFAULTS.longitude,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIpLocation();
+  }, []);
+
+  // Get precise location using browser Geolocation API
+  const getPreciseLocation = () => {
+    if (navigator.geolocation) {
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setPreciseLocation(newLocation);
+          setLoading(false);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+          setError(
+            "Failed to get precise location. Please check your browser permissions.",
+          );
+          setLoading(false);
+        },
+      );
+    } else {
+      setError("Geolocation is not supported by your browser");
+    }
+  };
+
+  // Custom Marker component
+  const CustomMarker = ({ color, children }) => (
+    <div className="flex flex-col items-center">
+      {children}
+      <div
+        className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
+        style={{ backgroundColor: color }}
+      />
+    </div>
+  );
+
+  // Mapbox route line between points
+  const routeData = {
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "LineString",
+      coordinates:
+        ipLocation && preciseLocation
+          ? [
+              [ipLocation.lng, ipLocation.lat],
+              [preciseLocation.lng, preciseLocation.lat],
+            ]
+          : [],
+    },
+  };
+
+  // Line layer style
+  const lineLayer = {
+    id: "route",
+    type: "line",
+    paint: {
+      "line-color": "#fafafa",
+      "line-width": 3,
+      "line-dasharray": [2, 1],
+    },
+  };
+
+  return (
+    <>
+      {error && <div className="text-red-500">{error}</div>}
+      <ReactMapGL
+        ref={mapRef}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        style={{ width: "100%", height: "500px" }}
+        mapStyle={MAP_STYLE}
+        {...viewState}
+      >
+        {/* IP Location Marker */}
+        {ipLocation && (
+          <Marker
+            longitude={ipLocation.lng}
+            latitude={ipLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  IP Location
+                </p>
+                <p className="text-xs font-mono uppercase">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+
+        {/* Precise Location Marker */}
+        {preciseLocation && (
+          <Marker
+            longitude={preciseLocation.lng}
+            latitude={preciseLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  Precise Location
+                </p>
+                <p className="text-xs font-mono uppercase text-white">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+
+        {/* Dashed line between the two points */}
+        {ipLocation && preciseLocation && (
+          <Source id="route-source" type="geojson" data={routeData}>
+            <Layer {...lineLayer} />
+          </Source>
+        )}
+      </ReactMapGL>
+      <div className="w-full flex justify-center mt-6">
+        <button onClick={getPreciseLocation} disabled={loading || !ipLocation}>
+          {loading ? "Getting location..." : "Show precise location"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+export default MapComponent;
+```
+
+---
+
+### Step 7: Calculating and showing the distance between the 2
+
+Now we have a line but we want to show the distance as well. At the midpoint of the rendered line we'll render a label showing the distance in KM.
+
+To calculate the distance, we'll use the Haversine formula:
+
+```javascript
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Earth's radius in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))); // Distance in km
+};
+
+const deg2rad = (deg) => {
+  return deg * (Math.PI / 180);
+};
+```
+
+We can get the distance now but we need to render it at the midpoint. We'll create a simple function to do just that. Given 2 points, return a new point that is the halfway.
+
+```javascript
+const calculateMidpoint = (lat1, lng1, lat2, lng2) => {
+  return {
+    lat: (lat1 + lat2) / 2,
+    lng: (lng1 + lng2) / 2,
+  };
+};
+```
+
+Alright cool, now let's add this to our component and show the distance label:
+
+```jsx
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import ReactMapGL, { Layer, Marker, Source } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
+
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Default response if IP API fails
+const DEFAULTS = {
+  latitude: 51.5074, // London coordinates as default centre
+  longitude: -0.1278,
+  zoom: 10,
+};
+
+const MAP_STYLE = "mapbox://styles/mapbox/dark-v11";
+
+// Calculate distance between two points using Haversine formula
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Radius of the earth in km
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in km
+  return distance;
+};
+
+const deg2rad = (deg) => {
+  return deg * (Math.PI / 180);
+};
+
+// Calculate midpoint between two coordinates
+const calculateMidpoint = (lat1, lng1, lat2, lng2) => {
+  return {
+    lat: (lat1 + lat2) / 2,
+    lng: (lng1 + lng2) / 2,
+  };
+};
+
+function MapComponent() {
+  const mapRef = useRef();
+  const [viewState, setViewState] = useState({
+    latitude: DEFAULTS.latitude,
+    longitude: DEFAULTS.longitude,
+    zoom: DEFAULTS.zoom,
+  });
+  const [ipLocation, setIpLocation] = useState(null);
+  const [preciseLocation, setPreciseLocation] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [distance, setDistance] = useState(null);
+
+  // Get initial location based on IP
+  useEffect(() => {
+    const fetchIpLocation = async () => {
+      try {
+        setLoading(true);
+        // Get location data from IP
+        const response = await fetch(`https://ipapi.co/json`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const ipData = await response.json();
+
+        const location = {
+          lat: ipData.latitude,
+          lng: ipData.longitude,
+        };
+
+        setIpLocation(location);
+        setViewState({
+          longitude: location.lng,
+          latitude: location.lat,
+          zoom: 10,
+        });
+      } catch (err) {
+        console.error("Error fetching IP location:", err);
+        setError("Failed to get location from IP");
+        // Use default location
+        setIpLocation({
+          lat: DEFAULTS.latitude,
+          lng: DEFAULTS.longitude,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIpLocation();
+  }, []);
+
+  // Get precise location using browser Geolocation API
+  const getPreciseLocation = () => {
+    if (navigator.geolocation) {
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setPreciseLocation(newLocation);
+
+          // Calculate distance if both locations are available
+          if (ipLocation) {
+            const dist = calculateDistance(
+              ipLocation.lat,
+              ipLocation.lng,
+              newLocation.lat,
+              newLocation.lng,
+            );
+            setDistance(dist);
+          }
+
+          // Adjust map to show both points
+          if (mapRef.current && ipLocation) {
+            const map = mapRef.current.getMap();
+
+            // Create bounds that include both points
+            const bounds = new mapboxgl.LngLatBounds();
+            bounds.extend([ipLocation.lng, ipLocation.lat]);
+            bounds.extend([newLocation.lng, newLocation.lat]);
+
+            // Fit the map to these bounds with padding
+            map.fitBounds(bounds, {
+              padding: { top: 100, bottom: 50, left: 100, right: 100 },
+              duration: 1000,
+            });
+          }
+
+          setLoading(false);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+          setError(
+            "Failed to get precise location. Please check your browser permissions.",
+          );
+          setLoading(false);
+        },
+      );
+    } else {
+      setError("Geolocation is not supported by your browser");
+    }
+  };
+
+  // Custom Marker component
+  const CustomMarker = ({ color, children }) => (
+    <div className="flex flex-col items-center">
+      {children}
+      <div
+        className="w-5 h-5 rounded-full border-2 border-white cursor-pointer marker-pulse"
+        style={{ backgroundColor: color }}
+      />
+    </div>
+  );
+
+  // Custom Distance Label component
+  const DistanceLabel = ({ distance }) => (
+    <div className="bg-black px-2 py-1 text-white text-xs font-mono uppercase">
+      <p className="font-bold">{distance.toFixed(2)} km</p>
+    </div>
+  );
+
+  // Mapbox route line between points
+  const routeData = {
+    type: "Feature",
+    properties: {},
+    geometry: {
+      type: "LineString",
+      coordinates:
+        ipLocation && preciseLocation
+          ? [
+              [ipLocation.lng, ipLocation.lat],
+              [preciseLocation.lng, preciseLocation.lat],
+            ]
+          : [],
+    },
+  };
+
+  // Line layer style
+  const lineLayer = {
+    id: "route",
+    type: "line",
+    paint: {
+      "line-color": "#fafafa",
+      "line-width": 3,
+      "line-dasharray": [2, 1],
+    },
+  };
+
+  return (
+    <>
+      {error && <div className="text-red-500">{error}</div>}
+      <ReactMapGL
+        ref={mapRef}
+        onMove={(evt) => setViewState(evt.viewState)}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+        style={{ width: "100%", height: "500px" }}
+        mapStyle={MAP_STYLE}
+        {...viewState}
+      >
+        {/* IP Location Marker */}
+        {ipLocation && (
+          <Marker
+            longitude={ipLocation.lng}
+            latitude={ipLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  IP Location
+                </p>
+                <p className="text-xs font-mono uppercase">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {ipLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+
+        {/* Precise Location Marker */}
+        {preciseLocation && (
+          <Marker
+            longitude={preciseLocation.lng}
+            latitude={preciseLocation.lat}
+            anchor="bottom"
+          >
+            <CustomMarker color="#000000">
+              <div className="text-white text-xs font-mono uppercase bg-black px-2 py-1 mb-1 flex flex-col gap-1">
+                <p className="text-xs font-mono uppercase font-bold">
+                  Precise Location
+                </p>
+                <p className="text-xs font-mono uppercase text-white">
+                  lat{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lat.toFixed(2)}
+                  </span>
+                  &nbsp; lng{" "}
+                  <span className="text-gray-300">
+                    {preciseLocation.lng.toFixed(2)}
+                  </span>
+                </p>
+              </div>
+            </CustomMarker>
+          </Marker>
+        )}
+
+        {/* Dashed line between the two points */}
+        {ipLocation && preciseLocation && (
+          <Source id="route-source" type="geojson" data={routeData}>
+            <Layer {...lineLayer} />
+          </Source>
+        )}
+
+        {/* Distance Label at Midpoint */}
+        {ipLocation && preciseLocation && distance && (
+          <Marker
+            longitude={
+              calculateMidpoint(
+                ipLocation.lng,
+                ipLocation.lng,
+                preciseLocation.lng,
+                preciseLocation.lng,
+              ).lng
+            }
+            latitude={
+              calculateMidpoint(
+                ipLocation.lat,
+                ipLocation.lat,
+                preciseLocation.lat,
+                preciseLocation.lat,
+              ).lat
+            }
+            anchor="top-right"
+          >
+            <DistanceLabel distance={distance} />
+          </Marker>
+        )}
+      </ReactMapGL>
+      <div className="w-full flex justify-center mt-6">
+        <button onClick={getPreciseLocation} disabled={loading || !ipLocation}>
+          {loading ? "Getting location..." : "Show precise location"}
+        </button>
+      </div>
+    </>
+  );
+}
+
+export default MapComponent;
+```
+
+So there's 2 things I wanted to mention here. We'va added some logic to the `getPreciseLocation` function. So after we get the precise location, we now calculate the distance between the 2 points and set it to component state. Which we'll use as the distance value inside the label.
+
+```javascript
+// Calculate distance if both locations are available
+if (ipLocation) {
+    const dist = calculateDistance(
+        ipLocation.lat, ipLocation.lng,
+        newLocation.lat, newLocation.lng
+    );
+    setDistance(dist);
+```
+
+Then we set the maps bounds to fit both of the points nicely.
+
+```javascript
+// Adjust map to show both points
+if (mapRef.current && ipLocation) {
+  const map = mapRef.current.getMap();
+
+  // Create bounds that include both points
+  const bounds = new mapboxgl.LngLatBounds();
+  bounds.extend([ipLocation.lng, ipLocation.lat]);
+  bounds.extend([newLocation.lng, newLocation.lat]);
+
+  // Fit the map to these bounds with padding
+  map.fitBounds(bounds, {
+    padding: { top: 100, bottom: 50, left: 100, right: 100 },
+    duration: 1000,
+  });
+}
+```
+
+For this we use the `mapRef` we implemented earlier to extend the bounds to fit the 2 points with a bit of padding (to fit them nicely). I've set some custom padding so that the labels fit proportionally.
+
+And that's pretty much it. We've covered the 2 different ways to get a user location and how we can use these on our app. To demonstrate this we used Mapbox and React Maps GL to show some markers and the distance between the 2.
+
+---
+
+**Wrapping Up**
+
+So, that's how you can grab a user's location using both IP-based tracking and the Geolocation API, and visualize that data on a map using Mapbox. Each method has its pros and cons, so choose the one that best fits your needs. Play around with the code, and adapt it to your specific projects.
+
+**Peace.**

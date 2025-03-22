@@ -6,10 +6,7 @@ export default function PostList({ posts }) {
   return (
     <>
       {posts?.map((post, i) => (
-        <PostCard
-          key={i}
-          post={post}
-        />
+        <PostCard key={i} post={post} />
       ))}
     </>
   );
