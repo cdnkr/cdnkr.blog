@@ -6,6 +6,7 @@ import PWAInstallButton from "./pwainstall";
 import QRCodeGenerator from "./qrgenerator";
 import UUIDV4Generator from "./uuidv4generator";
 import CurrentLocation from "./currentlocation-mapbox";
+import Base64Converter from "./bas64converter";
 
 const postComponents = {
   UUIDV4Generator: UUIDV4Generator,
@@ -16,6 +17,7 @@ const postComponents = {
   Block: Block,
   ImageMasonry: ImageMasonry,
   CurrentLocation: CurrentLocation,
+  Base64Converter: Base64Converter,
 };
 
 export default postComponents;
