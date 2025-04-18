@@ -2,8 +2,9 @@
 
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Card_Simple as Card } from "./ui/card";
+import { ArrowUpRight } from "./ui/icons";
 
 const PostCard = ({ post, className, isActive, ...rest }) => {
   const { slug, frontmatter } = post;
@@ -27,25 +28,25 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
     );
   };
 
-  // useEffect(() => {
-  //   const checkVisibility = () => {
-  //     if (!ref.current) return;
+  useEffect(() => {
+    const checkVisibility = () => {
+      if (!ref.current) return;
 
-  //     const nowVisible = isElementFullyVisible(ref.current);
-  //     if (nowVisible !== isFullyVisible) {
-  //       setIsFullyVisible(nowVisible);
-  //       setKey((prev) => prev + 1); // Force re-render when visibility changes
-  //     }
-  //   };
+      const nowVisible = isElementFullyVisible(ref.current);
+      if (nowVisible !== isFullyVisible) {
+        setIsFullyVisible(nowVisible);
+        setKey((prev) => prev + 1); // Force re-render when visibility changes
+      }
+    };
 
-  //   window.addEventListener("scroll", checkVisibility);
-  //   checkVisibility(); // Check on mount
+    window.addEventListener("scroll", checkVisibility);
+    checkVisibility(); // Check on mount
 
-  //   return () => window.removeEventListener("scroll", checkVisibility);
-  // }, [isFullyVisible]);
+    return () => window.removeEventListener("scroll", checkVisibility);
+  }, [isFullyVisible]);
 
   return (
-    <Link href={`/post/${slug}`} className="bg-red-500">
+    <Link href={`/post/${slug}`}>
       <Card
         key={key} // This forces a complete re-render when visibility changes
         ref={ref}
@@ -56,12 +57,9 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
           "flex flex-col justify-center items-center",
           "px-4 lg:px-0 py-24 lg:py-12",
           "transition-all duration-300",
-          "text-dark/50",
-          // "hover:text-primary/70",
-          "!bg-tertiary",
-          "!border-dark !border-4",
-          "shadow-[12px_12px_0_0_rgba(var(--color-shadow))]",
-          "active:shadow-[12px_12px_0_0_rgba(var(--color-shadow))] hover:shadow-[18px_18px_0_0_rgba(var(--color-shadow))]",
+          "text-dark/40",
+          "hover:text-primary/70",
+          // "active:shadow-[9px_9px_0_0_rgba(var(--color-shadow))] hover:shadow-[18px_18px_0_0_rgba(var(--color-shadow))]",
           isFullyVisible && "text-primary/70 lg:text-dark/40",
           post.pattern,
         )}
