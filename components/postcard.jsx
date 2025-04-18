@@ -2,9 +2,8 @@
 
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card_Simple as Card } from "./ui/card";
-import { ArrowUpRight } from "./ui/icons";
 
 const PostCard = ({ post, className, isActive, ...rest }) => {
   const { slug, frontmatter } = post;
@@ -58,9 +57,8 @@ const PostCard = ({ post, className, isActive, ...rest }) => {
           "px-4 lg:px-0 py-24 lg:py-12",
           "transition-all duration-300",
           "text-dark/40",
-          "hover:text-primary/70",
-          // "active:shadow-[9px_9px_0_0_rgba(var(--color-shadow))] hover:shadow-[18px_18px_0_0_rgba(var(--color-shadow))]",
-          isFullyVisible && "text-primary/70 lg:text-dark/40",
+          "hover:text-tertiary/80",
+          isFullyVisible && "text-tertiary/80 lg:text-dark/40",
           post.pattern,
         )}
         {...rest}

@@ -69,10 +69,10 @@
 }
 
 .dark {
-  --color-primary: #fee685;
-  --color-primary-rgb: 254, 230, 133;
-  --color-secondary: #c4a219;
-  --color-tertiary: #2eabb0;
+  --color-primary: #f4442e;
+  --color-primary-rgb: 244, 68, 46;
+  --color-secondary: #f4442e;
+  --color-tertiary: #f4442e;
   --color-background: #222;
   --color-text: #fafafa;
   --color-text-secondary: #fff;
