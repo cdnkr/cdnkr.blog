@@ -22,7 +22,12 @@ export default function Post({ post, layout = "default" }) {
       <div className="w-full flex flex-col gap-10">
         <div
           className={cn(
-            "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0 text-primary/70",
+            "relative w-full flex flex-col justify-center min-h-[357px] gap-4 py-24 lg:py-8 px-4 lg:px-0",
+            "text-dark/50",
+            // "hover:text-primary/70",
+            "!bg-tertiary",
+            // "shadow-[18px_18px_0_0_rgba(var(--color-shadow))]",
+            "!border-dark !border-4",
             post.pattern,
             layout === "full" ? "lg:py-16 min-h-auto" : "lg:min-h-[360px]",
           )}
