@@ -59,6 +59,7 @@ export default function Button({
   className,
   variant = "primary",
   shadowColor,
+  disabled,
   ...rest
 }) {
   const variants = {
@@ -76,6 +77,7 @@ export default function Button({
       className={cn(
         "bg-button border-button-border text-button-text uppercase font-mono shadow-[3px_3px_0_0_rgba(var(--color-shadow))] active:shadow-[1px_1px_0_0_rgba(var(--color-shadow))] hover:shadow-[5px_5px_0_0_rgba(var(--color-shadow))] max-h-[52px] leading-snug max-w-full cursor-pointer flex justify-center items-center gap-1 py-3 px-10 border-2 transition-all duration-300",
         // variants[variant],
+        disabled && "opacity-75 cursor-not-allowed",
         className,
       )}
       style={
