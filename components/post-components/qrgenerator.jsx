@@ -5,6 +5,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import Button from "../ui/button";
 import Input from "../ui/input";
+import { getColorValue } from "@/utils/color";
 
 export default function QRCodeGenerator() {
   const [text, setText] = useState("");
@@ -50,8 +51,8 @@ export default function QRCodeGenerator() {
             value={text || config.url}
             size={512}
             className="w-full  h-auto"
-            bgColor={getComputedStyle(document.documentElement).getPropertyValue("--color-background")}
-            fgColor={getComputedStyle(document.documentElement).getPropertyValue("--color-dark")}
+            bgColor={getColorValue("--color-background")}
+            fgColor={getColorValue("--color-dark")}
           />
           <div className="w-full flex flex-col gap-4">
             <Input
