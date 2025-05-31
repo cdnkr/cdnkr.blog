@@ -9,10 +9,10 @@ import {
 import "./globals.css";
 
 import Header from "@/components/header";
+import ThemeToggle from "@/components/themetoggle";
+import Link from "next/link";
 
 import "@/utils/pwa-handler";
-// import ThemeToggle from "@/components/themetoggle";
-import Link from "next/link";
 
 const jetBrainsMono = JetBrains_Mono({
   variable: "--font-mono",
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${libreFranklin.variable} ${jetBrainsMono.variable} ${gochiHand.variable} ${tiny5.variable} dark`}
+      className={`${oswald.variable} ${libreFranklin.variable} ${jetBrainsMono.variable} ${gochiHand.variable} ${tiny5.variable}`}
     >
       <head>
         <link rel="manifest" href="/manifest.json" />
@@ -89,7 +89,7 @@ export default function RootLayout({ children }) {
                 About
               </Link>
             </div>
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </div>
         </div>
         <div className="w-full max-w-[1260px] flex flex-col items-center py-2 lg:py-0 px-6 lg:px-8">
