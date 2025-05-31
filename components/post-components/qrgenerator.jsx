@@ -50,8 +50,8 @@ export default function QRCodeGenerator() {
             value={text || config.url}
             size={512}
             className="w-full  h-auto"
-            bgColor="var(--color-background)"
-            fgColor="var(--color-dark)"
+            bgColor={getComputedStyle(document.documentElement).getPropertyValue("--color-background")}
+            fgColor={getComputedStyle(document.documentElement).getPropertyValue("--color-dark")}
           />
           <div className="w-full flex flex-col gap-4">
             <Input
